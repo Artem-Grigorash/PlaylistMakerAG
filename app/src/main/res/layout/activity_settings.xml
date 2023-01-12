@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings"
-            android:textColor="@color/black"
+            android:textColor="@color/classic_text"
             android:textSize="25sp"
             android:paddingLeft="50dp"
             android:fontFamily="@font/ys_display_medium"/>
@@ -25,7 +25,8 @@
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:paddingTop="10dp"
-            app:srcCompat="@drawable/array_back" />
+            app:srcCompat="@drawable/array_back"
+            app:tint="@color/classic_text" />
     </FrameLayout>
 
     <FrameLayout
