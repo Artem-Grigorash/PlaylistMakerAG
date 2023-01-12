@@ -17,7 +17,8 @@
             android:text="@string/settings"
             android:textColor="@color/black"
             android:textSize="25sp"
-            android:paddingLeft="50dp"/>
+            android:paddingLeft="50dp"
+            android:fontFamily="@font/ys_display_medium"/>
 
         <ImageView
             android:id="@+id/settings_back"
@@ -35,9 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dark_theme"
-            android:textColor="@color/black"
             android:layout_gravity="center_vertical"
-            android:textSize="@dimen/classic_text"
+            style="@style/ClassicTextStyle"
             />
         <Switch
             android:layout_width="wrap_content"
@@ -55,9 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/share"
-            android:textColor="@color/black"
             android:layout_gravity="center_vertical"
-            android:textSize="@dimen/classic_text"
+            style="@style/ClassicTextStyle"
             />
 
         <ImageView
@@ -77,9 +76,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help"
-            android:textColor="@color/black"
             android:layout_gravity="center_vertical"
-            android:textSize="@dimen/classic_text"
+            style="@style/ClassicTextStyle"
             />
 
         <ImageView
@@ -99,9 +97,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/agreement"
-            android:textColor="@color/black"
             android:layout_gravity="center_vertical"
-            android:textSize="@dimen/classic_text"
+            style="@style/ClassicTextStyle"
             />
         <ImageView
             android:layout_width="36dp"
