@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textColor="@color/button_white"
-            android:textSize="25sp"
+            android:textSize="@dimen/header_text"
             />
 
     </FrameLayout>
@@ -36,10 +36,10 @@
             android:text="@string/search"
             android:textColor="@color/black"
             android:textSize="@dimen/button_text"
-            app:cornerRadius="16dp"
+            app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/search"
             app:iconGravity="textStart"
-            app:iconPadding="5dp"
+            app:iconPadding="@dimen/icon_padding"
             app:iconTint="@color/black" />
 
     </FrameLayout>
@@ -59,10 +59,10 @@
             android:text="@string/mediateka"
             android:textColor="@color/black"
             android:textSize="@dimen/button_text"
-            app:cornerRadius="16dp"
+            app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/mediateka"
             app:iconGravity="textStart"
-            app:iconPadding="5dp"
+            app:iconPadding="@dimen/icon_padding"
             app:iconTint="@color/black" />
 
     </FrameLayout>
@@ -82,10 +82,10 @@
             android:text="@string/settings"
             android:textColor="@color/black"
             android:textSize="@dimen/button_text"
-            app:cornerRadius="16dp"
+            app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/settings"
             app:iconGravity="textStart"
-            app:iconPadding="5dp"
+            app:iconPadding="@dimen/icon_padding"
             app:iconTint="@color/black" />
 
     </FrameLayout>

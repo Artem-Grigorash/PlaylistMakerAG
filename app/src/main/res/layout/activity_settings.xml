@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@string/settings"
             android:textColor="@color/black"
-            android:textSize="25sp"
+            android:textSize="@dimen/header_text"
             android:paddingLeft="50dp"/>
 
         <ImageView
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
+            android:paddingVertical="@dimen/settings_picture_padding_vertical"
             />
     </FrameLayout>
 
@@ -61,10 +61,10 @@
             />
 
         <ImageView
-            android:layout_width="36dp"
+            android:layout_width="@dimen/settings_picture_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
+            android:paddingVertical="@dimen/settings_picture_padding_vertical"
             app:srcCompat="@drawable/share"
             app:tint="@color/icons_tint" />
     </FrameLayout>
@@ -83,10 +83,10 @@
             />
 
         <ImageView
-            android:layout_width="36dp"
+            android:layout_width="@dimen/settings_picture_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
+            android:paddingVertical="@dimen/settings_picture_padding_vertical"
             app:srcCompat="@drawable/support"
             app:tint="@color/icons_tint" />
     </FrameLayout>
@@ -104,10 +104,10 @@
             android:textSize="@dimen/classic_text"
             />
         <ImageView
-            android:layout_width="36dp"
+            android:layout_width="@dimen/settings_picture_layout_width"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
+            android:paddingVertical="@dimen/settings_picture_padding_vertical"
             app:srcCompat="@drawable/array_forward"
             app:tint="@color/icons_tint" />
     </FrameLayout>
