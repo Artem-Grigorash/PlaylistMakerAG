@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@string/settings"
             android:textColor="@color/classic_text"
-            android:textSize="25sp"
+            android:textSize="@dimen/header_text"
             android:paddingLeft="50dp"
             android:fontFamily="@font/ys_display_medium"/>
 
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
+            style="@style/SettingsPicturesStyle"
             />
     </FrameLayout>
 
@@ -61,12 +61,11 @@
             />
 
         <ImageView
-            android:layout_width="36dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
             app:srcCompat="@drawable/share"
-            app:tint="@color/icons_tint" />
+            app:tint="@color/icons_tint"
+            style="@style/SettingsPicturesStyle"/>
     </FrameLayout>
 
     <FrameLayout
@@ -82,12 +81,11 @@
             />
 
         <ImageView
-            android:layout_width="36dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
             app:srcCompat="@drawable/support"
-            app:tint="@color/icons_tint" />
+            app:tint="@color/icons_tint"
+            style="@style/SettingsPicturesStyle"/>
     </FrameLayout>
 
     <FrameLayout
@@ -102,12 +100,11 @@
             style="@style/ClassicTextStyle"
             />
         <ImageView
-            android:layout_width="36dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:paddingVertical="22dp"
             app:srcCompat="@drawable/array_forward"
-            app:tint="@color/icons_tint" />
+            app:tint="@color/icons_tint"
+            style="@style/SettingsPicturesStyle"/>
     </FrameLayout>
 
     <FrameLayout
