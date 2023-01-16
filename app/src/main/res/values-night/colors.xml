@@ -11,4 +11,6 @@
     <color name="background_main">#1A1B22</color>
     <color name="icons_tint">#FFFFFF</color>
     <color name="classic_text">#FFFFFF</color>
+    <color name="search_field">#FFFFFF</color>
+    <color name="text_gray">#1A1B22</color>
 </resources>

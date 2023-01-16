@@ -39,16 +39,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/search"
+            android:textColorHint="@color/text_gray"
             android:inputType="text"
+            android:textColor="@color/text_gray"
             android:lines="1"
             android:maxLength="30"
-            android:paddingStart="30dp" />
+            android:paddingStart="50dp" />
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            app:icon="@drawable/search" />
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                app:icon="@drawable/search"
+                app:tint="@color/text_gray" />
+        </FrameLayout>
+
 
     </FrameLayout>
 
