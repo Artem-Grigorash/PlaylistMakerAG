@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_dark"
     android:orientation="vertical"
-    android:padding="15dp"
-    android:background="@color/white_dark">
+    android:padding="15dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -12,15 +15,15 @@
         android:layout_weight="1">
 
         <TextView
+            style="@style/HeaderStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search"
             android:paddingLeft="50dp"
             android:paddingTop="5dp"
-            style="@style/HeaderStyle"/>
+            android:text="@string/search" />
 
         <ImageView
-            android:id="@+id/settings_back"
+            android:id="@+id/search_back"
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:paddingTop="10dp"
@@ -32,30 +35,39 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/search_field"
-        >
+        android:background="@color/search_field">
 
         <EditText
+            android:id="@+id/searchEdit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/search"
-            android:textColorHint="@color/text_gray"
             android:inputType="text"
-            android:textColor="@color/text_gray"
             android:lines="1"
             android:maxLength="30"
-            android:paddingStart="50dp" />
+            android:paddingStart="50dp"
+            android:textColor="@color/text_gray"
+            android:textColorHint="@color/text_gray" />
+
+        <ImageView
+            android:id="@+id/clearIcon"
+            style="@style/SettingsPicturesStyle"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/share"
+            app:tint="@color/icons_tint" />
 
         <FrameLayout
             android:layout_width="50dp"
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="match_parent"
+                style="@style/SettingsPicturesStyle"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                app:icon="@drawable/search"
+                android:layout_gravity="end"
+                app:srcCompat="@drawable/search"
                 app:tint="@color/text_gray" />
+
         </FrameLayout>
 
 
