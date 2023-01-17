@@ -54,8 +54,8 @@
             style="@style/SettingsPicturesStyle"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            app:srcCompat="@drawable/share"
-            app:tint="@color/icons_tint" />
+            app:srcCompat="@drawable/clear"
+            app:tint="@color/text_gray" />
 
         <FrameLayout
             android:layout_width="50dp"
@@ -64,7 +64,7 @@
             <ImageView
                 style="@style/SettingsPicturesStyle"
                 android:layout_height="match_parent"
-                android:layout_gravity="end"
+                android:layout_gravity="center_horizontal"
                 app:srcCompat="@drawable/search"
                 app:tint="@color/text_gray" />
 
