@@ -10,6 +10,25 @@ import android.widget.EditText
 import android.widget.ImageView
 
 class SearchActivity : AppCompatActivity() {
+
+    companion object {
+        const val INPUT_TEXT = "INPUT_TEXT"
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val inputEditText = findViewById<EditText>(R.id.searchEdit)
+        val textValue: String = inputEditText.text.toString()
+        outState.putString(INPUT_TEXT,textValue)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val inputEditText = findViewById<EditText>(R.id.searchEdit)
+        val textValue = savedInstanceState.getString(INPUT_TEXT,"")
+        inputEditText.setText(textValue)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -19,7 +38,6 @@ class SearchActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
 
         val inputEditText = findViewById<EditText>(R.id.searchEdit)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
