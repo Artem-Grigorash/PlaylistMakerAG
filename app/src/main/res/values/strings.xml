@@ -7,4 +7,9 @@
     <string name="share">Поделиться приложением</string>
     <string name="help">Написать в поддержку</string>
     <string name="agreement">Пользовательское соглашение</string>
+    <string name="practicum_url">https://practicum.yandex.ru/android-developer/</string>
+    <string name="thanks">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="subject">Написать в поддержку</string>
+    <string name="email">artem.s.grigorash@gmail.com</string>
+    <string name="legal_url">https://yandex.ru/legal/practicum_offer/</string>
 </resources>
