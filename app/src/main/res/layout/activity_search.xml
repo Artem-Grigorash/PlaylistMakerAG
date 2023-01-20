@@ -44,6 +44,7 @@
             android:inputType="text"
             android:lines="1"
             android:maxLength="25"
+            android:background="@android:color/transparent"
             android:paddingStart="50dp"
             android:textColor="@color/text_gray"
             android:textColorHint="@color/text_gray" />
