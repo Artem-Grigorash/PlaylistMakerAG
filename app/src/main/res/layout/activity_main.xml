@@ -48,8 +48,6 @@
             android:id="@+id/mediateka_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:gravity="center_horizontal|center_vertical"
             android:text="@string/mediateka"
             app:icon="@drawable/mediateka"
             style="@style/MainButtonStyle"/>
@@ -65,8 +63,6 @@
             android:id="@+id/settings_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:gravity="center_horizontal|center_vertical"
             android:text="@string/settings"
             app:icon="@drawable/settings"
             style="@style/MainButtonStyle"/>
