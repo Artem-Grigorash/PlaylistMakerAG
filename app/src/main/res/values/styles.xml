@@ -19,6 +19,10 @@
         <item name="android:layout_width">@dimen/settings_picture_layout_width</item>
         <item name="android:paddingVertical">@dimen/settings_picture_padding_vertical</item>
     </style>
+    <style name="TracksPicturesStyle">
+        <item name="android:layout_width">@dimen/tracks_picture_layout_width</item>
+        <item name="android:layout_height">@dimen/tracks_picture_layout_height</item>
+    </style>
     <style name="HeaderStyle">
         <item name="android:textColor">@color/classic_text</item>
         <item name="android:textSize">@dimen/header_text</item>

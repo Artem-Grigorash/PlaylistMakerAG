@@ -6,5 +6,7 @@
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="icon_padding">5dp</dimen>
     <dimen name="settings_picture_layout_width">36dp</dimen>
+    <dimen name="tracks_picture_layout_width">45dp</dimen>
+    <dimen name="tracks_picture_layout_height">45dp</dimen>
     <dimen name="settings_picture_padding_vertical">22dp</dimen>
 </resources>
