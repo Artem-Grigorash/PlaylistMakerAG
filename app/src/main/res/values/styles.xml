@@ -22,6 +22,13 @@
     <style name="TracksPicturesStyle">
         <item name="android:layout_width">@dimen/tracks_picture_layout_width</item>
         <item name="android:layout_height">@dimen/tracks_picture_layout_height</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+    <style name="TracksArraysStyle">
+        <item name="android:layout_width">@dimen/arrays_picture_layout_width</item>
+        <item name="android:layout_height">@dimen/arrays_picture_layout_height</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:paddingVertical">@dimen/settings_picture_padding_vertical</item>
     </style>
     <style name="HeaderStyle">
         <item name="android:textColor">@color/classic_text</item>
