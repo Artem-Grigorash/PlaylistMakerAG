@@ -27,16 +27,6 @@
         tools:text="author"
         />
 
-    <TextView
-        android:id="@+id/trackTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="205dp"
-        android:paddingTop="20dp"
-        android:textSize="14sp"
-        tools:text="time"
-        />
-
     <ImageView
         android:id="@+id/trackPicture"
         style="@style/TracksPicturesStyle"
@@ -47,7 +37,6 @@
         android:id="@+id/array"
         style="@style/TracksArraysStyle"
         android:layout_gravity="end"
-
         app:srcCompat="@drawable/array_forward"
         app:tint="@color/icons_tint"
         />

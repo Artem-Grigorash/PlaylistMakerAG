@@ -27,7 +27,7 @@
     <style name="TracksArraysStyle">
         <item name="android:layout_width">@dimen/arrays_picture_layout_width</item>
         <item name="android:layout_height">@dimen/arrays_picture_layout_height</item>
-        <item name="android:scaleType">centerCrop</item>
+        <item name="android:scaleType">center</item>
         <item name="android:paddingVertical">@dimen/settings_picture_padding_vertical</item>
     </style>
     <style name="HeaderStyle">

@@ -5,10 +5,10 @@
     <dimen name="header_text">25sp</dimen>
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="icon_padding">5dp</dimen>
-    <dimen name="settings_picture_layout_width">20dp</dimen>
+    <dimen name="settings_picture_layout_width">30dp</dimen>
     <dimen name="tracks_picture_layout_width">40dp</dimen>
     <dimen name="tracks_picture_layout_height">40dp</dimen>
     <dimen name="arrays_picture_layout_width">20dp</dimen>
-    <dimen name="arrays_picture_layout_height">20dp</dimen>
-    <dimen name="settings_picture_padding_vertical">22dp</dimen>
+    <dimen name="arrays_picture_layout_height">40dp</dimen>
+    <dimen name="settings_picture_padding_vertical">18dp</dimen>
 </resources>
