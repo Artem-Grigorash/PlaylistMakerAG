@@ -9,22 +9,21 @@
 
     <TextView
         android:id="@+id/trackName"
+        style="@style/SearchTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:textSize="16sp"
-        android:textColor="@color/black"
         android:paddingStart="55dp"
         android:paddingBottom="10dp"
         tools:text="Very important news text" />
 
     <TextView
         android:id="@+id/artistName"
+        style="@style/LittleTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="55dp"
         android:paddingTop="20dp"
-        android:textSize="14sp"
-        tools:text="author"
+        tools:text="author and time"
         />
 
     <ImageView

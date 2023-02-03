@@ -36,6 +36,7 @@
 
         <EditText
             android:id="@+id/searchEdit"
+            style="@style/SearchPermanentTextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/search"
@@ -44,12 +45,12 @@
             android:maxLength="25"
             android:background="@android:color/transparent"
             android:paddingStart="50dp"
-            android:textColor="@color/text_gray"
             android:textColorHint="@color/text_gray" />
 
         <ImageView
             android:id="@+id/clearIcon"
             style="@style/SettingsPicturesStyle"
+            android:visibility="invisible"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             app:srcCompat="@drawable/clear"

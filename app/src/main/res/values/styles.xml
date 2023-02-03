@@ -15,6 +15,21 @@
         <item name="android:textSize">@dimen/classic_text</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+    <style name="SearchTextStyle">
+        <item name="android:textColor">@color/totalBlack</item>
+        <item name="android:textSize">@dimen/search_text</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="SearchPermanentTextStyle">
+        <item name="android:textColor">@color/permanent_black</item>
+        <item name="android:textSize">@dimen/search_big_text</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="LittleTextStyle">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">@dimen/small_text</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
     <style name="SettingsPicturesStyle">
         <item name="android:layout_width">@dimen/settings_picture_layout_width</item>
         <item name="android:paddingVertical">@dimen/settings_picture_padding_vertical</item>
