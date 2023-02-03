@@ -10,8 +10,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="50dp">
 
         <TextView
             style="@style/HeaderStyle"
@@ -32,12 +31,12 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="50dp"
         android:background="@drawable/rounded_edittext">
 
         <EditText
             android:id="@+id/searchEdit"
+            style="@style/SearchPermanentTextStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/search"
@@ -46,12 +45,12 @@
             android:maxLength="25"
             android:background="@android:color/transparent"
             android:paddingStart="50dp"
-            android:textColor="@color/text_gray"
             android:textColorHint="@color/text_gray" />
 
         <ImageView
             android:id="@+id/clearIcon"
             style="@style/SettingsPicturesStyle"
+            android:visibility="invisible"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             app:srcCompat="@drawable/clear"
@@ -76,7 +75,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10">
+        android:layout_weight="1">
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTracks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </FrameLayout>
 </LinearLayout>
