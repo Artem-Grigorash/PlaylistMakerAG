@@ -45,7 +45,9 @@
             android:maxLength="25"
             android:background="@android:color/transparent"
             android:paddingStart="50dp"
-            android:textColorHint="@color/text_gray" />
+            android:textColorHint="@color/text_gray"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageView
             android:id="@+id/clearIcon"
@@ -88,6 +90,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <TextView android:id="@+id/placeholderMessage"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
     </FrameLayout>
 </LinearLayout>

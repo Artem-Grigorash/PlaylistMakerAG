@@ -12,4 +12,6 @@
     <string name="subject">Написать в поддержку</string>
     <string name="email">artem.s.grigorash@gmail.com</string>
     <string name="legal_url">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="something_went_wrong">Ошибка!</string>
+    <string name="nothing_found">Ничего не найдено!</string>
 </resources>
