@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -91,14 +92,59 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-        <TextView android:id="@+id/placeholderMessage"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+    <FrameLayout
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
+
+            <ImageView
+                android:id="@+id/placeholderNF"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"
+                />
+
+            <TextView
+                android:id="@+id/placeholderMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/PlaceHolderStyle"
+                android:paddingTop="130dp"
+                android:textAlignment="center"
+                tools:text="Ничего не нашлось"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <Button
+                android:id="@+id/reload_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/classic_text"
+                android:text="@string/reload"
+                android:textAllCaps="false"
+                style="@style/ReloadTextStyle"
+                android:visibility="invisible"
+                android:clickable="false"
+                />
+        </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
 
     </FrameLayout>
 </LinearLayout>
