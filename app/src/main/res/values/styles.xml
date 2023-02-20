@@ -50,4 +50,15 @@
         <item name="android:textSize">@dimen/header_text</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
+    <style name="PlaceHolderStyle">
+        <item name="android:textColor">@color/classic_text</item>
+        <item name="android:textSize">@dimen/classic_text</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+    <style name="ReloadTextStyle">
+        <item name="android:textColor">@color/white_dark</item>
+        <item name="android:textSize">@dimen/small_text</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+    </style>
 </resources>
