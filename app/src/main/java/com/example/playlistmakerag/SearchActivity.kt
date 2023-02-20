@@ -20,6 +20,12 @@ import retrofit2.http.Query
 
 class SearchActivity : AppCompatActivity() {
 
+    companion object {
+        const val INPUT_TEXT = "INPUT_TEXT"
+    }
+
+
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val inputEditText = findViewById<EditText>(R.id.searchEdit)
@@ -34,16 +40,9 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(textValue)
     }
 
-    companion object {
-        const val INPUT_TEXT = "INPUT_TEXT"
-    }
+
 
     private val baseUrl = "https://itunes.apple.com"
-
-    interface ItunesApi {
-        @GET("/search?entity=song")
-        fun search(@Query("term") text: String): Call<TrackResponse>
-    }
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -60,12 +59,14 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeholder: ImageView
     private lateinit var reloadButton: Button
+    private lateinit var searchBack: ImageView
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
 
         recyclerView = findViewById(R.id.recyclerViewTracks)
         inputEditText = findViewById(R.id.searchEdit)
@@ -73,6 +74,7 @@ class SearchActivity : AppCompatActivity() {
         placeholderMessage = findViewById(R.id.placeholderMessage)
         placeholder = findViewById(R.id.placeholderNF)
         reloadButton = findViewById(R.id.reload_button)
+        searchBack = findViewById(R.id.search_back)
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -98,11 +100,13 @@ class SearchActivity : AppCompatActivity() {
             searchTracks()
         }
 
-        val searchBack = findViewById<ImageView>(R.id.search_back)
+
+
         searchBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -121,6 +125,9 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
+    //functions:
+
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -128,6 +135,7 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
+
 
     private fun showMessage(text: String, additionalMessage: String, holderImage: Int) {
         if (text.isNotEmpty()) {
@@ -146,6 +154,7 @@ class SearchActivity : AppCompatActivity() {
             placeholder.visibility = View.GONE
         }
     }
+
 
     fun searchTracks(){
         reloadButton.visibility = View.GONE

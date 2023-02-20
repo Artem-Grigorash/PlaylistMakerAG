@@ -1,6 +1,5 @@
 package com.example.playlistmakerag
 
-class TrackResponse (
-//    val resultCount : Int,
+data class TrackResponse (
     val results : ArrayList<Track>
 )
