@@ -6,11 +6,28 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+
+
+
+    private lateinit var themeSwitcher : SwitchMaterial
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
+
+        themeSwitcher = findViewById(R.id.theme_switcher)
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            sharedPref.edit()
+                .putBoolean(DARK_THEME_KEY, !checked)
+                .apply()
+        }
 
         val settingsBack = findViewById<ImageView>(R.id.settings_back)
         settingsBack.setOnClickListener {

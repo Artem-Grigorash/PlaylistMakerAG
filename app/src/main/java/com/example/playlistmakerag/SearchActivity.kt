@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.switchmaterial.SwitchMaterial
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,6 +65,7 @@ class SearchActivity : AppCompatActivity() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -75,6 +77,7 @@ class SearchActivity : AppCompatActivity() {
         placeholder = findViewById(R.id.placeholderNF)
         reloadButton = findViewById(R.id.reload_button)
         searchBack = findViewById(R.id.search_back)
+
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -100,12 +103,11 @@ class SearchActivity : AppCompatActivity() {
             searchTracks()
         }
 
-
-
         searchBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
 
 
         val simpleTextWatcher = object : TextWatcher {
