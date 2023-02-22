@@ -23,9 +23,12 @@ class SettingsActivity : AppCompatActivity() {
 
         themeSwitcher = findViewById(R.id.theme_switcher)
 
+        themeSwitcher.isChecked = (sharedPref.getBoolean(DARK_THEME_KEY, false))
+
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
             sharedPref.edit()
-                .putBoolean(DARK_THEME_KEY, !checked)
+                .putBoolean(DARK_THEME_KEY, checked)
                 .apply()
         }
 
