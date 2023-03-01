@@ -61,6 +61,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var placeholder: ImageView
     private lateinit var reloadButton: Button
     private lateinit var searchBack: ImageView
+    private lateinit var hisrory: LinearLayout
 
 
 
@@ -77,6 +78,7 @@ class SearchActivity : AppCompatActivity() {
         placeholder = findViewById(R.id.placeholderNF)
         reloadButton = findViewById(R.id.reload_button)
         searchBack = findViewById(R.id.search_back)
+        hisrory = findViewById(R.id.story)
 
 
         recyclerView.adapter = adapter
@@ -87,6 +89,10 @@ class SearchActivity : AppCompatActivity() {
                 searchTracks()
             }
             false
+        }
+
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            hisrory.visibility = if(hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
         }
 
         clearButton.setOnClickListener {
@@ -108,7 +114,9 @@ class SearchActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
+        adapter.itemClickListener = { position, track ->
+            Toast.makeText(this, "track ${track.trackId}", Toast.LENGTH_SHORT).show()
+        }
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -117,6 +125,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
