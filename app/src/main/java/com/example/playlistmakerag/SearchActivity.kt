@@ -53,6 +53,7 @@ class SearchActivity : AppCompatActivity() {
     private val trackService = retrofit.create(ItunesApi::class.java)
     private val tracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
+    private val recentAdapter = RecentTracksAdapter(tracks)
 
     private lateinit var clearButton: ImageView
     private lateinit var inputEditText: EditText
@@ -62,6 +63,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var reloadButton: Button
     private lateinit var searchBack: ImageView
     private lateinit var hisrory: LinearLayout
+    private lateinit var historyRecycler: RecyclerView
 
 
 
@@ -79,10 +81,14 @@ class SearchActivity : AppCompatActivity() {
         reloadButton = findViewById(R.id.reload_button)
         searchBack = findViewById(R.id.search_back)
         hisrory = findViewById(R.id.story)
+        historyRecycler = findViewById(R.id.search_history_recycler)
 
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        historyRecycler.adapter = recentAdapter
+        historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -114,9 +120,27 @@ class SearchActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+        val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
         adapter.itemClickListener = { position, track ->
-            Toast.makeText(this, "track ${track.trackId}", Toast.LENGTH_SHORT).show()
+        val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+        addTrack(track,recentSongs)
+        SearchHistory().write(sharedPref,recentSongs)
+        Toast.makeText(this, "track ${track.trackId}", Toast.LENGTH_SHORT).show()
         }
+
+
+        sharedPref.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == HISTORY_KEY) {
+                val track = sharedPreferences?.getString(HISTORY_KEY, null)
+                if (track != null) {
+//                    recentAdapter.rece.add(0, createFactFromJson(fact))
+                    recentAdapter.notifyItemInserted(0)
+                }
+            }
+        }
+
+
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -138,6 +162,14 @@ class SearchActivity : AppCompatActivity() {
 
 
     //functions:
+
+    fun addTrack(track: Track, place : ArrayList<Track>){
+        if (place.size == 10)
+            place.removeAt(9)
+        if (place.contains(track))
+            place.remove(track)
+        place.add(0, track)
+    }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
