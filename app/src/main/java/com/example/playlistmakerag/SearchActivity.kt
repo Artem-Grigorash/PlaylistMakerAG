@@ -10,7 +10,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -18,8 +17,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 class SearchActivity : AppCompatActivity() {
 
@@ -104,7 +101,7 @@ class SearchActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
 
-        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+        inputEditText.setOnFocusChangeListener { _, hasFocus ->
             val tracks = SearchHistory().read(sharedPref)
             recentTracks.clear()
             for (track in tracks)
@@ -135,7 +132,7 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-        adapter.itemClickListener = { position, track ->
+        adapter.itemClickListener = { _, track ->
         val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
         addTrack(track,recentSongs)
         SearchHistory().write(sharedPref,recentSongs)
@@ -143,7 +140,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
-        sharedPref.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+        sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
             if (key == HISTORY_KEY) {
                 val tracks = SearchHistory().read(sharedPref)
                 recentTracks.clear()
@@ -193,7 +190,7 @@ class SearchActivity : AppCompatActivity() {
         return Gson().fromJson(json, object : TypeToken<ArrayList<Track>>() {}.type)
     }
 
-    fun addTrack(track: Track, place : ArrayList<Track>){
+    private fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
             place.removeAt(9)
         if (place.contains(track))
@@ -229,7 +226,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    fun searchTracks(){
+    private fun searchTracks(){
         reloadButton.visibility = View.GONE
         placeholder.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
