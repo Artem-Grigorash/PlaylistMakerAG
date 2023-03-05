@@ -84,7 +84,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="20">
+        android:layout_weight="20"
+        android:clickable="true">
 
         <LinearLayout
             android:id="@+id/story"
@@ -92,7 +93,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="invisible"
-            android:clickable="false"
+            android:clickable="true"
             >
 
             <TextView
@@ -117,6 +118,7 @@
                 android:backgroundTint="@color/classic_text"
                 android:text="@string/clean_history"
                 android:textAllCaps="false"
+                android:clickable="true"
                 style="@style/ReloadTextStyle"
                 />
 

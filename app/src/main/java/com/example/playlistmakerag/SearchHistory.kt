@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 const val HISTORY_KEY = "key_for_history"
 
 
-class SearchHistory() {
+class SearchHistory {
 
     fun read(pref: SharedPreferences): ArrayList<Track> {
         val json = pref.getString(HISTORY_KEY, null) ?: return ArrayList()

@@ -11,6 +11,8 @@ import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,8 +54,9 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackService = retrofit.create(ItunesApi::class.java)
     private val tracks = ArrayList<Track>()
+    private val recentTracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
-    private val recentAdapter = RecentTracksAdapter(tracks)
+    private val recentAdapter = RecentTracksAdapter(recentTracks)
 
     private lateinit var clearButton: ImageView
     private lateinit var inputEditText: EditText
@@ -64,6 +67,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchBack: ImageView
     private lateinit var hisrory: LinearLayout
     private lateinit var historyRecycler: RecyclerView
+    private lateinit var cleanHistoryButton : Button
 
 
 
@@ -82,6 +86,7 @@ class SearchActivity : AppCompatActivity() {
         searchBack = findViewById(R.id.search_back)
         hisrory = findViewById(R.id.story)
         historyRecycler = findViewById(R.id.search_history_recycler)
+        cleanHistoryButton = findViewById(R.id.clean_history_button)
 
 
         recyclerView.adapter = adapter
@@ -132,15 +137,23 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPref.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == HISTORY_KEY) {
-                val track = sharedPreferences?.getString(HISTORY_KEY, null)
-                if (track != null) {
-//                    recentAdapter.rece.add(0, createFactFromJson(fact))
-                    recentAdapter.notifyItemInserted(0)
-                }
+                val tracks = SearchHistory().read(sharedPref)
+                recentTracks.clear()
+                for (track in tracks)
+                    recentTracks.add(track)
+                recentAdapter.notifyDataSetChanged()
             }
         }
 
-
+        cleanHistoryButton.isClickable
+        cleanHistoryButton.setOnClickListener {
+            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+            recentSongs.clear()
+            SearchHistory().write(sharedPref,recentSongs)
+            recentTracks.clear()
+            recentAdapter.notifyDataSetChanged()
+            Toast.makeText(this, "t", Toast.LENGTH_SHORT).show()
+        }
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -162,6 +175,14 @@ class SearchActivity : AppCompatActivity() {
 
 
     //functions:
+
+    private fun createJsonFromTrack(track: Track): String {
+        return Gson().toJson(track)
+    }
+
+    private fun createTracksListFromJson(json: String): ArrayList<Track> {
+        return Gson().fromJson(json, object : TypeToken<ArrayList<Track>>() {}.type)
+    }
 
     fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
