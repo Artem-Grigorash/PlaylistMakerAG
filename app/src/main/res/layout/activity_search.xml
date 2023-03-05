@@ -84,7 +84,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="20"
+        android:layout_weight="40"
         android:clickable="true">
 
         <LinearLayout
@@ -98,7 +98,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:text="@string/you_searched"
                 android:layout_gravity="center_horizontal"
                 style="@style/PlaceHolderStyle"
@@ -107,8 +107,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_history_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:layout_height="280dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <Button
                 android:id="@+id/clean_history_button"
