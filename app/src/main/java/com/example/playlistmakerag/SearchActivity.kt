@@ -174,9 +174,7 @@ class SearchActivity : AppCompatActivity() {
                 hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                // empty
-            }
+            override fun afterTextChanged(s: Editable?) {}
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
@@ -184,14 +182,6 @@ class SearchActivity : AppCompatActivity() {
 
 
     //functions:
-
-    private fun createJsonFromTrack(track: Track): String {
-        return Gson().toJson(track)
-    }
-
-    private fun createTracksListFromJson(json: String): ArrayList<Track> {
-        return Gson().fromJson(json, object : TypeToken<ArrayList<Track>>() {}.type)
-    }
 
     private fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
