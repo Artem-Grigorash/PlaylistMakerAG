@@ -53,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
     private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
-    private val recentAdapter = RecentTracksAdapter(recentTracks)
+    private val recentAdapter = TracksAdapter(recentTracks)
 
     private lateinit var clearButton: ImageView
     private lateinit var inputEditText: EditText
@@ -84,7 +84,8 @@ class SearchActivity : AppCompatActivity() {
         hisrory = findViewById(R.id.story)
         historyRecycler = findViewById(R.id.search_history_recycler)
         cleanHistoryButton = findViewById(R.id.clean_history_button)
-        cleanHistoryButton.isClickable
+
+
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -107,8 +108,10 @@ class SearchActivity : AppCompatActivity() {
             for (track in tracks)
                 recentTracks.add(track)
             recentAdapter.notifyDataSetChanged()
-            hisrory.visibility = if(hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
+            hisrory.visibility = if(hasFocus && inputEditText.text.isEmpty() && recentTracks.size != 0) View.VISIBLE else View.GONE
         }
+
+        hisrory.visibility = View.GONE
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -136,7 +139,6 @@ class SearchActivity : AppCompatActivity() {
         val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
         addTrack(track,recentSongs)
         SearchHistory().write(sharedPref,recentSongs)
-        Toast.makeText(this, "track ${track.trackId}", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -157,18 +159,19 @@ class SearchActivity : AppCompatActivity() {
             SearchHistory().write(sharedPref,recentSongs)
             recentTracks.clear()
             recentAdapter.notifyDataSetChanged()
-            Toast.makeText(this, "clean", Toast.LENGTH_SHORT).show()
+            hisrory.visibility = View.GONE
         }
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 clearButton.visibility = View.GONE
+                hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 recyclerView.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE
-                hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
