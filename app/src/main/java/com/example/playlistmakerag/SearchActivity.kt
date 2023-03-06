@@ -10,15 +10,21 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 class SearchActivity : AppCompatActivity() {
+
+    companion object {
+        const val INPUT_TEXT = "INPUT_TEXT"
+    }
+
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -34,16 +40,9 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(textValue)
     }
 
-    companion object {
-        const val INPUT_TEXT = "INPUT_TEXT"
-    }
+
 
     private val baseUrl = "https://itunes.apple.com"
-
-    interface ItunesApi {
-        @GET("/search?entity=song")
-        fun search(@Query("term") text: String): Call<TrackResponse>
-    }
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -52,7 +51,9 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackService = retrofit.create(ItunesApi::class.java)
     private val tracks = ArrayList<Track>()
+    private val recentTracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
+    private val recentAdapter = TracksAdapter(recentTracks)
 
     private lateinit var clearButton: ImageView
     private lateinit var inputEditText: EditText
@@ -60,12 +61,18 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeholder: ImageView
     private lateinit var reloadButton: Button
+    private lateinit var searchBack: ImageView
+    private lateinit var hisrory: LinearLayout
+    private lateinit var historyRecycler: RecyclerView
+    private lateinit var cleanHistoryButton : Button
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
 
         recyclerView = findViewById(R.id.recyclerViewTracks)
         inputEditText = findViewById(R.id.searchEdit)
@@ -73,9 +80,18 @@ class SearchActivity : AppCompatActivity() {
         placeholderMessage = findViewById(R.id.placeholderMessage)
         placeholder = findViewById(R.id.placeholderNF)
         reloadButton = findViewById(R.id.reload_button)
+        searchBack = findViewById(R.id.search_back)
+        hisrory = findViewById(R.id.story)
+        historyRecycler = findViewById(R.id.search_history_recycler)
+        cleanHistoryButton = findViewById(R.id.clean_history_button)
+
+
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        historyRecycler.adapter = recentAdapter
+        historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -84,10 +100,24 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
+        val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
+
+        inputEditText.setOnFocusChangeListener { _, hasFocus ->
+            val tracks = SearchHistory().read(sharedPref)
+            recentTracks.clear()
+            for (track in tracks)
+                recentTracks.add(track)
+            recentAdapter.notifyDataSetChanged()
+            hisrory.visibility = if(hasFocus && inputEditText.text.isEmpty() && recentTracks.size != 0) View.VISIBLE else View.GONE
+        }
+
+        hisrory.visibility = View.GONE
+
         clearButton.setOnClickListener {
             inputEditText.setText("")
             tracks.clear()
             adapter.notifyDataSetChanged()
+            recentAdapter.notifyDataSetChanged()
             placeholder.visibility = View.GONE
             placeholderMessage.visibility = View.GONE
             reloadButton.visibility = View.GONE
@@ -98,19 +128,50 @@ class SearchActivity : AppCompatActivity() {
             searchTracks()
         }
 
-        val searchBack = findViewById<ImageView>(R.id.search_back)
         searchBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
+
+
+        adapter.itemClickListener = { _, track ->
+        val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+        addTrack(track,recentSongs)
+        SearchHistory().write(sharedPref,recentSongs)
+        }
+
+
+        sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
+            if (key == HISTORY_KEY) {
+                val tracks = SearchHistory().read(sharedPref)
+                recentTracks.clear()
+                for (track in tracks)
+                    recentTracks.add(track)
+                recentAdapter.notifyDataSetChanged()
+            }
+        }
+
+
+        cleanHistoryButton.setOnClickListener {
+            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+            recentSongs.clear()
+            SearchHistory().write(sharedPref,recentSongs)
+            recentTracks.clear()
+            recentAdapter.notifyDataSetChanged()
+            hisrory.visibility = View.GONE
+        }
+
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 clearButton.visibility = View.GONE
+                hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                recyclerView.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE
+                hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -121,6 +182,25 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
+    //functions:
+
+    private fun createJsonFromTrack(track: Track): String {
+        return Gson().toJson(track)
+    }
+
+    private fun createTracksListFromJson(json: String): ArrayList<Track> {
+        return Gson().fromJson(json, object : TypeToken<ArrayList<Track>>() {}.type)
+    }
+
+    private fun addTrack(track: Track, place : ArrayList<Track>){
+        if (place.size == 10)
+            place.removeAt(9)
+        if (place.contains(track))
+            place.remove(track)
+        place.add(0, track)
+    }
+
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -128,6 +208,7 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
+
 
     private fun showMessage(text: String, additionalMessage: String, holderImage: Int) {
         if (text.isNotEmpty()) {
@@ -147,7 +228,8 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    fun searchTracks(){
+
+    private fun searchTracks(){
         reloadButton.visibility = View.GONE
         placeholder.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
