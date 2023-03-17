@@ -138,19 +138,24 @@ class SearchActivity : AppCompatActivity() {
 
 
         adapter.itemClickListener = { _, track ->
-        val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
-        addTrack(track,recentSongs)
-        SearchHistory().write(sharedPref,recentSongs)
+            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+            addTrack(track,recentSongs)
+            SearchHistory().write(sharedPref,recentSongs)
 
-        val intent = Intent(this, TrackDisplayActivity::class.java)
-        startActivity(intent)
+            val intent = Intent(this, TrackDisplayActivity::class.java)
+            startActivity(intent)
 
-        lastTrack = track
+            lastTrack = track
         }
 
         recentAdapter.itemClickListener = {_, track ->
+            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+            addTrack(track,recentSongs)
+            SearchHistory().write(sharedPref,recentSongs)
+
             val intent = Intent(this, TrackDisplayActivity::class.java)
             startActivity(intent)
+
             lastTrack = track
         }
 
