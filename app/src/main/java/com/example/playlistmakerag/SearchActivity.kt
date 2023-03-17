@@ -18,6 +18,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+var lastTrack : Track? = null
+
 class SearchActivity : AppCompatActivity() {
 
     companion object {
@@ -139,8 +141,18 @@ class SearchActivity : AppCompatActivity() {
         val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
         addTrack(track,recentSongs)
         SearchHistory().write(sharedPref,recentSongs)
+
+        val intent = Intent(this, TrackDisplayActivity::class.java)
+        startActivity(intent)
+
+        lastTrack = track
         }
 
+        recentAdapter.itemClickListener = {_, track ->
+            val intent = Intent(this, TrackDisplayActivity::class.java)
+            startActivity(intent)
+            lastTrack = track
+        }
 
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
             if (key == HISTORY_KEY) {
