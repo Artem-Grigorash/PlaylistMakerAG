@@ -8,6 +8,7 @@
     <color name="black">#1A1B22</color>
     <color name="totalBlack">#000000</color>
     <color name="gray">#AEAFB4</color>
+    <color name="permanentGray">#AEAFB4</color>
     <color name="white_dark">#FFFFFFFF</color>
     <color name="button_white">#FFFFFF</color>
     <color name="background_main">#DD2500FD</color>

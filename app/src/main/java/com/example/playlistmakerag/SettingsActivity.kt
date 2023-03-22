@@ -34,8 +34,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val settingsBack = findViewById<ImageView>(R.id.settings_back)
         settingsBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
         }
 
         val settingsShare = findViewById<FrameLayout>(R.id.settings_share)
