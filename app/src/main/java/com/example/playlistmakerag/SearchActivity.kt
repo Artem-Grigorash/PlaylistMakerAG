@@ -140,10 +140,10 @@ class SearchActivity : AppCompatActivity() {
             SearchHistory().write(sharedPref,recentSongs)
 
             val intent = Intent(this, TrackDisplayActivity::class.java)
-            startActivity(intent)
+
             val trackJson = Gson().toJson(track)
             intent.putExtra("LAST_TRACK", trackJson)
-
+            startActivity(intent)
         }
 
         recentAdapter.itemClickListener = {_, track ->
@@ -152,10 +152,11 @@ class SearchActivity : AppCompatActivity() {
             SearchHistory().write(sharedPref,recentSongs)
 
             val intent = Intent(this, TrackDisplayActivity::class.java)
-            startActivity(intent)
+
 
             val trackJson = Gson().toJson(track)
             intent.putExtra("LAST_TRACK", trackJson)
+            startActivity(intent)
         }
 
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
