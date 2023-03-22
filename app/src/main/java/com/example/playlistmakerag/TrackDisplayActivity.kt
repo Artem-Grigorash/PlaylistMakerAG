@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,12 +43,14 @@ class TrackDisplayActivity : AppCompatActivity() {
         country = findViewById(R.id.country_value)
 
 
+        val lastTrack: Track? = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
+
         nameOfTrack.text = lastTrack?.trackName
         authorOfTrack.text = lastTrack?.artistName
         val time = SimpleDateFormat("mm:ss", Locale.getDefault()).format(lastTrack?.trackTimeMillis)
         timeOfTrack.text = time
         if (lastTrack?.collectionName!=null)
-            album.text = lastTrack?.collectionName
+            album.text = lastTrack.collectionName
         else
             album.visibility = View.GONE
         year.text = lastTrack?.releaseDate?.substring(0,4)
@@ -62,7 +66,5 @@ class TrackDisplayActivity : AppCompatActivity() {
         arrayBack.setOnClickListener {
             finish()
         }
-
-
     }
 }

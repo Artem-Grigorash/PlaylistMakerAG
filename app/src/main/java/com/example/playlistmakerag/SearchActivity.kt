@@ -1,24 +1,22 @@
 package com.example.playlistmakerag
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-var lastTrack : Track? = null
 
 class SearchActivity : AppCompatActivity() {
 
@@ -143,8 +141,9 @@ class SearchActivity : AppCompatActivity() {
 
             val intent = Intent(this, TrackDisplayActivity::class.java)
             startActivity(intent)
+            val trackJson = Gson().toJson(track)
+            intent.putExtra("LAST_TRACK", trackJson)
 
-            lastTrack = track
         }
 
         recentAdapter.itemClickListener = {_, track ->
@@ -155,7 +154,8 @@ class SearchActivity : AppCompatActivity() {
             val intent = Intent(this, TrackDisplayActivity::class.java)
             startActivity(intent)
 
-            lastTrack = track
+            val trackJson = Gson().toJson(track)
+            intent.putExtra("LAST_TRACK", trackJson)
         }
 
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
