@@ -2,6 +2,8 @@ package com.example.playlistmakerag
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -22,8 +24,9 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val INPUT_TEXT = "INPUT_TEXT"
+        private const val SEARCH_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
-
 
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -40,9 +43,13 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(textValue)
     }
 
+    private val handler = Handler(Looper.getMainLooper())
 
+    private val searchRunnable = Runnable { searchTracks() }
 
     private val baseUrl = "https://itunes.apple.com"
+
+    private var isClickAllowed = true
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -65,6 +72,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var hisrory: LinearLayout
     private lateinit var historyRecycler: RecyclerView
     private lateinit var cleanHistoryButton : Button
+    private lateinit var progressBar : ProgressBar
 
 
 
@@ -84,6 +92,7 @@ class SearchActivity : AppCompatActivity() {
         hisrory = findViewById(R.id.story)
         historyRecycler = findViewById(R.id.search_history_recycler)
         cleanHistoryButton = findViewById(R.id.clean_history_button)
+        progressBar = findViewById(R.id.progressBar)
 
 
 
@@ -92,13 +101,6 @@ class SearchActivity : AppCompatActivity() {
 
         historyRecycler.adapter = recentAdapter
         historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        inputEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTracks()
-            }
-            false
-        }
 
         val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
 
@@ -135,28 +137,32 @@ class SearchActivity : AppCompatActivity() {
 
 
         adapter.itemClickListener = { _, track ->
-            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
-            addTrack(track,recentSongs)
-            SearchHistory().write(sharedPref,recentSongs)
+            if(clickDebounce()) {
+                val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
+                addTrack(track, recentSongs)
+                SearchHistory().write(sharedPref, recentSongs)
 
-            val intent = Intent(this, TrackDisplayActivity::class.java)
+                val intent = Intent(this, TrackDisplayActivity::class.java)
 
-            val trackJson = Gson().toJson(track)
-            intent.putExtra("LAST_TRACK", trackJson)
-            startActivity(intent)
+                val trackJson = Gson().toJson(track)
+                intent.putExtra("LAST_TRACK", trackJson)
+                startActivity(intent)
+            }
         }
 
         recentAdapter.itemClickListener = {_, track ->
-            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
-            addTrack(track,recentSongs)
-            SearchHistory().write(sharedPref,recentSongs)
+            if (clickDebounce()) {
+                val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
+                addTrack(track, recentSongs)
+                SearchHistory().write(sharedPref, recentSongs)
 
-            val intent = Intent(this, TrackDisplayActivity::class.java)
+                val intent = Intent(this, TrackDisplayActivity::class.java)
 
 
-            val trackJson = Gson().toJson(track)
-            intent.putExtra("LAST_TRACK", trackJson)
-            startActivity(intent)
+                val trackJson = Gson().toJson(track)
+                intent.putExtra("LAST_TRACK", trackJson)
+                startActivity(intent)
+            }
         }
 
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
@@ -186,6 +192,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchDebounce()
                 clearButton.visibility = clearButtonVisibility(s)
                 recyclerView.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE
                 hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
@@ -199,6 +206,20 @@ class SearchActivity : AppCompatActivity() {
 
 
     //functions:
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
 
     private fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
@@ -240,6 +261,8 @@ class SearchActivity : AppCompatActivity() {
         reloadButton.visibility = View.GONE
         placeholder.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
         reloadButton.isClickable = false
         if (inputEditText.text.isNotEmpty()) {
             trackService.search(inputEditText.text.toString()).enqueue(object :
@@ -247,12 +270,13 @@ class SearchActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<TrackResponse>,
                                         response: Response<TrackResponse>
                 ) {
-
+                    progressBar.visibility = View.GONE
                     if (response.code() == 200) {
                         tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
+                            recyclerView.visibility = View.VISIBLE
                         }
                         if (tracks.isEmpty()) {
                             showMessage(getString(R.string.nothing_found), "", R.drawable.tracks_placeholder_nf)
@@ -273,6 +297,9 @@ class SearchActivity : AppCompatActivity() {
                 }
 
             })
+        }
+        else{
+            progressBar.visibility = View.GONE
         }
     }
 
