@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,15 +36,12 @@ class TrackDisplayActivity : AppCompatActivity() {
     private lateinit var year : TextView
     private lateinit var genre : TextView
     private lateinit var country : TextView
-//    private lateinit var url : String
-    private lateinit var play : Button
+    private lateinit var play : FloatingActionButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
-
-        preparePlayer()
 
         arrayBack = findViewById(R.id.arrayBack)
         trackPicture = findViewById(R.id.trackPicture)
@@ -81,8 +79,11 @@ class TrackDisplayActivity : AppCompatActivity() {
             finish()
         }
 
-        val url = lastTrack.previewUrl
+        val url : String = lastTrack.previewUrl
         mediaPlayer.setDataSource(url)
+
+        preparePlayer()
+
         play.setOnClickListener {
             playbackControl()
         }
@@ -95,7 +96,7 @@ class TrackDisplayActivity : AppCompatActivity() {
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-//            play.text = "PLAY"
+            //play
             playerState = STATE_PREPARED
         }
     }
