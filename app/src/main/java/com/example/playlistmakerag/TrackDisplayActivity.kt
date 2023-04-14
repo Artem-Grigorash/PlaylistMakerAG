@@ -2,8 +2,9 @@ package com.example.playlistmakerag
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,11 +22,13 @@ class TrackDisplayActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+        private const val REFRESH_MILLIS = 200L
     }
 
     private var playerState = STATE_DEFAULT
 
     private var mediaPlayer = MediaPlayer()
+    private var handler: Handler? = null
 
     private lateinit var arrayBack : ImageView
     private lateinit var trackPicture: ImageView
@@ -37,6 +40,7 @@ class TrackDisplayActivity : AppCompatActivity() {
     private lateinit var genre : TextView
     private lateinit var country : TextView
     private lateinit var play : FloatingActionButton
+    private lateinit var progress : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +57,13 @@ class TrackDisplayActivity : AppCompatActivity() {
         genre = findViewById(R.id.genre_value)
         country = findViewById(R.id.country_value)
         play = findViewById(R.id.play_button)
+        progress = findViewById(R.id.time)
 
 
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
+
+        handler = Handler(Looper.getMainLooper())
+
 
         nameOfTrack.text = lastTrack.trackName
         authorOfTrack.text = lastTrack.artistName
@@ -79,15 +87,49 @@ class TrackDisplayActivity : AppCompatActivity() {
             finish()
         }
 
-        val url : String = lastTrack.previewUrl
-        mediaPlayer.setDataSource(url)
+        val url : String? = lastTrack.previewUrl
 
-        preparePlayer()
 
-        play.setOnClickListener {
-            playbackControl()
+        if(url!=null){
+            mediaPlayer.setDataSource(url)
+            preparePlayer()
+            play.setOnClickListener {
+                playbackControl()
+            }
         }
     }
+
+    private fun startTimer() {
+        handler?.post(
+            createUpdateTimerTask()
+        )
+    }
+
+
+
+    private fun createUpdateTimerTask(): Runnable {
+        return object : Runnable {
+            override fun run() {
+
+                if(playerState == STATE_PLAYING){
+                    val elapsedTime = mediaPlayer.currentPosition
+                    val duration = 29700
+                    val remainingTime = duration - elapsedTime
+
+                    if (remainingTime > 0) {
+                        progress.text = SimpleDateFormat(
+                            "mm:ss",
+                            Locale.getDefault()
+                        ).format(mediaPlayer.currentPosition)
+                        handler?.postDelayed(this, REFRESH_MILLIS)
+                    } else {
+                        progress.text = "00:00"
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun preparePlayer() {
         mediaPlayer.prepareAsync()
@@ -96,20 +138,22 @@ class TrackDisplayActivity : AppCompatActivity() {
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-            //play
+            play.setImageResource(R.drawable.play)
             playerState = STATE_PREPARED
         }
     }
 
     private fun startPlayer() {
         mediaPlayer.start()
-//        play.text = "PAUSE"
+        startTimer()
+        play.setImageResource(R.drawable.pause)
         playerState = STATE_PLAYING
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
-//        play.text = "PLAY"
+
+        play.setImageResource(R.drawable.play)
         playerState = STATE_PAUSED
     }
 
@@ -121,6 +165,7 @@ class TrackDisplayActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+
     }
 
     private fun playbackControl() {
