@@ -42,7 +42,6 @@ class TrackDisplayActivity : AppCompatActivity() {
     private lateinit var play : FloatingActionButton
     private lateinit var progress : TextView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
@@ -59,11 +58,8 @@ class TrackDisplayActivity : AppCompatActivity() {
         play = findViewById(R.id.play_button)
         progress = findViewById(R.id.time)
 
-
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
-
         handler = Handler(Looper.getMainLooper())
-
 
         nameOfTrack.text = lastTrack.trackName
         authorOfTrack.text = lastTrack.artistName
@@ -89,7 +85,6 @@ class TrackDisplayActivity : AppCompatActivity() {
 
         val url : String? = lastTrack.previewUrl
 
-
         if(url!=null){
             mediaPlayer.setDataSource(url)
             preparePlayer()
@@ -104,8 +99,6 @@ class TrackDisplayActivity : AppCompatActivity() {
             createUpdateTimerTask()
         )
     }
-
-
 
     private fun createUpdateTimerTask(): Runnable {
         return object : Runnable {
@@ -129,7 +122,6 @@ class TrackDisplayActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun preparePlayer() {
         mediaPlayer.prepareAsync()
