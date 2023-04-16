@@ -130,7 +130,6 @@ class TrackDisplayActivity : AppCompatActivity() {
         }
     }
 
-
     private fun preparePlayer() {
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
