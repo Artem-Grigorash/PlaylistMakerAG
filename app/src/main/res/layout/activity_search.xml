@@ -87,6 +87,13 @@
         android:layout_weight="40"
         android:clickable="true">
 
+        <ProgressBar android:id="@+id/progressBar"
+            android:layout_width="@dimen/progress_bar_side"
+            android:layout_height="@dimen/progress_bar_side"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/bar_blue"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:id="@+id/story"
             android:layout_width="match_parent"

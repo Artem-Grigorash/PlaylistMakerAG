@@ -14,4 +14,5 @@
     <dimen name="arrays_picture_layout_width">20dp</dimen>
     <dimen name="arrays_picture_layout_height">40dp</dimen>
     <dimen name="settings_picture_padding_vertical">18dp</dimen>
+    <dimen name="progress_bar_side">44dp</dimen>
 </resources>
