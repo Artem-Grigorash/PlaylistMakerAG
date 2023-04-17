@@ -87,15 +87,12 @@ class TrackDisplayActivity : AppCompatActivity() {
             finish()
         }
 
-        val url : String? = lastTrack.previewUrl
+        val url : String = lastTrack.previewUrl
 
-
-        if(url!=null){
-            mediaPlayer.setDataSource(url)
-            preparePlayer()
-            play.setOnClickListener {
-                playbackControl()
-            }
+        mediaPlayer.setDataSource(url)
+        preparePlayer()
+        play.setOnClickListener {
+            playbackControl()
         }
     }
 
