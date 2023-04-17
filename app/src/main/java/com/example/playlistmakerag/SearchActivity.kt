@@ -293,7 +293,7 @@ class SearchActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     showMessage(getString(R.string.something_went_wrong), t.message.toString(), R.drawable.tracks_placeholder_ce)
                     reloadButton.visibility = View.VISIBLE
-
+                    progressBar.visibility = View.GONE
                     reloadButton.isClickable = true
                 }
 
