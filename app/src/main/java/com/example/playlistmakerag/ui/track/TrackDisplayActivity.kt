@@ -1,4 +1,4 @@
-package com.example.playlistmakerag
+package com.example.playlistmakerag.ui.track
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -10,12 +10,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmakerag.R
+import com.example.playlistmakerag.data.dto.Track
+import com.example.playlistmakerag.presentation.track.TrackView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TrackDisplayActivity : AppCompatActivity() {
+class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -47,18 +50,7 @@ class TrackDisplayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
-        arrayBack = findViewById(R.id.arrayBack)
-        trackPicture = findViewById(R.id.trackPicture)
-        nameOfTrack = findViewById(R.id.name_of_track)
-        authorOfTrack = findViewById(R.id.author_of_track)
-        timeOfTrack = findViewById(R.id.time_of_track_value)
-        album = findViewById(R.id.album_value)
-        year = findViewById(R.id.year_value)
-        genre = findViewById(R.id.genre_value)
-        country = findViewById(R.id.country_value)
-        play = findViewById(R.id.play_button)
-        progress = findViewById(R.id.time)
-
+        setViews()
 
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
@@ -89,10 +81,26 @@ class TrackDisplayActivity : AppCompatActivity() {
         val url : String = lastTrack.previewUrl
 
         mediaPlayer.setDataSource(url)
+
         preparePlayer()
+
         play.setOnClickListener {
             playbackControl()
         }
+    }
+
+    private fun setViews(){
+        arrayBack = findViewById(R.id.arrayBack)
+        trackPicture = findViewById(R.id.trackPicture)
+        nameOfTrack = findViewById(R.id.name_of_track)
+        authorOfTrack = findViewById(R.id.author_of_track)
+        timeOfTrack = findViewById(R.id.time_of_track_value)
+        album = findViewById(R.id.album_value)
+        year = findViewById(R.id.year_value)
+        genre = findViewById(R.id.genre_value)
+        country = findViewById(R.id.country_value)
+        play = findViewById(R.id.play_button)
+        progress = findViewById(R.id.time)
     }
 
     private fun startTimer() {
@@ -163,7 +171,7 @@ class TrackDisplayActivity : AppCompatActivity() {
 
     }
 
-    private fun playbackControl() {
+    override fun playbackControl() {
         when(playerState) {
             STATE_PLAYING -> {
                 pausePlayer()
