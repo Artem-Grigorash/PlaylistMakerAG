@@ -64,7 +64,6 @@ class TrackDisplayActivity : AppCompatActivity() {
 
         handler = Handler(Looper.getMainLooper())
 
-
         nameOfTrack.text = lastTrack.trackName
         authorOfTrack.text = lastTrack.artistName
         val time = SimpleDateFormat("mm:ss", Locale.getDefault()).format(lastTrack.trackTimeMillis)
