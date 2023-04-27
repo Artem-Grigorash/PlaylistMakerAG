@@ -4,31 +4,17 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.data.dto.Track
+import com.example.playlistmakerag.presentation.track.TrackPresenter
 import com.example.playlistmakerag.presentation.track.TrackView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
-import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
-
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val REFRESH_MILLIS = 200L
-    }
-
-    private var playerState = STATE_DEFAULT
 
     private var mediaPlayer = MediaPlayer()
     private var handler: Handler? = null
@@ -45,51 +31,44 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
     private lateinit var play : FloatingActionButton
     private lateinit var progress : TextView
 
+    private lateinit var presenter : TrackPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
         setViews()
-
+        presenter = TrackPresenter(this)
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
-
         handler = Handler(Looper.getMainLooper())
 
-        nameOfTrack.text = lastTrack.trackName
-        authorOfTrack.text = lastTrack.artistName
-        val time = SimpleDateFormat("mm:ss", Locale.getDefault()).format(lastTrack.trackTimeMillis)
-        timeOfTrack.text = time
-        if (lastTrack.collectionName!=null)
-            album.text = lastTrack.collectionName
-        else
-            album.visibility = View.GONE
-        year.text = lastTrack.releaseDate.substring(0,4)
-        genre.text = lastTrack.primaryGenreName
-        country.text = lastTrack.country
-
-        Glide.with(trackPicture)
-            .load(lastTrack.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
-            .placeholder(R.drawable.tracks_place_holder)
-            .transform(RoundedCorners(30))
-            .into(trackPicture)
+        presenter.setInfo(
+            lastTrack,
+            nameOfTrack,
+            authorOfTrack,
+            timeOfTrack,
+            album,
+            year,
+            genre,
+            country,
+            trackPicture
+        )
 
         arrayBack.setOnClickListener {
-            finish()
+            presenter.onArrayBackClicked(this)
         }
 
         val url : String = lastTrack.previewUrl
-
         mediaPlayer.setDataSource(url)
-
-        preparePlayer()
+        presenter.preparePlayer(mediaPlayer, play)
 
         play.setOnClickListener {
-            playbackControl()
+            presenter.onPlayClicked()
         }
+
     }
 
-    private fun setViews(){
+        private fun setViews(){
         arrayBack = findViewById(R.id.arrayBack)
         trackPicture = findViewById(R.id.trackPicture)
         nameOfTrack = findViewById(R.id.name_of_track)
@@ -103,82 +82,4 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         progress = findViewById(R.id.time)
     }
 
-    private fun startTimer() {
-        handler?.post(
-            createUpdateTimerTask()
-        )
-    }
-
-
-
-    private fun createUpdateTimerTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-
-                if(playerState == STATE_PLAYING){
-                    val elapsedTime = mediaPlayer.currentPosition
-                    val duration = 29700
-                    val remainingTime = duration - elapsedTime
-
-                    if (remainingTime > 0) {
-                        progress.text = SimpleDateFormat(
-                            "mm:ss",
-                            Locale.getDefault()
-                        ).format(mediaPlayer.currentPosition)
-                        handler?.postDelayed(this, REFRESH_MILLIS)
-                    } else {
-                        progress.text = "00:00"
-                    }
-                }
-            }
-        }
-    }
-
-    private fun preparePlayer() {
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            play.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            play.setImageResource(R.drawable.play)
-            playerState = STATE_PREPARED
-        }
-    }
-
-    private fun startPlayer() {
-        mediaPlayer.start()
-        startTimer()
-        play.setImageResource(R.drawable.pause)
-        playerState = STATE_PLAYING
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-
-        play.setImageResource(R.drawable.play)
-        playerState = STATE_PAUSED
-    }
-
-    override fun onPause() {
-        super.onPause()
-        pausePlayer()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-
-    }
-
-    override fun playbackControl() {
-        when(playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
-    }
 }
