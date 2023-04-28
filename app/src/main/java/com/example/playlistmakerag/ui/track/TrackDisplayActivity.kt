@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.data.dto.Track
 import com.example.playlistmakerag.presentation.track.TrackPresenter
 import com.example.playlistmakerag.presentation.track.TrackView
@@ -15,6 +16,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
+
+    private val presenter = Creator.providePresenter(
+        view = this
+    )
 
     private var mediaPlayer = MediaPlayer()
     private lateinit var handler: Handler
@@ -31,14 +36,11 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
     private lateinit var play : FloatingActionButton
     private lateinit var progress : TextView
 
-    private lateinit var presenter : TrackPresenter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
         setViews()
-        presenter = TrackPresenter(this)
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
         handler = Handler(Looper.getMainLooper())
 
@@ -80,6 +82,16 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         country = findViewById(R.id.country_value)
         play = findViewById(R.id.play_button)
         progress = findViewById(R.id.time)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.pausePlayer(mediaPlayer, play)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
     }
 
 }

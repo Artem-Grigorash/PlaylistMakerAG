@@ -4,7 +4,6 @@ import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Handler
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.data.dto.Track
-import com.example.playlistmakerag.ui.track.TrackDisplayActivity
+import com.example.playlistmakerag.data.glide.GlideCreator
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,50 +25,14 @@ class TrackPresenter (
                 private const val STATE_PAUSED = 3
                 private const val REFRESH_MILLIS = 200L
         }
+        private var playerState = STATE_DEFAULT
 
-        private var playerState = TrackPresenter.STATE_DEFAULT
-
-
+        private val glide = GlideCreator()
 
         fun onArrayBackClicked(activity: Activity){
                 activity.finish()
         }
-        fun onPlayClicked(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler, progress: TextView){
-                playbackControl(mediaPlayer, play, handler, progress)
-        }
 
-        private fun startTimer(mediaPlayer: MediaPlayer, handler: Handler, progress: TextView) {
-                handler?.post(
-                        createUpdateTimerTask(mediaPlayer, handler, progress)
-                )
-        }
-
-
-
-        private fun createUpdateTimerTask(mediaPlayer: MediaPlayer, handler: Handler, progress: TextView): Runnable {
-                return object : Runnable {
-                        override fun run() {
-
-                                if(playerState == TrackPresenter.STATE_PLAYING){
-                                        val elapsedTime = mediaPlayer.currentPosition
-                                        val duration = 29700
-                                        val remainingTime = duration - elapsedTime
-
-                                        if (remainingTime > 0) {
-                                                progress.text = SimpleDateFormat(
-                                                        "mm:ss",
-                                                        Locale.getDefault()
-                                                ).format(mediaPlayer.currentPosition)
-                                                handler?.postDelayed(this,
-                                                        TrackPresenter.REFRESH_MILLIS
-                                                )
-                                        } else {
-                                                progress.text = "00:00"
-                                        }
-                                }
-                        }
-                }
-        }
 
         fun setInfo(
                 track: Track,
@@ -93,22 +56,60 @@ class TrackPresenter (
                 year.text = track.releaseDate.substring(0,4)
                 genre.text = track.primaryGenreName
                 country.text = track.country
-                Glide.with(picture)
-                        .load(track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
-                        .placeholder(R.drawable.tracks_place_holder)
-                        .transform(RoundedCorners(30))
-                        .into(picture)
+                glide.setTrackPicture(picture, track)
+//                Glide.with(picture)
+//                        .load(track.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
+//                        .placeholder(R.drawable.tracks_place_holder)
+//                        .transform(RoundedCorners(30))
+//                        .into(picture)
+        }
+
+
+
+        fun onPlayClicked(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler, progress: TextView){
+                playbackControl(mediaPlayer, play, handler, progress)
+        }
+
+        private fun startTimer(mediaPlayer: MediaPlayer, handler: Handler, progress: TextView) {
+                handler.post(
+                        createUpdateTimerTask(mediaPlayer, handler, progress)
+                )
+        }
+
+        private fun createUpdateTimerTask(mediaPlayer: MediaPlayer, handler: Handler, progress: TextView): Runnable {
+                return object : Runnable {
+                        override fun run() {
+
+                                if(playerState == STATE_PLAYING){
+                                        val elapsedTime = mediaPlayer.currentPosition
+                                        val duration = 29700
+                                        val remainingTime = duration - elapsedTime
+
+                                        if (remainingTime > 0) {
+                                                progress.text = SimpleDateFormat(
+                                                        "mm:ss",
+                                                        Locale.getDefault()
+                                                ).format(mediaPlayer.currentPosition)
+                                                handler.postDelayed(this,
+                                                        REFRESH_MILLIS
+                                                )
+                                        } else {
+                                                progress.text = "00:00"
+                                        }
+                                }
+                        }
+                }
         }
 
         fun preparePlayer(mediaPlayer:MediaPlayer, play: ImageButton) {
                 mediaPlayer.prepareAsync()
                 mediaPlayer.setOnPreparedListener {
                         play.isEnabled = true
-                        playerState = TrackPresenter.STATE_PREPARED
+                        playerState = STATE_PREPARED
                 }
                 mediaPlayer.setOnCompletionListener {
                         play.setImageResource(R.drawable.play)
-                        playerState = TrackPresenter.STATE_PREPARED
+                        playerState = STATE_PREPARED
                 }
         }
 
@@ -116,30 +117,22 @@ class TrackPresenter (
                 mediaPlayer.start()
                 startTimer(mediaPlayer, handler, progress)
                 play.setImageResource(R.drawable.pause)
-                playerState = TrackPresenter.STATE_PLAYING
+                playerState = STATE_PLAYING
         }
 
-        private fun pausePlayer(mediaPlayer: MediaPlayer, play: ImageButton) {
+        fun pausePlayer(mediaPlayer: MediaPlayer, play: ImageButton) {
                 mediaPlayer.pause()
 
                 play.setImageResource(R.drawable.play)
-                playerState = TrackPresenter.STATE_PAUSED
+                playerState = STATE_PAUSED
         }
 
-        fun onPause(mediaPlayer: MediaPlayer, play: ImageButton) {
-                pausePlayer(mediaPlayer, play)
-        }
-
-        fun onDestroy(mediaPlayer: MediaPlayer) {
-                mediaPlayer.release()
-        }
-
-        fun playbackControl(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler, progress: TextView) {
+        private fun playbackControl(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler, progress: TextView) {
                 when(playerState) {
-                        TrackPresenter.STATE_PLAYING -> {
+                        STATE_PLAYING -> {
                                 pausePlayer(mediaPlayer, play)
                         }
-                        TrackPresenter.STATE_PREPARED, TrackPresenter.STATE_PAUSED -> {
+                        STATE_PREPARED, STATE_PAUSED -> {
                                 startPlayer(mediaPlayer, play, handler, progress)
                         }
                 }
