@@ -34,11 +34,11 @@ class TrackPresenter (
         fun onArrayBackClicked(activity: Activity){
                 activity.finish()
         }
-        fun onPlayClicked(){
-
+        fun onPlayClicked(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler, progress: TextView){
+                playbackControl(mediaPlayer, play, handler, progress)
         }
 
-        private fun startTimer(mediaPlayer: MediaPlayer, handler: Handler?, progress: TextView) {
+        private fun startTimer(mediaPlayer: MediaPlayer, handler: Handler, progress: TextView) {
                 handler?.post(
                         createUpdateTimerTask(mediaPlayer, handler, progress)
                 )
@@ -46,7 +46,7 @@ class TrackPresenter (
 
 
 
-        private fun createUpdateTimerTask(mediaPlayer: MediaPlayer, handler: Handler?, progress: TextView): Runnable {
+        private fun createUpdateTimerTask(mediaPlayer: MediaPlayer, handler: Handler, progress: TextView): Runnable {
                 return object : Runnable {
                         override fun run() {
 
@@ -112,7 +112,7 @@ class TrackPresenter (
                 }
         }
 
-        private fun startPlayer(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler?, progress: TextView) {
+        private fun startPlayer(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler, progress: TextView) {
                 mediaPlayer.start()
                 startTimer(mediaPlayer, handler, progress)
                 play.setImageResource(R.drawable.pause)
@@ -132,10 +132,9 @@ class TrackPresenter (
 
         fun onDestroy(mediaPlayer: MediaPlayer) {
                 mediaPlayer.release()
-
         }
 
-        fun playbackControl(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler?, progress: TextView) {
+        fun playbackControl(mediaPlayer:MediaPlayer, play: ImageButton, handler: Handler, progress: TextView) {
                 when(playerState) {
                         TrackPresenter.STATE_PLAYING -> {
                                 pausePlayer(mediaPlayer, play)

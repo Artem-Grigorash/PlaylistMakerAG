@@ -17,7 +17,7 @@ import com.google.gson.Gson
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
     private var mediaPlayer = MediaPlayer()
-    private var handler: Handler? = null
+    private lateinit var handler: Handler
 
     private lateinit var arrayBack : ImageView
     private lateinit var trackPicture: ImageView
@@ -63,7 +63,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         presenter.preparePlayer(mediaPlayer, play)
 
         play.setOnClickListener {
-            presenter.onPlayClicked()
+            presenter.onPlayClicked(mediaPlayer, play, handler, progress)
         }
 
     }
