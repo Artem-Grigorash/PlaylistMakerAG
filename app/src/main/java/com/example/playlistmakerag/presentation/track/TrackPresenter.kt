@@ -26,74 +26,38 @@ class TrackPresenter (
                 activity.finish()
         }
 
-        fun onPlayClicked(play: ImageButton, handler: Handler, progress: TextView){
+        fun onPlayClicked(play: ImageButton, progress: TextView){
                 interactor.playbackControl()
+                playbackControl(play, progress)
         }
 
-        private fun startTimer(handler: Handler, progress: TextView) {
-                handler.post(
-                        createUpdateTimerTask(mediaPlayer, handler, progress)
-                )
-        }
 
-        private fun createUpdateTimerTask(handler: Handler, progress: TextView): Runnable {
-                return object : Runnable {
-                        override fun run() {
-
-                                if(playerState == STATE_PLAYING){
-                                        val elapsedTime = mediaPlayer.currentPosition
-                                        val duration = 29700
-                                        val remainingTime = duration - elapsedTime
-
-                                        if (remainingTime > 0) {
-                                                progress.text = SimpleDateFormat(
-                                                        "mm:ss",
-                                                        Locale.getDefault()
-                                                ).format(mediaPlayer.currentPosition)
-                                                handler.postDelayed(this,
-                                                        REFRESH_MILLIS
-                                                )
-                                        } else {
-                                                progress.text = "00:00"
-                                        }
-                                }
-                        }
-                }
-        }
 
         fun preparePlayer(play: ImageButton) {
-                mediaPlayer.prepareAsync()
-                mediaPlayer.setOnPreparedListener {
-                        play.isEnabled = true
-                        playerState = STATE_PREPARED
-                }
-                mediaPlayer.setOnCompletionListener {
-                        play.setImageResource(R.drawable.play)
-                        playerState = STATE_PREPARED
-                }
+                interactor.preparePlayer()
+                play.isEnabled = true
+                play.setImageResource(R.drawable.play)
         }
 
-        private fun startPlayer(play: ImageButton, handler: Handler, progress: TextView) {
-                mediaPlayer.start()
-                startTimer(mediaPlayer, handler, progress)
+        private fun startPlayer(play: ImageButton, progress: TextView) {
+                interactor.startTimer(progress)
                 play.setImageResource(R.drawable.pause)
                 playerState = STATE_PLAYING
         }
 
         fun pausePlayer(play: ImageButton) {
-                mediaPlayer.pause()
-
                 play.setImageResource(R.drawable.play)
                 playerState = STATE_PAUSED
         }
 
-        fun playbackControl(play: ImageButton, handler: Handler, progress: TextView) {
+        fun playbackControl(play: ImageButton, progress: TextView) {
+                interactor.playbackControl()
                 when(playerState) {
                         STATE_PLAYING -> {
-                                pausePlayer(mediaPlayer, play)
+                                pausePlayer(play)
                         }
                         STATE_PREPARED, STATE_PAUSED -> {
-                                startPlayer(mediaPlayer, play, handler, progress)
+                                startPlayer(play, progress)
                         }
                 }
         }

@@ -1,5 +1,7 @@
 package com.example.playlistmakerag.domain
 
+import android.widget.TextView
+
 class TrackInteractor(
     private val player: PlayerInterface
 ) {
@@ -8,5 +10,8 @@ class TrackInteractor(
     }
     fun playbackControl(){
         player.playbackControl()
+    }
+    fun startTimer(progress : TextView){
+        player.startTimer(progress)
     }
 }
