@@ -4,16 +4,20 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.data.dto.Track
+import com.example.playlistmakerag.data.glide.GlideCreator
 import com.example.playlistmakerag.presentation.track.TrackPresenter
 import com.example.playlistmakerag.presentation.track.TrackView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
@@ -22,6 +26,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
     )
 
     private var mediaPlayer = MediaPlayer()
+    private val glide = GlideCreator()
     private lateinit var handler: Handler
 
     private lateinit var arrayBack : ImageView
@@ -40,21 +45,13 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
+
+
         setViews()
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
         handler = Handler(Looper.getMainLooper())
 
-        presenter.setInfo(
-            lastTrack,
-            nameOfTrack,
-            authorOfTrack,
-            timeOfTrack,
-            album,
-            year,
-            genre,
-            country,
-            trackPicture
-        )
+        setInfo(lastTrack)
 
         arrayBack.setOnClickListener {
             presenter.onArrayBackClicked(this)
@@ -84,6 +81,20 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         progress = findViewById(R.id.time)
     }
 
+    private fun setInfo(
+        track: Track,
+    ){
+        nameOfTrack.text = track.trackName
+        authorOfTrack.text = track.artistName
+        val timer = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        timeOfTrack.text = timer
+        album.text = track.collectionName
+        year.text = track.releaseDate.substring(0,4)
+        genre.text = track.primaryGenreName
+        country.text = track.country
+        glide.setTrackPicture(trackPicture, track)
+    }
+
     override fun onPause() {
         super.onPause()
         presenter.pausePlayer(mediaPlayer, play)
@@ -93,5 +104,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         super.onDestroy()
         mediaPlayer.release()
     }
+
+
 
 }
