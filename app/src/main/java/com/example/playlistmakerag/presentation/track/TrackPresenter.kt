@@ -3,9 +3,11 @@ package com.example.playlistmakerag.presentation.track
 import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Handler
+import android.os.Looper
 import android.widget.ImageButton
 import android.widget.TextView
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.data.player.Player
 import com.example.playlistmakerag.domain.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,8 +20,10 @@ class TrackPresenter (
                 private const val STATE_PREPARED = 1
                 private const val STATE_PLAYING = 2
                 private const val STATE_PAUSED = 3
+                private const val REFRESH_MILLIS = 200L
         }
         private var playerState = STATE_DEFAULT
+        private var handler = Handler(Looper.getMainLooper())
 
         fun onArrayBackClicked(activity: Activity){
                 activity.finish()
@@ -39,7 +43,7 @@ class TrackPresenter (
         }
 
         private fun startPlayer(play: ImageButton, progress: TextView) {
-                interactor.startTimer(progress)
+                startTimer(progress)
                 play.setImageResource(R.drawable.pause)
                 playerState = STATE_PLAYING
         }
@@ -60,4 +64,37 @@ class TrackPresenter (
                         }
                 }
         }
+        fun startTimer(progress: TextView) {
+                handler.post(
+                        createUpdateTimerTask(progress)
+                )
+        }
+
+        private fun createUpdateTimerTask(progress: TextView): Runnable {
+                return object : Runnable {
+                        override fun run() {
+
+                                if(playerState == STATE_PLAYING){
+                                        val elapsedTime = interactor.getPosition()
+                                        val duration = 29700
+                                        val remainingTime = duration - elapsedTime
+
+                                        if (remainingTime > 0) {
+                                                progress.text = SimpleDateFormat(
+                                                        "mm:ss",
+                                                        Locale.getDefault()
+                                                ).format(interactor.getPosition())
+                                                handler.postDelayed(this,
+                                                        REFRESH_MILLIS
+                                                )
+                                        } else {
+                                                progress.text = "00:00"
+                                        }
+                                }
+                        }
+                }
+        }
+
+
+
 }

@@ -1,14 +1,17 @@
 package com.example.playlistmakerag.creator
 
+import com.example.playlistmakerag.data.player.Player
 import com.example.playlistmakerag.domain.TrackInteractor
 import com.example.playlistmakerag.presentation.track.TrackPresenter
-import com.example.playlistmakerag.presentation.track.TrackView
 
 object Creator {
+    private fun getPlayer(): Player {
+        return Player()
+    }
 
-    fun providePresenter(view: TrackView): TrackPresenter {
+    fun providePresenter(): TrackPresenter {
         return TrackPresenter(
-            interactor =
+            interactor = TrackInteractor(getPlayer())
         )
     }
 }

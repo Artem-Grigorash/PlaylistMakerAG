@@ -21,9 +21,7 @@ import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
-    private val presenter = Creator.providePresenter(
-        view = this
-    )
+    private val presenter = Creator.providePresenter()
 
     private var mediaPlayer = MediaPlayer()
     private val glide = GlideCreator()
