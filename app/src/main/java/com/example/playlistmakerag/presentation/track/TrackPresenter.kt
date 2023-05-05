@@ -18,7 +18,6 @@ class TrackPresenter (
                 private const val STATE_PREPARED = 1
                 private const val STATE_PLAYING = 2
                 private const val STATE_PAUSED = 3
-                private const val REFRESH_MILLIS = 200L
         }
         private var playerState = STATE_DEFAULT
 

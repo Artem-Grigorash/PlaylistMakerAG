@@ -59,10 +59,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
         val url : String = lastTrack.previewUrl
         mediaPlayer.setDataSource(url)
-        presenter.preparePlayer(mediaPlayer, play)
+        presenter.preparePlayer(play)
 
         play.setOnClickListener {
-            presenter.onPlayClicked(mediaPlayer, play, handler, progress)
+            presenter.onPlayClicked(play,progress)
         }
 
     }
@@ -97,7 +97,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
     override fun onPause() {
         super.onPause()
-        presenter.pausePlayer(mediaPlayer, play)
+        presenter.pausePlayer(play)
     }
 
     override fun onDestroy() {
