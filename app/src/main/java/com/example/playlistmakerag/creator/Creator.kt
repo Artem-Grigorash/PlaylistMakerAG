@@ -5,13 +5,13 @@ import com.example.playlistmakerag.domain.TrackInteractor
 import com.example.playlistmakerag.presentation.track.TrackPresenter
 
 object Creator {
-    private fun getPlayer(): Player {
-        return Player()
+    private fun getPlayer(url:String): Player {
+        return Player(url)
     }
 
-    fun providePresenter(): TrackPresenter {
+    fun providePresenter(url:String): TrackPresenter {
         return TrackPresenter(
-            interactor = TrackInteractor(getPlayer())
+            interactor = TrackInteractor(getPlayer(url))
         )
     }
 }

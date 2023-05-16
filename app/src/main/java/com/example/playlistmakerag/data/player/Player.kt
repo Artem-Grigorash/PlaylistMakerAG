@@ -9,7 +9,7 @@ import com.example.playlistmakerag.presentation.track.TrackPresenter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Player : PlayerInterface{
+class Player(url:String) : PlayerInterface{
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -19,12 +19,20 @@ class Player : PlayerInterface{
     }
     private var playerState = STATE_DEFAULT
 
-    var mediaPlayer = MediaPlayer()
+    private var mediaPlayer = MediaPlayer()
+
+    init {
+        mediaPlayer.setDataSource(url)
+        this.preparePlayer()
+    }
 
     override fun getPosition(): Int = mediaPlayer.currentPosition
 
+    fun release(){
 
-    override fun preparePlayer() {
+    }
+
+    private fun preparePlayer() {
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             playerState = STATE_PREPARED

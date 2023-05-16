@@ -3,9 +3,9 @@ package com.example.playlistmakerag.domain
 class TrackInteractor(
     private val player: PlayerInterface
 ) {
-    fun preparePlayer(){
-        player.preparePlayer()
-    }
+//    fun preparePlayer(){
+//        player.preparePlayer()
+//    }
     fun playbackControl(){
         player.playbackControl()
     }

@@ -21,9 +21,9 @@ import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
-    private val presenter = Creator.providePresenter()
+    private lateinit var presenter : TrackPresenter
 
-    private var mediaPlayer = MediaPlayer()
+//    private var mediaPlayer = MediaPlayer()
     private val glide = GlideCreator()
     private lateinit var handler: Handler
 
@@ -56,7 +56,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         }
 
         val url : String = lastTrack.previewUrl
-        mediaPlayer.setDataSource(url)
+        presenter = Creator.providePresenter(url)
         presenter.preparePlayer(play)
 
         play.setOnClickListener {
@@ -100,7 +100,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        presenter.
     }
 
 

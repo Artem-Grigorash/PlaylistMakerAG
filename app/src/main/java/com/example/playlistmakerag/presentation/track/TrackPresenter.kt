@@ -37,7 +37,7 @@ class TrackPresenter (
 
 
         fun preparePlayer(play: ImageButton) {
-                interactor.preparePlayer()
+//                interactor.preparePlayer()
                 play.isEnabled = true
                 play.setImageResource(R.drawable.play)
         }
