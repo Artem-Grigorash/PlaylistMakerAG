@@ -12,4 +12,7 @@ class TrackInteractor(
     fun getPosition():Int{
         return player.getPosition()
     }
+    fun delete(){
+        player.delete()
+    }
 }

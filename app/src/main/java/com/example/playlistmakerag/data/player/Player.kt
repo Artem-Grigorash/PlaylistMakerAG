@@ -28,6 +28,10 @@ class Player(url:String) : PlayerInterface{
 
     override fun getPosition(): Int = mediaPlayer.currentPosition
 
+    override fun delete() {
+        mediaPlayer.release()
+    }
+
     fun release(){
 
     }

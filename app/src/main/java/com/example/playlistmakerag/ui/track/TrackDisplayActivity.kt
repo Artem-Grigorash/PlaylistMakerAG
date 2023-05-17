@@ -95,14 +95,11 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
     override fun onPause() {
         super.onPause()
-        presenter.pausePlayer(play)
+//        presenter.pausePlayer(play)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.
+        presenter.delete()
     }
-
-
-
 }

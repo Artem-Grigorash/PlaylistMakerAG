@@ -30,11 +30,14 @@ class TrackPresenter (
         }
 
         fun onPlayClicked(play: ImageButton, progress: TextView){
-                interactor.playbackControl()
+//                interactor.playbackControl()
                 playbackControl(play, progress)
         }
 
 
+        fun delete(){
+                interactor.delete()
+        }
 
         fun preparePlayer(play: ImageButton) {
 //                interactor.preparePlayer()
@@ -48,12 +51,12 @@ class TrackPresenter (
                 playerState = STATE_PLAYING
         }
 
-        fun pausePlayer(play: ImageButton) {
+        private fun pausePlayer(play: ImageButton) {
                 play.setImageResource(R.drawable.play)
                 playerState = STATE_PAUSED
         }
 
-        fun playbackControl(play: ImageButton, progress: TextView) {
+        private fun playbackControl(play: ImageButton, progress: TextView) {
                 interactor.playbackControl()
                 when(playerState) {
                         STATE_PLAYING -> {
