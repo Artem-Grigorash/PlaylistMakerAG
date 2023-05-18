@@ -1,10 +1,8 @@
 package com.example.playlistmakerag.ui.track
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +21,6 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
     private lateinit var presenter : TrackPresenter
 
-//    private var mediaPlayer = MediaPlayer()
     private val glide = GlideCreator()
     private lateinit var handler: Handler
 
@@ -91,11 +88,6 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         genre.text = track.primaryGenreName
         country.text = track.country
         glide.setTrackPicture(trackPicture, track)
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        presenter.pausePlayer(play)
     }
 
     override fun onDestroy() {

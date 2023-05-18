@@ -1,13 +1,11 @@
 package com.example.playlistmakerag.presentation.track
 
 import android.app.Activity
-import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageButton
 import android.widget.TextView
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.data.player.Player
 import com.example.playlistmakerag.domain.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.*
@@ -16,13 +14,12 @@ class TrackPresenter (
         private val interactor: TrackInteractor
 ){
         companion object {
-                private const val STATE_DEFAULT = 0
                 private const val STATE_PREPARED = 1
                 private const val STATE_PLAYING = 2
                 private const val STATE_PAUSED = 3
                 private const val REFRESH_MILLIS = 200L
         }
-        private var playerState = STATE_DEFAULT
+        private var playerState = STATE_PAUSED
         private var handler = Handler(Looper.getMainLooper())
 
         fun onArrayBackClicked(activity: Activity){
@@ -30,7 +27,6 @@ class TrackPresenter (
         }
 
         fun onPlayClicked(play: ImageButton, progress: TextView){
-//                interactor.playbackControl()
                 playbackControl(play, progress)
         }
 
@@ -40,7 +36,6 @@ class TrackPresenter (
         }
 
         fun preparePlayer(play: ImageButton) {
-//                interactor.preparePlayer()
                 play.isEnabled = true
                 play.setImageResource(R.drawable.play)
         }
@@ -67,7 +62,7 @@ class TrackPresenter (
                         }
                 }
         }
-        fun startTimer(progress: TextView) {
+        private fun startTimer(progress: TextView) {
                 handler.post(
                         createUpdateTimerTask(progress)
                 )
