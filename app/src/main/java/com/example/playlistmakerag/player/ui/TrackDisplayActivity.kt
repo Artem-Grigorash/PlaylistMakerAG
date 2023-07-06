@@ -6,20 +6,23 @@ import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.domain.TrackPresenter
 import com.example.playlistmakerag.player.domain.TrackView
 import com.example.playlistmakerag.creator.Creator
+import com.example.playlistmakerag.player.domain.TrackState
+import com.example.playlistmakerag.player.domain.view_models.TrackViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackDisplayActivity : ComponentActivity(), TrackView {
-
-    private lateinit var presenter : TrackPresenter
+private lateinit var viewModel: TrackViewModel
 
     private val glide = GlideCreator()
     private lateinit var handler: Handler
@@ -40,7 +43,7 @@ class TrackDisplayActivity : ComponentActivity(), TrackView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
-
+        viewModel = ViewModelProvider(this)[TrackViewModel::class.java]
 
         setViews()
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
@@ -49,17 +52,18 @@ class TrackDisplayActivity : ComponentActivity(), TrackView {
         setInfo(lastTrack)
 
         arrayBack.setOnClickListener {
-            presenter.onArrayBackClicked(this)
+            viewModel.onArrayBackClicked(this)
         }
 
         val url : String = lastTrack.previewUrl
-        presenter = Creator.providePresenter(url)
-        presenter.preparePlayer(play)
+        viewModel = Creator.providePresenter(url)
+        viewModel.preparePlayer(play)
 
         play.setOnClickListener {
-            presenter.onPlayClicked(play,progress)
+            viewModel.onPlayClicked(play,progress)
         }
 
+        viewModel.getState().observe(this){}
     }
 
         private fun setViews(){
@@ -92,6 +96,13 @@ class TrackDisplayActivity : ComponentActivity(), TrackView {
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.delete()
+        viewModel.delete()
+    }
+
+    override fun render(state: TrackState) {
+        when (state){
+            is TrackState.Content -> TODO()
+            is TrackState.Loading -> TODO()
+        }
     }
 }
