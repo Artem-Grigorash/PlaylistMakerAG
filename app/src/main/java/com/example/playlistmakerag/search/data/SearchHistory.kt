@@ -1,7 +1,7 @@
-package com.example.playlistmakerag
+package com.example.playlistmakerag.search.data
 
 import android.content.SharedPreferences
-import com.example.playlistmakerag.data.dto.Track
+import com.example.playlistmakerag.player.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

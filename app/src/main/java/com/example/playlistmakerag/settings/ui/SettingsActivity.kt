@@ -1,4 +1,4 @@
-package com.example.playlistmakerag
+package com.example.playlistmakerag.settings.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.example.playlistmakerag.settings.data.App
+import com.example.playlistmakerag.settings.data.DARK_THEME_KEY
+import com.example.playlistmakerag.settings.data.PRFERENCES
+import com.example.playlistmakerag.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {

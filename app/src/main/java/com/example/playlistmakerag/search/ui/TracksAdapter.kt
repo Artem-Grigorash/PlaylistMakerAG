@@ -1,9 +1,10 @@
-package com.example.playlistmakerag
+package com.example.playlistmakerag.search.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmakerag.data.dto.Track
+import com.example.playlistmakerag.R
+import com.example.playlistmakerag.player.domain.models.Track
 
 class TracksAdapter(
     private val tracks: ArrayList<Track>

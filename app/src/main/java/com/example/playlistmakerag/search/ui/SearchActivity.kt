@@ -1,4 +1,4 @@
-package com.example.playlistmakerag
+package com.example.playlistmakerag.search.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,10 +11,14 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmakerag.data.dto.ItunesApi
-import com.example.playlistmakerag.data.dto.Track
-import com.example.playlistmakerag.data.dto.TrackResponse
-import com.example.playlistmakerag.ui.track.TrackDisplayActivity
+import com.example.playlistmakerag.search.data.HISTORY_KEY
+import com.example.playlistmakerag.player.data.dto.ItunesApi
+import com.example.playlistmakerag.settings.data.PRFERENCES
+import com.example.playlistmakerag.R
+import com.example.playlistmakerag.search.data.SearchHistory
+import com.example.playlistmakerag.player.domain.models.Track
+import com.example.playlistmakerag.player.ui.TrackDisplayActivity
+import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -282,19 +286,25 @@ class SearchActivity : AppCompatActivity() {
                             recyclerView.visibility = View.VISIBLE
                         }
                         if (tracks.isEmpty()) {
-                            showMessage(getString(R.string.nothing_found), "", R.drawable.tracks_placeholder_nf)
+                            showMessage(getString(R.string.nothing_found), "",
+                                R.drawable.tracks_placeholder_nf
+                            )
                         }
                     }
 
                     else {
-                        showMessage(getString(R.string.something_went_wrong), response.code().toString(), R.drawable.tracks_placeholder_ce)
+                        showMessage(getString(R.string.something_went_wrong), response.code().toString(),
+                            R.drawable.tracks_placeholder_ce
+                        )
                         reloadButton.visibility = View.VISIBLE
                         reloadButton.isClickable = true
                     }
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    showMessage(getString(R.string.something_went_wrong), t.message.toString(), R.drawable.tracks_placeholder_ce)
+                    showMessage(getString(R.string.something_went_wrong), t.message.toString(),
+                        R.drawable.tracks_placeholder_ce
+                    )
                     reloadButton.visibility = View.VISIBLE
                     progressBar.visibility = View.GONE
                     reloadButton.isClickable = true

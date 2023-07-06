@@ -1,10 +1,10 @@
-package com.example.playlistmakerag.data.glide
+package com.example.playlistmakerag.player.data.glide
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.data.dto.Track
+import com.example.playlistmakerag.player.domain.models.Track
 
 class GlideCreator {
     fun setTrackPicture(picture: ImageView, track: Track){

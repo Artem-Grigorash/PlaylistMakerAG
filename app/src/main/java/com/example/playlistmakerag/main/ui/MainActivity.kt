@@ -1,10 +1,14 @@
-package com.example.playlistmakerag
+package com.example.playlistmakerag.main.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import com.example.playlistmakerag.MediatekaActivity
+import com.example.playlistmakerag.R
+import com.example.playlistmakerag.search.ui.SearchActivity
+import com.example.playlistmakerag.settings.ui.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 

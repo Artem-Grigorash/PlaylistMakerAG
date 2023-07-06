@@ -1,26 +1,31 @@
-package com.example.playlistmakerag.presentation.track
+package com.example.playlistmakerag.player.domain
 
 import android.app.Activity
+import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.domain.TrackInteractor
+import com.example.playlistmakerag.creator.Creator
+import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackPresenter (
-        private val interactor: TrackInteractor
-){
+        private val interactor: TrackInteractor,
+        application: Application
+) : AndroidViewModel(application){
         companion object {
-                private const val STATE_PREPARED = 1
                 private const val STATE_PLAYING = 2
                 private const val STATE_PAUSED = 3
                 private const val REFRESH_MILLIS = 200L
         }
         private var playerState = STATE_PAUSED
         private var handler = Handler(Looper.getMainLooper())
+
 
         fun onArrayBackClicked(activity: Activity){
                 activity.finish()
@@ -57,7 +62,7 @@ class TrackPresenter (
                         STATE_PLAYING -> {
                                 pausePlayer(play)
                         }
-                        STATE_PREPARED, STATE_PAUSED -> {
+                        STATE_PAUSED -> {
                                 startPlayer(play, progress)
                         }
                 }

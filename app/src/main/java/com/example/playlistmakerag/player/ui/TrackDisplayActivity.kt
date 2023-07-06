@@ -1,23 +1,23 @@
-package com.example.playlistmakerag.ui.track
+package com.example.playlistmakerag.player.ui
 
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.player.domain.models.Track
+import com.example.playlistmakerag.player.domain.TrackPresenter
+import com.example.playlistmakerag.player.domain.TrackView
 import com.example.playlistmakerag.creator.Creator
-import com.example.playlistmakerag.data.dto.Track
-import com.example.playlistmakerag.data.glide.GlideCreator
-import com.example.playlistmakerag.presentation.track.TrackPresenter
-import com.example.playlistmakerag.presentation.track.TrackView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TrackDisplayActivity : AppCompatActivity(), TrackView {
+class TrackDisplayActivity : ComponentActivity(), TrackView {
 
     private lateinit var presenter : TrackPresenter
 

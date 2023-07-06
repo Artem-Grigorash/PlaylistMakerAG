@@ -1,4 +1,6 @@
-package com.example.playlistmakerag.domain
+package com.example.playlistmakerag.player.domain.impl
+
+import com.example.playlistmakerag.player.domain.PlayerInterface
 
 class TrackInteractor(
     private val player: PlayerInterface

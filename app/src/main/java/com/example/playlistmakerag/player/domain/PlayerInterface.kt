@@ -1,4 +1,4 @@
-package com.example.playlistmakerag.domain
+package com.example.playlistmakerag.player.domain
 
 
 interface PlayerInterface {

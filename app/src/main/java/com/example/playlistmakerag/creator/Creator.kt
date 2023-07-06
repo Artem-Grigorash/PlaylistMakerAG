@@ -1,8 +1,8 @@
 package com.example.playlistmakerag.creator
 
-import com.example.playlistmakerag.data.player.Player
-import com.example.playlistmakerag.domain.TrackInteractor
-import com.example.playlistmakerag.presentation.track.TrackPresenter
+import com.example.playlistmakerag.player.data.player.Player
+import com.example.playlistmakerag.player.domain.impl.TrackInteractor
+import com.example.playlistmakerag.player.domain.TrackPresenter
 
 object Creator {
     private fun getPlayer(url:String): Player {

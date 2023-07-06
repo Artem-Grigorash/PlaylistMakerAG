@@ -1,9 +1,9 @@
-package com.example.playlistmakerag.data.player
+package com.example.playlistmakerag.player.data.player
 
 import android.media.MediaPlayer
-import com.example.playlistmakerag.domain.PlayerInterface
+import com.example.playlistmakerag.player.domain.PlayerInterface
 
-class Player(url:String) : PlayerInterface{
+class Player(url:String) : PlayerInterface {
 
     companion object {
         private const val STATE_PREPARED = 1
