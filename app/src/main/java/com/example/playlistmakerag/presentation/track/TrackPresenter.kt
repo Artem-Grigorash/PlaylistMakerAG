@@ -41,7 +41,7 @@ class TrackPresenter (
         }
 
         private fun startPlayer(play: ImageButton, progress: TextView) {
-                startTimer(progress)
+                startTimer(play, progress)
                 play.setImageResource(R.drawable.pause)
                 playerState = STATE_PLAYING
         }
@@ -62,13 +62,13 @@ class TrackPresenter (
                         }
                 }
         }
-        private fun startTimer(progress: TextView) {
+        private fun startTimer(play: ImageButton, progress: TextView) {
                 handler.post(
-                        createUpdateTimerTask(progress)
+                        createUpdateTimerTask(play, progress)
                 )
         }
 
-        private fun createUpdateTimerTask(progress: TextView): Runnable {
+        private fun createUpdateTimerTask(play: ImageButton, progress: TextView): Runnable {
                 return object : Runnable {
                         override fun run() {
 
@@ -87,6 +87,7 @@ class TrackPresenter (
                                                 )
                                         } else {
                                                 progress.text = "00:00"
+                                                play.setImageResource(R.drawable.play)
                                         }
                                 }
                         }
