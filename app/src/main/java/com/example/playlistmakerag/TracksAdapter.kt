@@ -3,6 +3,7 @@ package com.example.playlistmakerag
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmakerag.data.dto.Track
 
 class TracksAdapter(
     private val tracks: ArrayList<Track>

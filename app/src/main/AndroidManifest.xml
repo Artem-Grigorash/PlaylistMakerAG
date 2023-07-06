@@ -37,7 +37,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".TrackDisplayActivity"
+            android:name=".ui.track.TrackDisplayActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

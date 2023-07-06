@@ -7,11 +7,14 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmakerag.data.dto.ItunesApi
+import com.example.playlistmakerag.data.dto.Track
+import com.example.playlistmakerag.data.dto.TrackResponse
+import com.example.playlistmakerag.ui.track.TrackDisplayActivity
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
