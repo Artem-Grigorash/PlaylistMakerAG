@@ -8,6 +8,10 @@ import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.TrackPresenter
@@ -23,6 +27,17 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
         private const val REFRESH_MILLIS = 200L
+
+        fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val interactor = (this[APPLICATION_KEY] as MyApplication).provideTracksInteractor()
+
+                TrackViewModel(
+                    url,
+                    interactor,
+                )
+            }
+        }
     }
 
     private val state = MutableLiveData<TrackState>()
@@ -37,7 +52,11 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     }
 
     fun onPlayClicked(play: ImageButton, progress: TextView){
-        playbackControl(play, progress)
+//        playbackControl(play, progress)
+        if (state.value==TrackState.Pause)
+            state.value = TrackState.Play
+        else
+            state.value = TrackState.Pause
     }
 
 

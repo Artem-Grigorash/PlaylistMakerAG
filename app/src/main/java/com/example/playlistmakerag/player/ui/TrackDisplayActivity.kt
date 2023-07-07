@@ -56,17 +56,21 @@ private lateinit var viewModel: TrackViewModel
         }
 
         val url : String = lastTrack.previewUrl
-        viewModel = Creator.providePresenter(url)
+//        viewModel = Creator.providePresenter(url)
         viewModel.preparePlayer(play)
 
         play.setOnClickListener {
             viewModel.onPlayClicked(play,progress)
         }
 
-        viewModel.getState().observe(this){}
+        viewModel.getState().observe(this){
+
+        }
     }
 
-        private fun setViews(){
+
+
+    private fun setViews(){
         arrayBack = findViewById(R.id.arrayBack)
         trackPicture = findViewById(R.id.trackPicture)
         nameOfTrack = findViewById(R.id.name_of_track)
@@ -101,8 +105,15 @@ private lateinit var viewModel: TrackViewModel
 
     override fun render(state: TrackState) {
         when (state){
-            is TrackState.Content -> TODO()
-            is TrackState.Loading -> TODO()
+            is TrackState.Pause -> showPaused()
+            is TrackState.Play -> showPlayed()
         }
+    }
+
+    private fun showPlayed(){
+
+    }
+    private fun showPaused(){
+
     }
 }
