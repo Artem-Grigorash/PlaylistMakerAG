@@ -2,6 +2,8 @@ package com.example.playlistmakerag
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmakerag.player.data.player.Player
+import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 
 
 const val PRFERENCES = "preferences"
@@ -34,4 +36,12 @@ class App : Application() {
                 }
             )
         }
+
+    private fun getPlayer(url:String): Player {
+        return Player(url)
+    }
+
+    fun provideViewModel(url:String): TrackInteractor {
+        return TrackInteractor(getPlayer(url))
+    }
 }

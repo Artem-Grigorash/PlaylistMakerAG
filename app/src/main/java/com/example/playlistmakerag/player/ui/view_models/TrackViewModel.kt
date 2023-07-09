@@ -1,4 +1,4 @@
-package com.example.playlistmakerag.player.domain.view_models
+package com.example.playlistmakerag.player.ui.view_models
 
 import android.app.Activity
 import android.os.Handler
@@ -12,9 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmakerag.App
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.creator.Creator
-import com.example.playlistmakerag.player.domain.MyApplication
 import com.example.playlistmakerag.player.domain.TrackState
 import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 import java.text.SimpleDateFormat
@@ -28,7 +27,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
 
         fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val interactor = (this[APPLICATION_KEY] as MyApplication).provideViewModel(url)
+                val interactor = (this[APPLICATION_KEY] as App).provideViewModel(url)
                 TrackViewModel(
                     interactor
                 )
@@ -40,7 +39,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     fun getState() : LiveData<TrackState> = state
 
 
-    private var playerState = TrackViewModel.STATE_PAUSED
+    private var playerState = STATE_PAUSED
     private var handler = Handler(Looper.getMainLooper())
 
     fun onArrayBackClicked(activity: Activity){
@@ -48,12 +47,11 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     }
 
     fun onPlayClicked(){
-        if (state.value==TrackState.Pause)
-            state.value = TrackState.Play
-        else
+        if (state.value==TrackState.Play)
             state.value = TrackState.Pause
+        else
+            state.value = TrackState.Play
     }
-
 
     fun delete(){
         interactor.delete()
@@ -65,11 +63,13 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     }
 
     fun startPlayer(play: ImageButton, progress: TextView) {
+        interactor.playbackControl()
         startTimer(play, progress)
         play.setImageResource(R.drawable.pause)
     }
 
     fun pausePlayer(play: ImageButton) {
+        interactor.playbackControl()
         play.setImageResource(R.drawable.play)
     }
 

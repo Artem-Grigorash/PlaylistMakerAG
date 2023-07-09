@@ -2,7 +2,7 @@ package com.example.playlistmakerag.creator
 
 import com.example.playlistmakerag.player.data.player.Player
 import com.example.playlistmakerag.player.domain.impl.TrackInteractor
-import com.example.playlistmakerag.player.domain.view_models.TrackViewModel
+import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 
 object Creator {
     private fun getPlayer(url:String): Player {

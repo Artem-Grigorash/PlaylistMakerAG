@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.MediatekaActivity
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.main.domain.MainViewModel
-import com.example.playlistmakerag.player.domain.view_models.TrackViewModel
+import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 import com.example.playlistmakerag.search.ui.SearchActivity
 import com.example.playlistmakerag.settings.ui.SettingsActivity
 
