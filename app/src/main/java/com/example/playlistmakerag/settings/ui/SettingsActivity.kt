@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
-import com.example.playlistmakerag.settings.data.App
-import com.example.playlistmakerag.settings.data.DARK_THEME_KEY
-import com.example.playlistmakerag.settings.data.PRFERENCES
+import com.example.playlistmakerag.App
+import com.example.playlistmakerag.DARK_THEME_KEY
+import com.example.playlistmakerag.PRFERENCES
 import com.example.playlistmakerag.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 

@@ -14,15 +14,13 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.creator.Creator
-import com.example.playlistmakerag.player.domain.TrackPresenter
+import com.example.playlistmakerag.player.domain.MyApplication
 import com.example.playlistmakerag.player.domain.TrackState
 import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
-//    private val getTrackUseCase = Creator.getTrackUseCase()
-
     companion object {
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
@@ -30,11 +28,9 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
 
         fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val interactor = (this[APPLICATION_KEY] as MyApplication).provideTracksInteractor()
-
+                val interactor = (this[APPLICATION_KEY] as MyApplication).provideViewModel(url)
                 TrackViewModel(
-                    url,
-                    interactor,
+                    interactor
                 )
             }
         }
@@ -51,8 +47,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         activity.finish()
     }
 
-    fun onPlayClicked(play: ImageButton, progress: TextView){
-//        playbackControl(play, progress)
+    fun onPlayClicked(){
         if (state.value==TrackState.Pause)
             state.value = TrackState.Play
         else
@@ -69,28 +64,26 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         play.setImageResource(R.drawable.play)
     }
 
-    private fun startPlayer(play: ImageButton, progress: TextView) {
+    fun startPlayer(play: ImageButton, progress: TextView) {
         startTimer(play, progress)
         play.setImageResource(R.drawable.pause)
-        playerState = STATE_PLAYING
     }
 
-    private fun pausePlayer(play: ImageButton) {
+    fun pausePlayer(play: ImageButton) {
         play.setImageResource(R.drawable.play)
-        playerState = STATE_PAUSED
     }
 
-    private fun playbackControl(play: ImageButton, progress: TextView) {
-        interactor.playbackControl()
-        when(playerState) {
-            STATE_PLAYING -> {
-                pausePlayer(play)
-            }
-            STATE_PAUSED -> {
-                startPlayer(play, progress)
-            }
-        }
-    }
+//    private fun playbackControl(play: ImageButton, progress: TextView) {
+//        interactor.playbackControl()
+//        when(playerState) {
+//            STATE_PLAYING -> {
+//                pausePlayer(play)
+//            }
+//            STATE_PAUSED -> {
+//                startPlayer(play, progress)
+//            }
+//        }
+//    }
     private fun startTimer(play: ImageButton, progress: TextView) {
         handler.post(
             createUpdateTimerTask(play, progress)

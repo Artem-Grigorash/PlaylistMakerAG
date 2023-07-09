@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
 import com.example.playlistmakerag.player.data.dto.ItunesApi
-import com.example.playlistmakerag.settings.data.PRFERENCES
+import com.example.playlistmakerag.PRFERENCES
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track

@@ -15,9 +15,9 @@ class MainViewModel : ViewModel(){
     private val state = MutableLiveData<TrackState>()
     fun getState() : LiveData<TrackState> = state
 
-    fun onSearchClicked(context: ComponentActivity){
-        val intent = Intent(context, SearchActivity::class.java)
-        startActivity(intent)
-    }
+//    fun onSearchClicked(context: ComponentActivity){
+//        val intent = Intent(context, SearchActivity::class.java)
+//        startActivity(intent)
+//    }
 
 }

@@ -4,13 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.playlistmakerag.MediatekaActivity
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.main.domain.MainViewModel
 import com.example.playlistmakerag.player.domain.view_models.TrackViewModel
 import com.example.playlistmakerag.search.ui.SearchActivity
+import com.example.playlistmakerag.settings.ui.SettingsActivity
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
 
@@ -30,12 +33,12 @@ class MainActivity : ComponentActivity() {
             startActivity(intent)
         }
         mediatekaButton.setOnClickListener {
-//            val intent = Intent(this, MediatekaActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, MediatekaActivity::class.java)
+            startActivity(intent)
         }
         settingsButton.setOnClickListener {
-//            val intent = Intent(this, SettingsActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
         }
         viewModel.getState().observe(this){}
     }

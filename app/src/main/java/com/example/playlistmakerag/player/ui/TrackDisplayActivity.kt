@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.player.domain.TrackPresenter
 import com.example.playlistmakerag.player.domain.TrackView
 import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.TrackState
@@ -43,9 +42,9 @@ private lateinit var viewModel: TrackViewModel
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
-        viewModel = ViewModelProvider(this)[TrackViewModel::class.java]
 
-        setViews()
+
+setViews()
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
         handler = Handler(Looper.getMainLooper())
 
@@ -56,16 +55,20 @@ private lateinit var viewModel: TrackViewModel
         }
 
         val url : String = lastTrack.previewUrl
-//        viewModel = Creator.providePresenter(url)
+        viewModel = ViewModelProvider(this, TrackViewModel.getViewModelFactory(url))[TrackViewModel::class.java]
         viewModel.preparePlayer(play)
 
         play.setOnClickListener {
-            viewModel.onPlayClicked(play,progress)
+            viewModel.onPlayClicked()
         }
 
-        viewModel.getState().observe(this){
 
+
+        viewModel.getState().observe(this){state->
+            render(state)
         }
+
+
     }
 
 
@@ -104,6 +107,7 @@ private lateinit var viewModel: TrackViewModel
     }
 
     override fun render(state: TrackState) {
+        viewModel.onPlayClicked()
         when (state){
             is TrackState.Pause -> showPaused()
             is TrackState.Play -> showPlayed()
@@ -111,9 +115,9 @@ private lateinit var viewModel: TrackViewModel
     }
 
     private fun showPlayed(){
-
+        viewModel.startPlayer(play, progress)
     }
     private fun showPaused(){
-
+        viewModel.pausePlayer(play)
     }
 }
