@@ -67,7 +67,7 @@ class SearchActivity : AppCompatActivity() {
 //    //data
 //    private val trackService = retrofit.create(ItunesApi::class.java)
 
-    private val tracks = ArrayList<Track>()
+//    private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
     private val recentAdapter = TracksAdapter(recentTracks)

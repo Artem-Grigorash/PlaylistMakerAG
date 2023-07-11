@@ -5,6 +5,7 @@ import android.widget.EditText
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.data.dto.ItunesApi
 import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.player.domain.models.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,7 +16,7 @@ class Retrofit {
     //data
     private val baseUrl = "https://itunes.apple.com"
 
-
+    private val tracks = ArrayList<Track>()
     //data
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
