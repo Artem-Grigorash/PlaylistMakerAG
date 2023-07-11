@@ -23,4 +23,11 @@ class SearchHistory {
             .apply()
     }
 
+    fun addTrack(track: Track, place : ArrayList<Track>){
+        if (place.size == 10)
+            place.removeAt(9)
+        if (place.contains(track))
+            place.remove(track)
+        place.add(0, track)
+    }
 }

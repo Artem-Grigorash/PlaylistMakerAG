@@ -9,22 +9,22 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
-import com.example.playlistmakerag.player.data.dto.ItunesApi
 import com.example.playlistmakerag.PRFERENCES
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.search.domain.SearchViewModel
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 
 class SearchActivity : AppCompatActivity() {
@@ -54,16 +54,19 @@ class SearchActivity : AppCompatActivity() {
 
     private val searchRunnable = Runnable { searchTracks() }
 
-    private val baseUrl = "https://itunes.apple.com"
+    //data
+//    private val baseUrl = "https://itunes.apple.com"
 
     private var isClickAllowed = true
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    //data
+//    private val retrofit = Retrofit.Builder()
+//        .baseUrl(baseUrl)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
+//    //data
+//    private val trackService = retrofit.create(ItunesApi::class.java)
 
-    private val trackService = retrofit.create(ItunesApi::class.java)
     private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
@@ -81,37 +84,21 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var cleanHistoryButton : Button
     private lateinit var progressBar : ProgressBar
 
-
+    private lateinit var viewModel: SearchViewModel
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
-        recyclerView = findViewById(R.id.recyclerViewTracks)
-        inputEditText = findViewById(R.id.searchEdit)
-        clearButton = findViewById(R.id.clearIcon)
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        placeholder = findViewById(R.id.placeholderNF)
-        reloadButton = findViewById(R.id.reload_button)
-        searchBack = findViewById(R.id.search_back)
-        hisrory = findViewById(R.id.story)
-        historyRecycler = findViewById(R.id.search_history_recycler)
-        cleanHistoryButton = findViewById(R.id.clean_history_button)
-        progressBar = findViewById(R.id.progressBar)
-
-
-
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        historyRecycler.adapter = recentAdapter
-        historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
+        setViews()
+        //data
         val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
 
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
+            //data
             val tracks = SearchHistory().read(sharedPref)
             recentTracks.clear()
             for (track in tracks)
@@ -214,6 +201,26 @@ class SearchActivity : AppCompatActivity() {
 
     //functions:
 
+    private fun setViews(){
+        recyclerView = findViewById(R.id.recyclerViewTracks)
+        inputEditText = findViewById(R.id.searchEdit)
+        clearButton = findViewById(R.id.clearIcon)
+        placeholderMessage = findViewById(R.id.placeholderMessage)
+        placeholder = findViewById(R.id.placeholderNF)
+        reloadButton = findViewById(R.id.reload_button)
+        searchBack = findViewById(R.id.search_back)
+        hisrory = findViewById(R.id.story)
+        historyRecycler = findViewById(R.id.search_history_recycler)
+        cleanHistoryButton = findViewById(R.id.clean_history_button)
+        progressBar = findViewById(R.id.progressBar)
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        historyRecycler.adapter = recentAdapter
+        historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+    }
+
     private fun clickDebounce() : Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -228,6 +235,7 @@ class SearchActivity : AppCompatActivity() {
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
+    //data
     private fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
             place.removeAt(9)
@@ -235,6 +243,7 @@ class SearchActivity : AppCompatActivity() {
             place.remove(track)
         place.add(0, track)
     }
+
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {

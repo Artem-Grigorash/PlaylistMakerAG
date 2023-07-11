@@ -44,7 +44,7 @@ private lateinit var viewModel: TrackViewModel
 
 
 
-setViews()
+        setViews()
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
         handler = Handler(Looper.getMainLooper())
 
