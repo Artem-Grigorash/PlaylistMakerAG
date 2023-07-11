@@ -94,7 +94,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         return object : Runnable {
             override fun run() {
 
-                if(playerState == STATE_PLAYING){
+                if (state.value==TrackState.Play){
                     val elapsedTime = interactor.getPosition()
                     val duration = 29700
                     val remainingTime = duration - elapsedTime
