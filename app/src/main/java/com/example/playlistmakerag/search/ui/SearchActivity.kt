@@ -325,7 +325,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun searchTracks(){
+    private fun searchTracks(response: Response<TrackResponse>){
         viewModel.loading()
         if (inputEditText.text.isNotEmpty()) {
             trackService.search(inputEditText.text.toString()).enqueue(object :

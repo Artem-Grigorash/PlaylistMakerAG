@@ -25,7 +25,7 @@ class Retrofit {
     //data
     private val trackService = retrofit.create(ItunesApi::class.java)
 
-    private fun searchTracks(inputEditText: EditText) : Response<TrackResponse>?{
+    fun searchTracks(inputEditText: EditText) : Response<TrackResponse>?{
         var resp : Response<TrackResponse>? = null
         if (inputEditText.text.isNotEmpty()) {
             trackService.search(inputEditText.text.toString()).enqueue(object :
