@@ -36,7 +36,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     }
 
     private val state = MutableLiveData<TrackState>()
-    fun getState() : LiveData<TrackState> = state
+    fun getTrackState() : LiveData<TrackState> = state
 
 
     private var playerState = STATE_PAUSED

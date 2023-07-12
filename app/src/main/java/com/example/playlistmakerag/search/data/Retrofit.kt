@@ -25,36 +25,21 @@ class Retrofit {
     //data
     private val trackService = retrofit.create(ItunesApi::class.java)
 
-    private fun searchTracks(inputEditText: EditText){
+    private fun searchTracks(inputEditText: EditText) : Response<TrackResponse>?{
+        var resp : Response<TrackResponse>? = null
         if (inputEditText.text.isNotEmpty()) {
             trackService.search(inputEditText.text.toString()).enqueue(object :
                 Callback<TrackResponse> {
                 override fun onResponse(call: Call<TrackResponse>,
                                         response: Response<TrackResponse>
                 ) {
-                    if (response.code() == 200) {
-                        tracks.clear()
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                        //состояние 1
-                        }
-                        if (tracks.isEmpty()) {
-                            //состояние 2
-                        }
-                    }
-
-                    else {
-                        //состояние 3
-                    }
+                    resp = response
                 }
-
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    //состояние 4
-                }
 
+                }
             })
         }
-        else{
-            //состояние 5
-        }
+        return resp
     }
 }

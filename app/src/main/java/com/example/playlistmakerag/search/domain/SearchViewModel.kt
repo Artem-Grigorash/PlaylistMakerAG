@@ -13,6 +13,8 @@ import android.text.TextWatcher
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.TypedArrayUtils.getString
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +25,7 @@ import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.player.domain.TrackState
 import com.example.playlistmakerag.search.domain.SearchViewModel
 import com.example.playlistmakerag.search.ui.TracksAdapter
 import com.google.gson.Gson
@@ -37,6 +40,25 @@ class SearchViewModel : ViewModel() {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
+
+
+    private val state = MutableLiveData<SearchState>()
+    fun getSearchState() : LiveData<SearchState> = state
+
+
+    fun loading(){
+        state.value = SearchState.Loading
+    }
+    fun nothingFound(){
+        state.value = SearchState.NothingFound
+    }
+    fun badConnection(){
+        state.value = SearchState.BadConnection
+    }
+    fun data(){
+        state.value = SearchState.Data
+    }
+
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -83,6 +105,7 @@ class SearchViewModel : ViewModel() {
             View.VISIBLE
         }
     }
+
 
 
 //    private fun showMessage(text: String, additionalMessage: String, holderImage: Int) {

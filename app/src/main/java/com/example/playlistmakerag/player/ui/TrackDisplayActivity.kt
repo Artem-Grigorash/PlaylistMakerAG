@@ -6,13 +6,11 @@ import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.domain.TrackView
-import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.TrackState
 import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -63,7 +61,7 @@ private lateinit var viewModel: TrackViewModel
         }
 
 
-        viewModel.getState().observe(this){state->
+        viewModel.getTrackState().observe(this){ state->
             render(state)
         }
 
@@ -85,7 +83,6 @@ private lateinit var viewModel: TrackViewModel
         play = findViewById(R.id.play_button)
         progress = findViewById(R.id.time)
     }
-
     private fun setInfo(
         track: Track,
     ){

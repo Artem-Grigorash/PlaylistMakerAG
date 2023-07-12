@@ -19,6 +19,7 @@ import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.search.domain.SearchState
 import com.example.playlistmakerag.search.domain.SearchViewModel
 import com.google.gson.Gson
 import retrofit2.Call
@@ -67,7 +68,7 @@ class SearchActivity : AppCompatActivity() {
 //    //data
 //    private val trackService = retrofit.create(ItunesApi::class.java)
 
-//    private val tracks = ArrayList<Track>()
+    private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
     private val recentAdapter = TracksAdapter(recentTracks)
@@ -91,7 +92,11 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+        viewModel.getSearchState().observe(this){ state->
+            render(state)
+        }
 
         setViews()
         //data
@@ -201,6 +206,52 @@ class SearchActivity : AppCompatActivity() {
 
     //functions:
 
+    private fun render (state: SearchState){
+        when(state){
+            SearchState.BadConnection -> showBadConnection()
+            SearchState.Data -> showData()
+            SearchState.Loading -> showLoading()
+            SearchState.NothingFound -> showNothingFound()
+        }
+    }
+
+    private fun showBadConnection(){
+        progressBar.visibility = View.GONE
+
+        showMessage(getString(R.string.something_went_wrong),
+//            response.code().toString(),
+            R.drawable.tracks_placeholder_ce
+        )
+        reloadButton.visibility = View.VISIBLE
+        reloadButton.isClickable = true
+    }
+    private fun showData(){
+        progressBar.visibility = View.GONE
+        tracks.clear()
+
+        tracks.addAll(response.body()?.results!!)
+        adapter.notifyDataSetChanged()
+        recyclerView.visibility = View.VISIBLE
+    }
+    private fun showLoading(){
+        reloadButton.visibility = View.GONE
+        placeholder.visibility = View.GONE
+        placeholderMessage.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        reloadButton.isClickable = false
+    }
+    private fun showNothingFound(){
+        progressBar.visibility = View.GONE
+        tracks.clear()
+
+        showMessage(getString(R.string.nothing_found),
+//                                "",
+            R.drawable.tracks_placeholder_nf
+        )
+    }
+
+
     private fun setViews(){
         recyclerView = findViewById(R.id.recyclerViewTracks)
         inputEditText = findViewById(R.id.searchEdit)
@@ -254,7 +305,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun showMessage(text: String, additionalMessage: String, holderImage: Int) {
+    private fun showMessage(text: String, holderImage: Int) {
         if (text.isNotEmpty()) {
             placeholderMessage.visibility = View.VISIBLE
             placeholder.visibility = View.VISIBLE
@@ -262,11 +313,12 @@ class SearchActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             placeholderMessage.text = text
             placeholder.setImageResource(holderImage)
-            if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-                    .show()
-            }
-        } else {
+//            if (additionalMessage.isNotEmpty()) {
+//                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+//                    .show()
+//            }
+        }
+    else {
             placeholderMessage.visibility = View.GONE
             placeholder.visibility = View.GONE
         }
@@ -274,57 +326,36 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun searchTracks(){
-        reloadButton.visibility = View.GONE
-        placeholder.visibility = View.GONE
-        placeholderMessage.visibility = View.GONE
-        recyclerView.visibility = View.GONE
-        progressBar.visibility = View.VISIBLE
-        reloadButton.isClickable = false
+        viewModel.loading()
         if (inputEditText.text.isNotEmpty()) {
             trackService.search(inputEditText.text.toString()).enqueue(object :
                 Callback<TrackResponse> {
                 override fun onResponse(call: Call<TrackResponse>,
                                         response: Response<TrackResponse>
                 ) {
-                    progressBar.visibility = View.GONE
                     if (response.code() == 200) {
-                        tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
-                            tracks.addAll(response.body()?.results!!)
-                            adapter.notifyDataSetChanged()
-                            recyclerView.visibility = View.VISIBLE
+                            viewModel.data()
                         }
                         if (tracks.isEmpty()) {
-                            showMessage(getString(R.string.nothing_found), "",
-                                R.drawable.tracks_placeholder_nf
-                            )
+                            viewModel.nothingFound()
                         }
                     }
-
                     else {
-                        showMessage(getString(R.string.something_went_wrong), response.code().toString(),
-                            R.drawable.tracks_placeholder_ce
-                        )
-                        reloadButton.visibility = View.VISIBLE
-                        reloadButton.isClickable = true
+                        viewModel.badConnection()
                     }
                 }
-
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    showMessage(getString(R.string.something_went_wrong), t.message.toString(),
+                    showMessage(getString(R.string.something_went_wrong),
+//                        t.message.toString(),
                         R.drawable.tracks_placeholder_ce
                     )
                     reloadButton.visibility = View.VISIBLE
                     progressBar.visibility = View.GONE
                     reloadButton.isClickable = true
                 }
-
             })
         }
-        else{
-            progressBar.visibility = View.GONE
-        }
     }
-
 
 }
