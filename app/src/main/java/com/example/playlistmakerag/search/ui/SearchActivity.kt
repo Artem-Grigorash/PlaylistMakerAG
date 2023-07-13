@@ -76,6 +76,9 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SearchViewModel
 
+    //-------------------------------------------------------------------------------------------------------------------
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,10 +126,6 @@ class SearchActivity : AppCompatActivity() {
         searchBack.setOnClickListener {
             finish()
         }
-
-
-
-
 
 
 
@@ -185,7 +184,7 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-
+        //-------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -208,13 +207,6 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
     }
-
-
-
-    //-------------------------------------------------------------------------------------------------------------------
-
-
-
 
 
 
@@ -321,22 +313,21 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun searchTracks(){
+    private fun searchTracks() {
         viewModel.loading()
         var response: Response<TrackResponse>
         if (inputEditText.text.isNotEmpty()) {
             response = viewModel.makeRequest(inputEditText.text.toString())!!
-                    if (response.code() == 200) {
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            viewModel.data()
-                        }
-                        if (tracks.isEmpty()) {
-                            viewModel.nothingFound()
-                        }
-                    }
-                    else {
-                        viewModel.badConnection()
-                    }
+            if (response.code() == 200) {
+                if (response.body()?.results?.isNotEmpty() == true) {
+                    viewModel.data()
+                }
+                if (tracks.isEmpty()) {
+                    viewModel.nothingFound()
+                }
+            } else {
+                viewModel.badConnection()
+            }
 
 //                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
 //                    showMessage(getString(R.string.something_went_wrong),
@@ -347,7 +338,7 @@ class SearchActivity : AppCompatActivity() {
 //                    progressBar.visibility = View.GONE
 //                    reloadButton.isClickable = true
 //                }
-            }
         }
+    }
 }
 

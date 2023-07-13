@@ -25,20 +25,21 @@ class Retrofit {
     //data
     private val trackService = retrofit.create(ItunesApi::class.java)
 
-    fun makeRequest(text: String) : Response<TrackResponse>?{
-        var resp : Response<TrackResponse>? = null
-            trackService.search(text).enqueue(object :
-                Callback<TrackResponse> {
-                override fun onResponse(call: Call<TrackResponse>,
-                                        response: Response<TrackResponse>
-                ) {
-                    resp = response
-                }
+    fun makeRequest(text: String): Response<TrackResponse>? {
+        var resp: Response<TrackResponse>? = null
+        trackService.search(text).enqueue(object :
+            Callback<TrackResponse> {
+            override fun onResponse(
+                call: Call<TrackResponse>,
+                response: Response<TrackResponse>
+            ) {
+                resp = response
+            }
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
 
-                }
-            })
+            }
+        })
         return resp
     }
 }

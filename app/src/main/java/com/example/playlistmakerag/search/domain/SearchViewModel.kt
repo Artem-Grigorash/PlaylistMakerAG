@@ -16,15 +16,8 @@ import retrofit2.Response
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 1000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
-
-
     private val state = MutableLiveData<SearchState>()
     fun getSearchState() : LiveData<SearchState> = state
-
 
     fun loading(){
         state.value = SearchState.Loading
@@ -43,22 +36,7 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         return interactor.makeRequest(text)
     }
 
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private var isClickAllowed = true
-
-    private lateinit var viewModel: SearchViewModel
-
     //functions:
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
 
     fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
