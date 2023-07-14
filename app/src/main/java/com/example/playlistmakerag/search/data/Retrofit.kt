@@ -1,22 +1,18 @@
 package com.example.playlistmakerag.search.data
 
-import android.view.View
-import android.widget.EditText
-import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.data.dto.ItunesApi
 import com.example.playlistmakerag.player.data.dto.TrackResponse
-import com.example.playlistmakerag.player.domain.models.Track
+import com.example.playlistmakerag.search.domain.SearchInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Retrofit {
+class Retrofit: SearchInterface {
     //data
     private val baseUrl = "https://itunes.apple.com"
 
-    private val tracks = ArrayList<Track>()
     //data
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -25,8 +21,8 @@ class Retrofit {
     //data
     private val trackService = retrofit.create(ItunesApi::class.java)
 
-    fun makeRequest(text: String): Response<TrackResponse>? {
-        var resp: Response<TrackResponse>? = null
+    override fun makeRequest(text: String): Response<TrackResponse> {
+        var resp: Response<TrackResponse>
         trackService.search(text).enqueue(object :
             Callback<TrackResponse> {
             override fun onResponse(

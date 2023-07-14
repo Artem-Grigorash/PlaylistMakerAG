@@ -1,4 +1,4 @@
-package com.example.playlistmakerag.player.domain
+package com.example.playlistmakerag.player.ui.view_models
 
 sealed class TrackState{
     object Play : TrackState()

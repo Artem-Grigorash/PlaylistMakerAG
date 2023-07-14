@@ -6,26 +6,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
-import com.example.playlistmakerag.App
-import com.example.playlistmakerag.DARK_THEME_KEY
-import com.example.playlistmakerag.PRFERENCES
+import com.example.playlistmakerag.app.App
+import com.example.playlistmakerag.app.DARK_THEME_KEY
+import com.example.playlistmakerag.app.PRFERENCES
 import com.example.playlistmakerag.R
 import com.google.android.material.switchmaterial.SwitchMaterial
-
 class SettingsActivity : AppCompatActivity() {
 
-
-
     private lateinit var themeSwitcher : SwitchMaterial
-
+    private lateinit var settingsBack : ImageView
+    private lateinit var settingsShare : FrameLayout
+    private lateinit var settingsMail : FrameLayout
+    private lateinit var settingsAgreement : FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        setViews()
 
         val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
-
-        themeSwitcher = findViewById(R.id.theme_switcher)
 
         themeSwitcher.isChecked = (sharedPref.getBoolean(DARK_THEME_KEY, false))
 
@@ -36,37 +35,27 @@ class SettingsActivity : AppCompatActivity() {
                 .apply()
         }
 
-        val settingsBack = findViewById<ImageView>(R.id.settings_back)
         settingsBack.setOnClickListener {
             finish()
         }
 
-        val settingsShare = findViewById<FrameLayout>(R.id.settings_share)
         settingsShare.setOnClickListener {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            val url = getString(R.string.practicum_url)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, url)
-            shareIntent.type = "text/plain"
-            startActivity(shareIntent)
+
         }
 
-        val settingsMail = findViewById<FrameLayout>(R.id.settings_mail)
         settingsMail.setOnClickListener{
-            val message = getString(R.string.thanks)
-            val massageTheme = getString(R.string.subject)
-            val shareIntent = Intent(Intent.ACTION_SENDTO)
-            shareIntent.data = Uri.parse("mailto:")
-            shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.email)))
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, massageTheme)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-            startActivity(shareIntent)
+
         }
 
-        val settingsAgreement = findViewById<FrameLayout>(R.id.settinds_agreement)
         settingsAgreement.setOnClickListener{
-            val url = Uri.parse(getString(R.string.legal_url))
-            val intent = Intent(Intent.ACTION_VIEW, url)
-            startActivity(intent)
+
         }
+    }
+    private fun setViews(){
+        themeSwitcher = findViewById(R.id.theme_switcher)
+        settingsBack = findViewById(R.id.settings_back)
+        settingsShare = findViewById(R.id.settings_share)
+        settingsMail = findViewById(R.id.settings_mail)
+        settingsAgreement = findViewById(R.id.settinds_agreement)
     }
 }

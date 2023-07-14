@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.player.domain.TrackView
-import com.example.playlistmakerag.player.domain.TrackState
+import com.example.playlistmakerag.player.ui.view_models.TrackState
 import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson

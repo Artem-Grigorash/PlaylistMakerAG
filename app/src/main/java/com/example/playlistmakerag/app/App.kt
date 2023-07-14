@@ -1,9 +1,11 @@
-package com.example.playlistmakerag
+package com.example.playlistmakerag.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmakerag.player.data.player.Player
 import com.example.playlistmakerag.player.domain.impl.TrackInteractor
+import com.example.playlistmakerag.search.data.Retrofit
+import com.example.playlistmakerag.search.domain.impl.SearchInteractor
 
 
 const val PRFERENCES = "preferences"
@@ -43,5 +45,11 @@ class App : Application() {
 
     fun provideViewModel(url:String): TrackInteractor {
         return TrackInteractor(getPlayer(url))
+    }
+    private fun getRetrofit() : Retrofit{
+        return Retrofit()
+    }
+    fun provideSearchViewModel() : SearchInteractor{
+        return SearchInteractor(getRetrofit())
     }
 }

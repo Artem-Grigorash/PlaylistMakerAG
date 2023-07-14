@@ -12,9 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmakerag.App
+import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.player.domain.TrackState
 import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -47,7 +46,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     }
 
     fun onPlayClicked(){
-        if (state.value==TrackState.Play)
+        if (state.value== TrackState.Play)
             state.value = TrackState.Pause
         else
             state.value = TrackState.Play
@@ -94,7 +93,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         return object : Runnable {
             override fun run() {
 
-                if (state.value==TrackState.Play){
+                if (state.value== TrackState.Play){
                     val elapsedTime = interactor.getPosition()
                     val duration = 29700
                     val remainingTime = duration - elapsedTime

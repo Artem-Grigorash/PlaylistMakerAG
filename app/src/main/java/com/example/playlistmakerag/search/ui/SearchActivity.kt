@@ -13,16 +13,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
-import com.example.playlistmakerag.PRFERENCES
+import com.example.playlistmakerag.app.PRFERENCES
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.player.data.dto.TrackResponse
-import com.example.playlistmakerag.search.domain.SearchState
-import com.example.playlistmakerag.search.domain.SearchViewModel
+import com.example.playlistmakerag.search.ui.view_models.SearchState
+import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson
-import retrofit2.Call
 import retrofit2.Response
 
 
@@ -85,7 +84,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+        viewModel = ViewModelProvider(this, SearchViewModel.getSearchViewModelFactory())[SearchViewModel::class.java]
+
         viewModel.getSearchState().observe(this){ state->
             render(state)
         }
@@ -317,7 +317,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.loading()
         var response: Response<TrackResponse>
         if (inputEditText.text.isNotEmpty()) {
-            response = viewModel.makeRequest(inputEditText.text.toString())!!
+            response = viewModel.makeRequest(inputEditText.text.toString())
             if (response.code() == 200) {
                 if (response.body()?.results?.isNotEmpty() == true) {
                     viewModel.data()
@@ -339,6 +339,8 @@ class SearchActivity : AppCompatActivity() {
 //                    reloadButton.isClickable = true
 //                }
         }
+        else
+            progressBar.visibility = View.GONE
     }
 }
 

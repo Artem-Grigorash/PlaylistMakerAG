@@ -1,13 +1,14 @@
-package com.example.playlistmakerag.search.domain
+package com.example.playlistmakerag.search.ui.view_models
 
 import android.view.View
 import androidx.lifecycle.ViewModel
 
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.domain.impl.SearchInteractor
@@ -15,6 +16,17 @@ import retrofit2.Response
 
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
+
+    companion object {
+        fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val interactor = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSearchViewModel()
+                SearchViewModel(
+                    interactor
+                )
+            }
+        }
+    }
 
     private val state = MutableLiveData<SearchState>()
     fun getSearchState() : LiveData<SearchState> = state
@@ -32,7 +44,7 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         state.value = SearchState.Data
     }
 
-    fun makeRequest(text: String): Response<TrackResponse>?{
+    fun makeRequest(text: String): Response<TrackResponse>{
         return interactor.makeRequest(text)
     }
 

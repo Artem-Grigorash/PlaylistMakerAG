@@ -3,19 +3,13 @@ package com.example.playlistmakerag.main.ui
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmakerag.MediatekaActivity
+import com.example.playlistmakerag.mediateka.MediatekaActivity
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.main.domain.MainViewModel
-import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 import com.example.playlistmakerag.search.ui.SearchActivity
 import com.example.playlistmakerag.settings.ui.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var viewModel: MainViewModel
 
     private lateinit var searchButton: Button
     private lateinit var mediatekaButton: Button
@@ -26,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         setViews()
 
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
 
         searchButton.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
@@ -40,7 +34,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
-        viewModel.getState().observe(this){}
     }
     private fun setViews(){
         searchButton = findViewById(R.id.search_button)
