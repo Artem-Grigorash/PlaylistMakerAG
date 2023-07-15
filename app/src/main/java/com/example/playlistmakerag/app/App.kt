@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmakerag.player.data.player.Player
 import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 import com.example.playlistmakerag.search.data.Retrofit
-import com.example.playlistmakerag.search.domain.impl.SearchInteractor
+import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
 
 
 const val PRFERENCES = "preferences"
@@ -49,7 +49,7 @@ class App : Application() {
     private fun getRetrofit() : Retrofit{
         return Retrofit()
     }
-    fun provideSearchViewModel() : SearchInteractor{
-        return SearchInteractor(getRetrofit())
+    fun provideSearchViewModel() : SearchInteractorImpl{
+        return SearchInteractorImpl(getRetrofit())
     }
 }

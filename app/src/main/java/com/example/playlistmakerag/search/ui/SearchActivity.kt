@@ -1,6 +1,7 @@
 package com.example.playlistmakerag.search.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -74,8 +75,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var progressBar : ProgressBar
 
     private lateinit var viewModel: SearchViewModel
+    private lateinit var sharedPref: SharedPreferences
 
-    //-------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -91,8 +92,11 @@ class SearchActivity : AppCompatActivity() {
         }
 
         setViews()
+
+        //-------------------------------------------------------------------------------------------------------------------
+
         //data
-        val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
+        sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
 
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             //data
@@ -117,44 +121,15 @@ class SearchActivity : AppCompatActivity() {
             reloadButton.isClickable = false
         }
 
-
-
-        reloadButton.setOnClickListener{
-            searchTracks()
-        }
-
-        searchBack.setOnClickListener {
-            finish()
-        }
-
-
-
         adapter.itemClickListener = { _, track ->
             if(clickDebounce()) {
-                val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
-                viewModel.addTrack(track, recentSongs)
-                SearchHistory().write(sharedPref, recentSongs)
-
-                val intent = Intent(this, TrackDisplayActivity::class.java)
-
-                val trackJson = Gson().toJson(track)
-                intent.putExtra("LAST_TRACK", trackJson)
-                startActivity(intent)
+                openTrack(track)
             }
         }
 
         recentAdapter.itemClickListener = {_, track ->
             if (clickDebounce()) {
-                val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
-                viewModel.addTrack(track, recentSongs)
-                SearchHistory().write(sharedPref, recentSongs)
-
-                val intent = Intent(this, TrackDisplayActivity::class.java)
-
-
-                val trackJson = Gson().toJson(track)
-                intent.putExtra("LAST_TRACK", trackJson)
-                startActivity(intent)
+                openTrack(track)
             }
         }
 
@@ -168,26 +143,24 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-
         cleanHistoryButton.setOnClickListener {
-            val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
-            recentSongs.clear()
-            SearchHistory().write(sharedPref,recentSongs)
+            viewModel.clean(sharedPref)
             recentTracks.clear()
             recentAdapter.notifyDataSetChanged()
             hisrory.visibility = View.GONE
         }
 
 
-
-
         //-------------------------------------------------------------------------------------------------------------------
 
 
+        reloadButton.setOnClickListener{
+            searchTracks()
+        }
 
+        searchBack.setOnClickListener {
+            finish()
+        }
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -208,19 +181,24 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-
-
     //functions:
+
+    private fun openTrack(track: Track){
+        viewModel.OnItemClicked(track, sharedPref)
+        val trackJson = Gson().toJson(track)
+        val intent = Intent(this, TrackDisplayActivity::class.java)
+        intent.putExtra("LAST_TRACK", trackJson)
+        startActivity(intent)
+    }
 
     private fun render (state: SearchState){
         when(state){
             SearchState.BadConnection -> showBadConnection()
-            SearchState.Data -> showData(viewModel.makeRequest(inputEditText.text.toString())!!)
+            SearchState.Data -> showData(viewModel.makeRequest(inputEditText.text.toString()))
             SearchState.Loading -> showLoading()
             SearchState.NothingFound -> showNothingFound()
         }
     }
-
     private fun showBadConnection(){
         progressBar.visibility = View.GONE
 
@@ -256,8 +234,6 @@ class SearchActivity : AppCompatActivity() {
             R.drawable.tracks_placeholder_nf
         )
     }
-
-
     private fun setViews(){
         recyclerView = findViewById(R.id.recyclerViewTracks)
         inputEditText = findViewById(R.id.searchEdit)
@@ -277,7 +253,6 @@ class SearchActivity : AppCompatActivity() {
         historyRecycler.adapter = recentAdapter
         historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
-
     private fun clickDebounce() : Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -286,13 +261,10 @@ class SearchActivity : AppCompatActivity() {
         }
         return current
     }
-
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
-
-
     private fun showMessage(text: String, holderImage: Int) {
         if (text.isNotEmpty()) {
             placeholderMessage.visibility = View.VISIBLE
@@ -311,11 +283,9 @@ class SearchActivity : AppCompatActivity() {
             placeholder.visibility = View.GONE
         }
     }
-
-
     private fun searchTracks() {
         viewModel.loading()
-        var response: Response<TrackResponse>
+        val response: Response<TrackResponse>
         if (inputEditText.text.isNotEmpty()) {
             response = viewModel.makeRequest(inputEditText.text.toString())
             if (response.code() == 200) {
@@ -328,16 +298,6 @@ class SearchActivity : AppCompatActivity() {
             } else {
                 viewModel.badConnection()
             }
-
-//                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-//                    showMessage(getString(R.string.something_went_wrong),
-////                        t.message.toString(),
-//                        R.drawable.tracks_placeholder_ce
-//                    )
-//                    reloadButton.visibility = View.VISIBLE
-//                    progressBar.visibility = View.GONE
-//                    reloadButton.isClickable = true
-//                }
         }
         else
             progressBar.visibility = View.GONE

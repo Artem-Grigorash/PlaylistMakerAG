@@ -1,5 +1,6 @@
 package com.example.playlistmakerag.search.ui.view_models
 
+import android.content.SharedPreferences
 import android.view.View
 import androidx.lifecycle.ViewModel
 
@@ -11,11 +12,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
-import com.example.playlistmakerag.search.domain.impl.SearchInteractor
+import com.example.playlistmakerag.search.data.SearchHistory
+import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
 import retrofit2.Response
+import java.util.function.Consumer
 
 
-class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
+class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel() {
 
     companion object {
         fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
@@ -31,6 +34,9 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     private val state = MutableLiveData<SearchState>()
     fun getSearchState() : LiveData<SearchState> = state
 
+    private val res = MutableLiveData<SearchState>()
+    fun getSearchStateResponse() : LiveData<SearchState> = res
+
     fun loading(){
         state.value = SearchState.Loading
     }
@@ -44,11 +50,17 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         state.value = SearchState.Data
     }
 
-    fun makeRequest(text: String): Response<TrackResponse>{
-        return interactor.makeRequest(text)
+    fun makeRequest(text: String): Response<TrackResponse> {
+        interactor.makeRequest(text, object : Consumer {
+            fun consume(response) {
+                res.postValue(response)
+            }
+        }
     }
+}
 
     //functions:
+
 
     fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
@@ -58,6 +70,18 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         place.add(0, track)
     }
 
+    fun clean(sharedPref : SharedPreferences){
+        val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+        recentSongs.clear()
+        SearchHistory().write(sharedPref,recentSongs)
+    }
+
+    fun OnItemClicked(track: Track, sharedPref : SharedPreferences){
+        val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
+        addTrack(track, recentSongs)
+        SearchHistory().write(sharedPref, recentSongs)
+
+    }
 
     fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {

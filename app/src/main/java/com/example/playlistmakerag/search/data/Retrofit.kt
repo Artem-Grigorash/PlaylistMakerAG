@@ -22,20 +22,13 @@ class Retrofit: SearchInterface {
     private val trackService = retrofit.create(ItunesApi::class.java)
 
     override fun makeRequest(text: String): Response<TrackResponse> {
-        var resp: Response<TrackResponse>
-        trackService.search(text).enqueue(object :
-            Callback<TrackResponse> {
-            override fun onResponse(
-                call: Call<TrackResponse>,
-                response: Response<TrackResponse>
-            ) {
-                resp = response
-            }
+        return trackService.search(text).execute()
 
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+//            val resp = trackService.search(text).execute()
+//
+//            val body = resp.body() ?: Response()
+//
+//            return body.apply { resultCode = resp.code() }
 
-            }
-        })
-        return resp
     }
 }
