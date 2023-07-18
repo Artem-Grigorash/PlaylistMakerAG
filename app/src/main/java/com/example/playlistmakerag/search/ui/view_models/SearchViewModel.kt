@@ -34,8 +34,8 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
     private val state = MutableLiveData<SearchState>()
     fun getSearchState() : LiveData<SearchState> = state
 
-    private val res = MutableLiveData<SearchState>()
-    fun getSearchStateResponse() : LiveData<SearchState> = res
+    private val res = MutableLiveData<Response<TrackResponse>>()
+    fun getSearchStateResponse() : LiveData<Response<TrackResponse>> = res
 
     fun loading(){
         state.value = SearchState.Loading
@@ -50,14 +50,14 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         state.value = SearchState.Data
     }
 
-    fun makeRequest(text: String): Response<TrackResponse> {
-        interactor.makeRequest(text, object : Consumer {
-            fun consume(response) {
+    fun makeRequest(text: String){
+        interactor.makeRequest(text, object Consumer {
+            fun consume(response: Response<TrackResponse> ) {
                 res.postValue(response)
             }
-        }
+        })
     }
-}
+
 
     //functions:
 

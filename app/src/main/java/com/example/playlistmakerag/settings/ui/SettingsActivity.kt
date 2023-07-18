@@ -6,10 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.app.DARK_THEME_KEY
 import com.example.playlistmakerag.app.PRFERENCES
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
+import com.example.playlistmakerag.settings.ui.view_models.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 class SettingsActivity : AppCompatActivity() {
 
@@ -19,10 +24,14 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var settingsMail : FrameLayout
     private lateinit var settingsAgreement : FrameLayout
 
+    private lateinit var viewModel : SettingsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         setViews()
+
+        viewModel = ViewModelProvider(this, SettingsViewModel.getSharingViewModelFactory())[SettingsViewModel::class.java]
 
         val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
 
@@ -40,15 +49,18 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         settingsShare.setOnClickListener {
-
+            val shareIntent = viewModel.shareApp()
+            startActivity(shareIntent)
         }
 
         settingsMail.setOnClickListener{
-
+            val mailIntent = viewModel.openSupport()
+            startActivity(mailIntent)
         }
 
         settingsAgreement.setOnClickListener{
-
+            val settingsIntent = viewModel.openTerms()
+            startActivity(settingsIntent)
         }
     }
     private fun setViews(){
