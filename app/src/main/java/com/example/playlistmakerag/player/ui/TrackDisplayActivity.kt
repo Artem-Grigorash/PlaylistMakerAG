@@ -64,10 +64,7 @@ private lateinit var viewModel: TrackViewModel
             render(state)
         }
 
-
     }
-
-
 
     private fun setViews(){
         arrayBack = findViewById(R.id.arrayBack)

@@ -20,8 +20,6 @@ import java.util.Locale
 
 class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     companion object {
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val REFRESH_MILLIS = 200L
 
         fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
@@ -37,8 +35,6 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     private val state = MutableLiveData<TrackState>()
     fun getTrackState() : LiveData<TrackState> = state
 
-
-    private var playerState = STATE_PAUSED
     private var handler = Handler(Looper.getMainLooper())
 
     fun onArrayBackClicked(activity: Activity){
@@ -72,17 +68,6 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         play.setImageResource(R.drawable.play)
     }
 
-//    private fun playbackControl(play: ImageButton, progress: TextView) {
-//        interactor.playbackControl()
-//        when(playerState) {
-//            STATE_PLAYING -> {
-//                pausePlayer(play)
-//            }
-//            STATE_PAUSED -> {
-//                startPlayer(play, progress)
-//            }
-//        }
-//    }
     private fun startTimer(play: ImageButton, progress: TextView) {
         handler.post(
             createUpdateTimerTask(play, progress)

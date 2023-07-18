@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         setViews()
 
-
-
         searchButton.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)

@@ -1,19 +1,13 @@
 package com.example.playlistmakerag.settings.ui
 
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.app.DARK_THEME_KEY
-import com.example.playlistmakerag.app.PRFERENCES
+import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.example.playlistmakerag.settings.ui.view_models.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 class SettingsActivity : AppCompatActivity() {
@@ -33,15 +27,10 @@ class SettingsActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, SettingsViewModel.getSharingViewModelFactory())[SettingsViewModel::class.java]
 
-        val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
-
+        val sharedPref = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         themeSwitcher.isChecked = (sharedPref.getBoolean(DARK_THEME_KEY, false))
-
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
-            sharedPref.edit()
-                .putBoolean(DARK_THEME_KEY, checked)
-                .apply()
+        themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            viewModel.onThemeClicked(checked, applicationContext, sharedPref)
         }
 
         settingsBack.setOnClickListener {

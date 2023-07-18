@@ -1,33 +1,39 @@
 package com.example.playlistmakerag.sharing.domain.impl
 
-import com.example.playlistmakerag.settings.ui.SharingInteractor
+import android.content.Intent
+import android.net.Uri
+import com.example.playlistmakerag.R
+import com.example.playlistmakerag.sharing.domain.SharingInteractor
+import com.example.playlistmakerag.sharing.data.EmailData
 import com.example.playlistmakerag.sharing.data.ExternalNavigator
 
 class SharingInteractorImpl(
     private val externalNavigator: ExternalNavigator,
 ) : SharingInteractor
 {
-    override fun shareApp() {
-        externalNavigator.shareLink(getShareAppLink())
+    override fun shareApp() : Intent{
+        return externalNavigator.shareLink(getShareAppLink())
     }
 
-    override fun openTerms() {
-        externalNavigator.openLink(getTermsLink())
+    override fun openTerms() : Intent {
+        return externalNavigator.openLink(getTermsLink())
     }
 
-    override fun openSupport() {
-        externalNavigator.openEmail(getSupportEmailData())
+    override fun openSupport() : Intent{
+        return externalNavigator.openEmail(getSupportEmailData())
     }
 
-    private fun getShareAppLink(): String {
-        // Нужно реализовать
+    private fun getShareAppLink(): Int {
+        return R.string.practicum_url
     }
 
     private fun getSupportEmailData(): EmailData {
-        // Нужно реализовать
+        val message = R.string.thanks
+        val massageTheme = R.string.subject
+        return EmailData(message, massageTheme)
     }
 
-    private fun getTermsLink(): String {
-        // Нужно реализовать
+    private fun getTermsLink(): Uri {
+        return Uri.parse(R.string.legal_url.toString())
     }
 }

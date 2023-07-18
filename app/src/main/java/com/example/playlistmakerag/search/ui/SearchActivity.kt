@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
-import com.example.playlistmakerag.app.PRFERENCES
+import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
@@ -52,7 +52,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val searchRunnable = Runnable { searchTracks() }
+    private val searchRunnable = Runnable { viewModel.makeRequest(inputEditText.text.toString()) }
 
     private var isClickAllowed = true
 
@@ -91,15 +91,15 @@ class SearchActivity : AppCompatActivity() {
             render(state)
         }
 
+        viewModel.getSearchStateResponse().observe(this){ res->
+            searchTracks(res)
+        }
+
         setViews()
 
-        //-------------------------------------------------------------------------------------------------------------------
-
-        //data
-        sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
+        sharedPref = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
 
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            //data
             val tracks = SearchHistory().read(sharedPref)
             recentTracks.clear()
             for (track in tracks)
@@ -111,14 +111,7 @@ class SearchActivity : AppCompatActivity() {
         hisrory.visibility = View.GONE
 
         clearButton.setOnClickListener {
-            inputEditText.setText("")
-            tracks.clear()
-            adapter.notifyDataSetChanged()
-            recentAdapter.notifyDataSetChanged()
-            placeholder.visibility = View.GONE
-            placeholderMessage.visibility = View.GONE
-            reloadButton.visibility = View.GONE
-            reloadButton.isClickable = false
+            clear()
         }
 
         adapter.itemClickListener = { _, track ->
@@ -132,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
                 openTrack(track)
             }
         }
-
+//
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
             if (key == HISTORY_KEY) {
                 val tracks = SearchHistory().read(sharedPref)
@@ -150,12 +143,8 @@ class SearchActivity : AppCompatActivity() {
             hisrory.visibility = View.GONE
         }
 
-
-        //-------------------------------------------------------------------------------------------------------------------
-
-
         reloadButton.setOnClickListener{
-            searchTracks()
+            viewModel.makeRequest(inputEditText.text.toString())
         }
 
         searchBack.setOnClickListener {
@@ -183,6 +172,17 @@ class SearchActivity : AppCompatActivity() {
 
     //functions:
 
+    private fun clear(){
+        inputEditText.setText("")
+        tracks.clear()
+        adapter.notifyDataSetChanged()
+        recentAdapter.notifyDataSetChanged()
+        placeholder.visibility = View.GONE
+        placeholderMessage.visibility = View.GONE
+        reloadButton.visibility = View.GONE
+        reloadButton.isClickable = false
+    }
+
     private fun openTrack(track: Track){
         viewModel.OnItemClicked(track, sharedPref)
         val trackJson = Gson().toJson(track)
@@ -194,7 +194,7 @@ class SearchActivity : AppCompatActivity() {
     private fun render (state: SearchState){
         when(state){
             SearchState.BadConnection -> showBadConnection()
-            SearchState.Data -> showData(viewModel.makeRequest(inputEditText.text.toString()))
+            SearchState.Data -> viewModel.makeRequest(inputEditText.text.toString())
             SearchState.Loading -> showLoading()
             SearchState.NothingFound -> showNothingFound()
         }
@@ -283,14 +283,12 @@ class SearchActivity : AppCompatActivity() {
             placeholder.visibility = View.GONE
         }
     }
-    private fun searchTracks() {
+    private fun searchTracks(response: Response<TrackResponse>) {
         viewModel.loading()
-        val response: Response<TrackResponse>
         if (inputEditText.text.isNotEmpty()) {
-            response = viewModel.makeRequest(inputEditText.text.toString())
             if (response.code() == 200) {
                 if (response.body()?.results?.isNotEmpty() == true) {
-                    viewModel.data()
+                    showData(response)
                 }
                 if (tracks.isEmpty()) {
                     viewModel.nothingFound()

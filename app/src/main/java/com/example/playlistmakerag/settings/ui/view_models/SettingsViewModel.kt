@@ -1,18 +1,14 @@
 package com.example.playlistmakerag.settings.ui.view_models
 
+import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import androidx.core.content.ContextCompat.startActivity
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmakerag.R
 import com.example.playlistmakerag.app.App
-import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.example.playlistmakerag.settings.domain.impl.SettingsInteractorImpl
-import com.example.playlistmakerag.settings.ui.SettingsInteractor
-import com.example.playlistmakerag.settings.ui.SharingInteractor
 import com.example.playlistmakerag.sharing.domain.impl.SharingInteractorImpl
 
 class SettingsViewModel(
@@ -35,32 +31,17 @@ class SettingsViewModel(
          }
      }
 
-    fun shareApp() : Intent{
-        sharingInteractor.shareApp()
+     fun onThemeClicked(checked: Boolean, applicationContext: Context, sharedPref: SharedPreferences){
+         settingsInteractor.updateThemeSetting(checked, applicationContext, sharedPref)
+     }
 
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        val url = R.string.practicum_url
-        shareIntent.putExtra(Intent.EXTRA_TEXT, url)
-        shareIntent.type = "text/plain"
-        return shareIntent
+    fun shareApp() : Intent{
+        return sharingInteractor.shareApp()
     }
     fun openTerms() : Intent{
-        sharingInteractor.openTerms()
-
-        val url = Uri.parse(R.string.legal_url.toString())
-        val intent = Intent(Intent.ACTION_VIEW, url)
-        return intent
+        return sharingInteractor.openTerms()
     }
     fun openSupport() : Intent{
-        sharingInteractor.openSupport()
-
-        val message = R.string.thanks
-        val massageTheme = R.string.subject
-        val shareIntent = Intent(Intent.ACTION_SENDTO)
-        shareIntent.data = Uri.parse("mailto:")
-        shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.email))
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, massageTheme)
-        shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-        return shareIntent
+        return sharingInteractor.openSupport()
     }
 }

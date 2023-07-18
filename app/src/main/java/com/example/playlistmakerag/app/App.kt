@@ -12,7 +12,7 @@ import com.example.playlistmakerag.sharing.data.ExternalNavigator
 import com.example.playlistmakerag.sharing.domain.impl.SharingInteractorImpl
 
 
-const val PRFERENCES = "preferences"
+const val PREFERENCES = "preferences"
 const val DARK_THEME_KEY = "key_for_dark_theme"
 
 
@@ -22,7 +22,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val sharedPref = getSharedPreferences(PRFERENCES, MODE_PRIVATE)
+        val sharedPref = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         AppCompatDelegate.setDefaultNightMode(
             if (sharedPref.getBoolean(DARK_THEME_KEY, false)) {
                 AppCompatDelegate.MODE_NIGHT_YES

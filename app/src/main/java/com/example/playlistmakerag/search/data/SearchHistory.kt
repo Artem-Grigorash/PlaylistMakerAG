@@ -5,9 +5,7 @@ import com.example.playlistmakerag.player.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-
 const val HISTORY_KEY = "key_for_history"
-
 
 class SearchHistory {
 
@@ -16,7 +14,7 @@ class SearchHistory {
         return Gson().fromJson(json, object : TypeToken<ArrayList<Track>>() {}.type)
     }
 
-    fun write(pref : SharedPreferences, tracks: ArrayList<Track>){
+    fun write(pref: SharedPreferences, tracks: ArrayList<Track>) {
         val json = Gson().toJson(tracks)
         pref.edit()
             .putString(HISTORY_KEY, json)

@@ -3,7 +3,6 @@ package com.example.playlistmakerag.search.ui.view_models
 import android.content.SharedPreferences
 import android.view.View
 import androidx.lifecycle.ViewModel
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -13,9 +12,9 @@ import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.data.SearchHistory
+import com.example.playlistmakerag.search.domain.SearchInteractor
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
 import retrofit2.Response
-import java.util.function.Consumer
 
 
 class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel() {
@@ -51,16 +50,14 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
     }
 
     fun makeRequest(text: String){
-        interactor.makeRequest(text, object Consumer {
-            fun consume(response: Response<TrackResponse> ) {
+        interactor.makeRequest(text, object: SearchInteractor.Consumer {
+            override fun consume(response: Response<TrackResponse> ) {
                 res.postValue(response)
             }
         })
     }
 
-
     //functions:
-
 
     fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)
