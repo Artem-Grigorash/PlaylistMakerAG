@@ -52,7 +52,10 @@ class SearchActivity : AppCompatActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val searchRunnable = Runnable { viewModel.makeRequest(inputEditText.text.toString()) }
+    private val searchRunnable = Runnable {
+        viewModel.loading()
+        viewModel.makeRequest(inputEditText.text.toString())
+    }
 
     private var isClickAllowed = true
 
@@ -144,6 +147,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         reloadButton.setOnClickListener{
+            viewModel.loading()
             viewModel.makeRequest(inputEditText.text.toString())
         }
 
@@ -300,5 +304,6 @@ class SearchActivity : AppCompatActivity() {
         else
             progressBar.visibility = View.GONE
     }
+
 }
 
