@@ -36,19 +36,19 @@ class SettingsActivity : AppCompatActivity() {
         settingsBack.setOnClickListener {
             finish()
         }
-
+        val context = applicationContext
         settingsShare.setOnClickListener {
-            val shareIntent = viewModel.shareApp()
+            val shareIntent = viewModel.shareApp(context)
             startActivity(shareIntent)
         }
 
         settingsMail.setOnClickListener{
-            val mailIntent = viewModel.openSupport()
+            val mailIntent = viewModel.openSupport(context)
             startActivity(mailIntent)
         }
 
         settingsAgreement.setOnClickListener{
-            val settingsIntent = viewModel.openTerms()
+            val settingsIntent = viewModel.openTerms(context)
             startActivity(settingsIntent)
         }
     }

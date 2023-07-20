@@ -35,13 +35,13 @@ class SettingsViewModel(
          settingsInteractor.updateThemeSetting(checked, applicationContext, sharedPref)
      }
 
-    fun shareApp() : Intent{
-        return sharingInteractor.shareApp()
+    fun shareApp(context: Context) : Intent{
+        return sharingInteractor.shareApp(context)
     }
-    fun openTerms() : Intent{
-        return sharingInteractor.openTerms()
+    fun openTerms(context: Context) : Intent{
+        return sharingInteractor.openTerms(context)
     }
-    fun openSupport() : Intent{
-        return sharingInteractor.openSupport()
+    fun openSupport(context: Context) : Intent{
+        return sharingInteractor.openSupport(context)
     }
 }
