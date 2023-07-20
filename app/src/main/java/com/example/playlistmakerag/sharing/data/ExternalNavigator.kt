@@ -5,7 +5,7 @@ import android.net.Uri
 import com.example.playlistmakerag.R
 
 class ExternalNavigator {
-    fun shareLink(link : Int) : Intent{
+    fun shareLink(link : String) : Intent{
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.putExtra(Intent.EXTRA_TEXT, link)
         shareIntent.type = "text/plain"

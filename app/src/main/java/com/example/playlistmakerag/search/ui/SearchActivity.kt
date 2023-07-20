@@ -207,7 +207,7 @@ class SearchActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
 
         showMessage(getString(R.string.something_went_wrong),
-//            response.code().toString(),
+            "",
             R.drawable.tracks_placeholder_ce
         )
         reloadButton.visibility = View.VISIBLE
@@ -234,7 +234,7 @@ class SearchActivity : AppCompatActivity() {
         tracks.clear()
 
         showMessage(getString(R.string.nothing_found),
-//                                "",
+                                "",
             R.drawable.tracks_placeholder_nf
         )
     }
@@ -269,7 +269,7 @@ class SearchActivity : AppCompatActivity() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
-    private fun showMessage(text: String, holderImage: Int) {
+    private fun showMessage(text: String, additionalMessage:String, holderImage: Int) {
         if (text.isNotEmpty()) {
             placeholderMessage.visibility = View.VISIBLE
             placeholder.visibility = View.VISIBLE
@@ -277,10 +277,10 @@ class SearchActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             placeholderMessage.text = text
             placeholder.setImageResource(holderImage)
-//            if (additionalMessage.isNotEmpty()) {
-//                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-//                    .show()
-//            }
+            if (additionalMessage.isNotEmpty()) {
+                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+                    .show()
+            }
         }
     else {
             placeholderMessage.visibility = View.GONE

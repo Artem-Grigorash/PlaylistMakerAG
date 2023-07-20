@@ -25,13 +25,13 @@ class SharingInteractorImpl(
         return externalNavigator.openEmail(getSupportEmailData(context))
     }
 
-    private fun getShareAppLink(context: Context): Int {
-        return context.getString(R.string.practicum_url).toInt()
+    private fun getShareAppLink(context: Context): String {
+        return context.getString(R.string.practicum_url)
     }
 
     private fun getSupportEmailData(context: Context): EmailData {
-        val message = context.getString(R.string.thanks).toInt()
-        val massageTheme = context.getString(R.string.subject).toInt()
+        val message = context.getString(R.string.thanks)
+        val massageTheme = context.getString(R.string.subject)
         return EmailData(message, massageTheme)
     }
 
