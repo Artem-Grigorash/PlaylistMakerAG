@@ -24,7 +24,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
 
         fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val interactor = (this[APPLICATION_KEY] as App).provideViewModel(url)
+                val interactor = (this[APPLICATION_KEY] as App).provideTrackInteractor(url)
                 TrackViewModel(
                     interactor
                 )
@@ -35,11 +35,11 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     private val state = MutableLiveData<TrackState>()
     fun getTrackState() : LiveData<TrackState> = state
 
-    private var handler = Handler(Looper.getMainLooper())
 
-    fun onArrayBackClicked(activity: Activity){
-        activity.finish()
-    }
+    private val buttonState = MutableLiveData<Boolean>()
+    fun getButtonState() : LiveData<Boolean> = buttonState
+
+    private var handler = Handler(Looper.getMainLooper())
 
     fun onPlayClicked(){
         if (state.value== TrackState.Play)
@@ -52,20 +52,18 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         interactor.delete()
     }
 
-    fun preparePlayer(play: ImageButton) {
-        play.isEnabled = true
-        play.setImageResource(R.drawable.play)
-    }
 
     fun startPlayer(play: ImageButton, progress: TextView) {
         interactor.playbackControl()
         startTimer(play, progress)
-        play.setImageResource(R.drawable.pause)
+        buttonState.value = true
+//        play.setImageResource(R.drawable.pause)
     }
 
-    fun pausePlayer(play: ImageButton) {
+    fun pausePlayer() {
         interactor.playbackControl()
-        play.setImageResource(R.drawable.play)
+        buttonState.value = false
+//        play.setImageResource(R.drawable.play)
     }
 
     private fun startTimer(play: ImageButton, progress: TextView) {
@@ -93,7 +91,8 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
                         )
                     } else {
                         progress.text = "00:00"
-                        play.setImageResource(R.drawable.play)
+                        buttonState.value = false
+//                        play.setImageResource(R.drawable.play)
                     }
                 }
             }

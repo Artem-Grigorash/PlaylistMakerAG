@@ -1,8 +1,7 @@
 package com.example.playlistmakerag.player.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -21,7 +20,6 @@ class TrackDisplayActivity : ComponentActivity(), TrackView {
 private lateinit var viewModel: TrackViewModel
 
     private val glide = GlideCreator()
-    private lateinit var handler: Handler
 
     private lateinit var arrayBack : ImageView
     private lateinit var trackPicture: ImageView
@@ -43,27 +41,44 @@ private lateinit var viewModel: TrackViewModel
 
         setViews()
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
-        handler = Handler(Looper.getMainLooper())
 
         setInfo(lastTrack)
 
         arrayBack.setOnClickListener {
-            viewModel.onArrayBackClicked(this)
+            finish()
         }
 
         val url : String = lastTrack.previewUrl
         viewModel = ViewModelProvider(this, TrackViewModel.getViewModelFactory(url))[TrackViewModel::class.java]
-        viewModel.preparePlayer(play)
+
+        play.isEnabled = true
+        play.setImageResource(R.drawable.play)
+//        var playing = false
 
         play.setOnClickListener {
             viewModel.onPlayClicked()
+//            if (playing)
+//                play.setImageResource(R.drawable.play)
+//            else
+//                play.setImageResource(R.drawable.pause)
         }
 
 
         viewModel.getTrackState().observe(this){ state->
             render(state)
         }
+        viewModel.getButtonState().observe(this){ button->
+            buttonControl(button)
+        }
 
+
+    }
+
+    private fun buttonControl(playing : Boolean){
+        if (playing)
+            play.setImageResource(R.drawable.pause)
+        else
+            play.setImageResource(R.drawable.play)
     }
 
     private fun setViews(){
@@ -109,6 +124,6 @@ private lateinit var viewModel: TrackViewModel
         viewModel.startPlayer(play, progress)
     }
     private fun showPaused(){
-        viewModel.pausePlayer(play)
+        viewModel.pausePlayer()
     }
 }
