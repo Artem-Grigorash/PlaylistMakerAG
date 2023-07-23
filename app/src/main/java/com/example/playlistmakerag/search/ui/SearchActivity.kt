@@ -128,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
                 openTrack(track)
             }
         }
-//
+
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
             if (key == HISTORY_KEY) {
                 val tracks = SearchHistory().read(sharedPref)

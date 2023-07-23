@@ -1,7 +1,7 @@
 package com.example.playlistmakerag.player.ui
 
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -42,6 +42,7 @@ private lateinit var viewModel: TrackViewModel
 
         setInfo(lastTrack)
 
+        arrayBack.visibility = View.VISIBLE
         arrayBack.setOnClickListener {
             finish()
         }
@@ -73,9 +74,9 @@ private lateinit var viewModel: TrackViewModel
 
     private fun buttonControl(state: TrackState){
         if (state == TrackState.Pause)
-            play.setImageResource(R.drawable.pause)
-        else
             play.setImageResource(R.drawable.play)
+        else
+            play.setImageResource(R.drawable.pause)
     }
 
     private fun setViews(){
