@@ -1,6 +1,5 @@
 package com.example.playlistmakerag.player.ui.view_models
 
-import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageButton
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
-import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -35,9 +33,8 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     private val state = MutableLiveData<TrackState>()
     fun getTrackState() : LiveData<TrackState> = state
 
-
-    private val buttonState = MutableLiveData<Boolean>()
-    fun getButtonState() : LiveData<Boolean> = buttonState
+    private val time = MutableLiveData<String>()
+    fun getTime() : LiveData<String> = time
 
     private var handler = Handler(Looper.getMainLooper())
 
@@ -53,26 +50,22 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     }
 
 
-    fun startPlayer(play: ImageButton, progress: TextView) {
+    fun startPlayer() {
         interactor.playbackControl()
-        startTimer(play, progress)
-        buttonState.value = true
-//        play.setImageResource(R.drawable.pause)
+        startTimer()
     }
 
     fun pausePlayer() {
         interactor.playbackControl()
-        buttonState.value = false
-//        play.setImageResource(R.drawable.play)
     }
 
-    private fun startTimer(play: ImageButton, progress: TextView) {
+    private fun startTimer() {
         handler.post(
-            createUpdateTimerTask(play, progress)
+            createUpdateTimerTask()
         )
     }
 
-    private fun createUpdateTimerTask(play: ImageButton, progress: TextView): Runnable {
+    private fun createUpdateTimerTask(): Runnable {
         return object : Runnable {
             override fun run() {
 
@@ -82,7 +75,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
                     val remainingTime = duration - elapsedTime
 
                     if (remainingTime > 0) {
-                        progress.text = SimpleDateFormat(
+                        time.value = SimpleDateFormat(
                             "mm:ss",
                             Locale.getDefault()
                         ).format(interactor.getPosition())
@@ -90,9 +83,8 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
                             REFRESH_MILLIS
                         )
                     } else {
-                        progress.text = "00:00"
-                        buttonState.value = false
-//                        play.setImageResource(R.drawable.play)
+                        time.value = "00:00"
+                        state.value = TrackState.Pause
                     }
                 }
             }

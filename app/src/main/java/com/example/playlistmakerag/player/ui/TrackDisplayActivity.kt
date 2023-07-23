@@ -37,8 +37,6 @@ private lateinit var viewModel: TrackViewModel
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
-
-
         setViews()
         val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
@@ -53,29 +51,28 @@ private lateinit var viewModel: TrackViewModel
 
         play.isEnabled = true
         play.setImageResource(R.drawable.play)
-//        var playing = false
 
         play.setOnClickListener {
             viewModel.onPlayClicked()
-//            if (playing)
-//                play.setImageResource(R.drawable.play)
-//            else
-//                play.setImageResource(R.drawable.pause)
         }
 
 
         viewModel.getTrackState().observe(this){ state->
             render(state)
-        }
-        viewModel.getButtonState().observe(this){ button->
-            buttonControl(button)
+            buttonControl(state)
         }
 
-
+        viewModel.getTime().observe(this){time ->
+            updateTime(time)
+        }
     }
 
-    private fun buttonControl(playing : Boolean){
-        if (playing)
+    private fun updateTime(time:String){
+        progress.text = time
+    }
+
+    private fun buttonControl(state: TrackState){
+        if (state == TrackState.Pause)
             play.setImageResource(R.drawable.pause)
         else
             play.setImageResource(R.drawable.play)
@@ -121,7 +118,7 @@ private lateinit var viewModel: TrackViewModel
     }
 
     private fun showPlayed(){
-        viewModel.startPlayer(play, progress)
+        viewModel.startPlayer()
     }
     private fun showPaused(){
         viewModel.pausePlayer()
