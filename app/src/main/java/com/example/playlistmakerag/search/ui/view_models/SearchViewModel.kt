@@ -1,7 +1,9 @@
 package com.example.playlistmakerag.search.ui.view_models
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
+import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.data.SearchHistory
@@ -30,6 +33,11 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         }
     }
 
+//        private val searchRunnable = Runnable() {
+//        loading()
+//        makeRequest(inputEditText.text.toString())
+//    }
+
     private val state = MutableLiveData<SearchState>()
     fun getSearchState() : LiveData<SearchState> = state
 
@@ -49,6 +57,10 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         state.value = SearchState.Data
     }
 
+    fun provideSharedPreferences(context: Context) : SharedPreferences{
+        return interactor.provideSharedPreferences(context)
+    }
+
     fun makeRequest(text: String){
         interactor.makeRequest(text, object: SearchInteractor.Consumer {
             override fun consume(response: Response<TrackResponse> ) {
@@ -57,7 +69,10 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         })
     }
 
-    //functions:
+    fun onReloadClicked(text: String){
+        loading()
+        makeRequest(text)
+    }
 
     fun addTrack(track: Track, place : ArrayList<Track>){
         if (place.size == 10)

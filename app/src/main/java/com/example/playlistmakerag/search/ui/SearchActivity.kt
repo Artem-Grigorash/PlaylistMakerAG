@@ -100,7 +100,7 @@ class SearchActivity : AppCompatActivity() {
 
         setViews()
 
-        sharedPref = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
+        sharedPref = viewModel.provideSharedPreferences(applicationContext)
 
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             val tracks = SearchHistory().read(sharedPref)
@@ -147,8 +147,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         reloadButton.setOnClickListener{
-            viewModel.loading()
-            viewModel.makeRequest(inputEditText.text.toString())
+            viewModel.onReloadClicked(inputEditText.text.toString())
         }
 
         searchBack.setOnClickListener {
@@ -162,6 +161,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
                 searchDebounce()
                 clearButton.visibility = viewModel.clearButtonVisibility(s)
                 recyclerView.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE

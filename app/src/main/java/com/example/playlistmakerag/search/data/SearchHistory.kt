@@ -20,4 +20,6 @@ class SearchHistory {
             .putString(HISTORY_KEY, json)
             .apply()
     }
+
+
 }

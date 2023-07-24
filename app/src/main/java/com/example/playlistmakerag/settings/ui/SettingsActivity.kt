@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, SettingsViewModel.getSharingViewModelFactory())[SettingsViewModel::class.java]
 
-        val sharedPref = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
+        val sharedPref = viewModel.provideSharedPreferences(applicationContext)
         themeSwitcher.isChecked = (sharedPref.getBoolean(DARK_THEME_KEY, false))
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.onThemeClicked(checked, applicationContext, sharedPref)
