@@ -107,7 +107,6 @@ private lateinit var viewModel: TrackViewModel
 
     override fun onDestroy() {
         super.onDestroy()
-//        viewModel.pausePlayer()
         viewModel.delete()
     }
 

@@ -47,6 +47,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
 
     fun delete(){
         interactor.delete()
+        state.value = TrackState.Pause
     }
 
 
