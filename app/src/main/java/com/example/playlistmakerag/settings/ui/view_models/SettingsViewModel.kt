@@ -1,15 +1,15 @@
 package com.example.playlistmakerag.settings.ui.view_models
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
-import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.settings.domain.impl.SettingsInteractorImpl
 import com.example.playlistmakerag.sharing.domain.impl.SharingInteractorImpl
 

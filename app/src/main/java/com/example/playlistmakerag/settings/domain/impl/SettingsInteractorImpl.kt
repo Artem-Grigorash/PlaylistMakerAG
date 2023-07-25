@@ -2,8 +2,6 @@ package com.example.playlistmakerag.settings.domain.impl
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.settings.data.SwitchTheme
 import com.example.playlistmakerag.settings.domain.SettingsInteractor
 

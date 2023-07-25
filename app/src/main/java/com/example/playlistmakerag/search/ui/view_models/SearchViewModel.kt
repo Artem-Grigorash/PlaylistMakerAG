@@ -88,6 +88,8 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         SearchHistory().write(sharedPref,recentSongs)
     }
 
+
+
     fun OnItemClicked(track: Track, sharedPref : SharedPreferences){
         val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
         addTrack(track, recentSongs)

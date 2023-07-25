@@ -56,6 +56,7 @@
             android:visibility="invisible"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/clear_padding"
             app:srcCompat="@drawable/clear"
             app:tint="@color/text_gray" />
 

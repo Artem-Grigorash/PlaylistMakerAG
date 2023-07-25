@@ -42,7 +42,6 @@ private lateinit var viewModel: TrackViewModel
 
         setInfo(lastTrack)
 
-        arrayBack.visibility = View.VISIBLE
         arrayBack.setOnClickListener {
             finish()
         }
@@ -95,19 +94,20 @@ private lateinit var viewModel: TrackViewModel
     private fun setInfo(
         track: Track,
     ){
-        nameOfTrack.text = track.trackName
-        authorOfTrack.text = track.artistName
+        nameOfTrack.text = short(track.trackName)
+        authorOfTrack.text = short(track.artistName)
         val timer = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
         timeOfTrack.text = timer
-        album.text = track.collectionName
+        album.text = short(track.collectionName)
         year.text = track.releaseDate.substring(0,4)
-        genre.text = track.primaryGenreName
-        country.text = track.country
+        genre.text = short(track.primaryGenreName)
+        country.text = short(track.country)
         glide.setTrackPicture(trackPicture, track)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+//        viewModel.pausePlayer()
         viewModel.delete()
     }
 
@@ -117,7 +117,12 @@ private lateinit var viewModel: TrackViewModel
             is TrackState.Play -> showPlayed()
         }
     }
-
+    private fun short(s : String) : String{
+        return if (s.length<=27)
+            s
+        else
+            s.substring(0,24) + "..."
+    }
     private fun showPlayed(){
         viewModel.startPlayer()
     }

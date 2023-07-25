@@ -176,6 +176,8 @@ class SearchActivity : AppCompatActivity() {
 
     //functions:
 
+
+
     private fun clear(){
         inputEditText.setText("")
         tracks.clear()

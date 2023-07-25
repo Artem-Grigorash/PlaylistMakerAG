@@ -80,7 +80,7 @@
             style="@style/SettingsPicturesStyle"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            app:srcCompat="@drawable/support"
+            app:srcCompat="@drawable/support_full"
             app:tint="@color/icons_tint" />
     </FrameLayout>
 
