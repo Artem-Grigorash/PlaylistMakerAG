@@ -36,7 +36,8 @@
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/array_back"
-        app:tint="@color/classic_text"/>
+        app:tint="@color/classic_text"
+        android:visibility="visible"/>
 
     <ImageView
         android:id="@+id/trackPicture"

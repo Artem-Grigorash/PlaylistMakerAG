@@ -31,8 +31,8 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val INPUT_TEXT = "INPUT_TEXT"
-        private const val SEARCH_DEBOUNCE_DELAY = 1000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+//        private const val SEARCH_DEBOUNCE_DELAY = 1000L
+//        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 
@@ -50,14 +50,14 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(textValue)
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+//    private val handler = Handler(Looper.getMainLooper())
 
-    private val searchRunnable = Runnable {
-        viewModel.loading()
-        viewModel.makeRequest(inputEditText.text.toString())
-    }
+//    private val searchRunnable = Runnable {
+//        viewModel.loading()
+//        viewModel.makeRequest(inputEditText.text.toString())
+//    }
 
-    private var isClickAllowed = true
+//    private var isClickAllowed = true
 
 
     private val tracks = ArrayList<Track>()
@@ -79,10 +79,6 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SearchViewModel
     private lateinit var sharedPref: SharedPreferences
-
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,13 +114,13 @@ class SearchActivity : AppCompatActivity() {
         }
 
         adapter.itemClickListener = { _, track ->
-            if(clickDebounce()) {
+            if(viewModel.clickDebounce()) {
                 openTrack(track)
             }
         }
 
         recentAdapter.itemClickListener = {_, track ->
-            if (clickDebounce()) {
+            if (viewModel.clickDebounce()) {
                 openTrack(track)
             }
         }
@@ -161,8 +157,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                searchDebounce()
+                viewModel.searchDebounce(s.toString())
                 clearButton.visibility = viewModel.clearButtonVisibility(s)
                 recyclerView.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE
                 hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
@@ -175,8 +170,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     //functions:
-
-
 
     private fun clear(){
         inputEditText.setText("")
@@ -259,18 +252,18 @@ class SearchActivity : AppCompatActivity() {
         historyRecycler.adapter = recentAdapter
         historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
+//    private fun clickDebounce() : Boolean {
+//        val current = isClickAllowed
+//        if (isClickAllowed) {
+//            isClickAllowed = false
+//            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+//        }
+//        return current
+//    }
+//    private fun searchDebounce() {
+//        handler.removeCallbacks(searchRunnable)
+//        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+//    }
     private fun showMessage(text: String, additionalMessage:String, holderImage: Int) {
         if (text.isNotEmpty()) {
             placeholderMessage.visibility = View.VISIBLE

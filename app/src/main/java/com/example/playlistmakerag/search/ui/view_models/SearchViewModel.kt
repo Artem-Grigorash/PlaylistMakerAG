@@ -2,6 +2,8 @@ package com.example.playlistmakerag.search.ui.view_models
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -17,12 +19,15 @@ import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
+import com.example.playlistmakerag.search.ui.SearchActivity
 import retrofit2.Response
 
 
 class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel() {
 
     companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
         fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val interactor = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSearchViewModel()
@@ -33,10 +38,36 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         }
     }
 
-//        private val searchRunnable = Runnable() {
-//        loading()
-//        makeRequest(inputEditText.text.toString())
-//    }
+    private var latestSearchText: String? = null
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private var isClickAllowed = true
+
+    fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+    fun searchDebounce(text: String) {
+        val searchRunnable = Runnable() {
+            loading()
+            makeRequest(text)
+        }
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+
+
+
+
+
+
+
 
     private val state = MutableLiveData<SearchState>()
     fun getSearchState() : LiveData<SearchState> = state
