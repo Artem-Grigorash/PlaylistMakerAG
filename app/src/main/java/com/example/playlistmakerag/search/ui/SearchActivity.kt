@@ -154,10 +154,13 @@ class SearchActivity : AppCompatActivity() {
                 viewModel.searchDebounce(s.toString())
                 clearButton.visibility = viewModel.clearButtonVisibility(s)
                 recyclerView.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE
+                progressBar.visibility = if(s?.isEmpty() == true) View.INVISIBLE else View.VISIBLE
                 hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                progressBar.visibility = if(s?.isEmpty() == true) View.INVISIBLE else View.VISIBLE
+            }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
