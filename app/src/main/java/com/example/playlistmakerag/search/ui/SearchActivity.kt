@@ -68,6 +68,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var sharedPref: SharedPreferences
 
+    private lateinit var actualResponse : Response<TrackResponse>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -78,8 +80,12 @@ class SearchActivity : AppCompatActivity() {
             render(state)
         }
 
+
         viewModel.getSearchStateResponse().observe(this){ res->
-            searchTracks(res)
+            //здесь лежит актуальный response
+            actualResponse = res
+            viewModel.searchTracks111(res, inputEditText.text.toString(), tracks)
+//            searchTracks(res)
         }
 
         setViews()
@@ -181,7 +187,8 @@ class SearchActivity : AppCompatActivity() {
     private fun render (state: SearchState){
         when(state){
             SearchState.BadConnection -> showBadConnection()
-            SearchState.Data -> viewModel.makeRequest(inputEditText.text.toString())
+            SearchState.Data -> showData(actualResponse)
+//                viewModel.makeRequest(inputEditText.text.toString())
             SearchState.Loading -> showLoading()
             SearchState.NothingFound -> showNothingFound()
         }
@@ -199,7 +206,6 @@ class SearchActivity : AppCompatActivity() {
     private fun showData(response: Response<TrackResponse>){
         progressBar.visibility = View.GONE
         tracks.clear()
-
         tracks.addAll(response.body()?.results!!)
         adapter.notifyDataSetChanged()
         recyclerView.visibility = View.VISIBLE
@@ -259,41 +265,24 @@ class SearchActivity : AppCompatActivity() {
             placeholder.visibility = View.GONE
         }
     }
-    private fun searchTracks(response: Response<TrackResponse>) {
-        viewModel.loading()
-        if (inputEditText.text.isNotEmpty()) {
-            if (response.code() == 200) {
-                if (response.body()?.results?.isNotEmpty() == true) {
-                    showData(response)
-                }
-                if (tracks.isEmpty()) {
-                    viewModel.nothingFound()
-                }
-            } else {
-                viewModel.badConnection()
-            }
-        }
-        else
-            progressBar.visibility = View.GONE
-    }
+//    private fun searchTracks(response: Response<TrackResponse>) {
+//        viewModel.loading()
+//        if (inputEditText.text.isNotEmpty()) {
+//            if (response.code() == 200) {
+//                if (response.body()?.results?.isNotEmpty() == true) {
+//                    showData(response)
+//                }
+//                if (tracks.isEmpty()) {
+//                    viewModel.nothingFound()
+//                }
+//            } else {
+//                viewModel.badConnection()
+//            }
+//        }
+//        else
+//            progressBar.visibility = View.GONE
+//    }
 
-    private fun searchTracks111(response: Response<TrackResponse>) {
-        viewModel.loading()
-        if (inputEditText.text.isNotEmpty()) {
-            if (response.code() == 200) {
-                if (response.body()?.results?.isNotEmpty() == true) {
-                    showData(response)
-                }
-                if (tracks.isEmpty()) {
-                    viewModel.nothingFound()
-                }
-            } else {
-                viewModel.badConnection()
-            }
-        }
-        else
-            progressBar.visibility = View.GONE
-    }
 
 }
 
