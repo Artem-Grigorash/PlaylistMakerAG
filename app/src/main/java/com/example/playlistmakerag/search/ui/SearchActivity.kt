@@ -277,5 +277,23 @@ class SearchActivity : AppCompatActivity() {
             progressBar.visibility = View.GONE
     }
 
+    private fun searchTracks111(response: Response<TrackResponse>) {
+        viewModel.loading()
+        if (inputEditText.text.isNotEmpty()) {
+            if (response.code() == 200) {
+                if (response.body()?.results?.isNotEmpty() == true) {
+                    showData(response)
+                }
+                if (tracks.isEmpty()) {
+                    viewModel.nothingFound()
+                }
+            } else {
+                viewModel.badConnection()
+            }
+        }
+        else
+            progressBar.visibility = View.GONE
+    }
+
 }
 

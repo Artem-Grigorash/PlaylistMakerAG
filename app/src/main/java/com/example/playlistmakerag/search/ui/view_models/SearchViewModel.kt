@@ -90,6 +90,26 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         })
     }
 
+
+//    private fun searchTracks(response: Response<TrackResponse>) {
+//        loading()
+//        if (inputEditText.text.isNotEmpty()) {
+//            if (response.code() == 200) {
+//                if (response.body()?.results?.isNotEmpty() == true) {
+//                    showData(response)
+//                }
+//                if (tracks.isEmpty()) {
+//                    nothingFound()
+//                }
+//            } else {
+//                badConnection()
+//            }
+//        }
+//        else
+//            progressBar.visibility = View.GONE
+//    }
+
+
     fun onReloadClicked(text: String){
         loading()
         makeRequest(text)
