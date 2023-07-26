@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
@@ -16,7 +17,7 @@ import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TrackDisplayActivity : ComponentActivity(), TrackView {
+class TrackDisplayActivity : AppCompatActivity(), TrackView {
 private lateinit var viewModel: TrackViewModel
 
     private val glide = GlideCreator()
