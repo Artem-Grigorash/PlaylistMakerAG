@@ -31,8 +31,6 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val INPUT_TEXT = "INPUT_TEXT"
-//        private const val SEARCH_DEBOUNCE_DELAY = 1000L
-//        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 
@@ -49,16 +47,6 @@ class SearchActivity : AppCompatActivity() {
         val textValue = savedInstanceState.getString(INPUT_TEXT,"")
         inputEditText.setText(textValue)
     }
-
-//    private val handler = Handler(Looper.getMainLooper())
-
-//    private val searchRunnable = Runnable {
-//        viewModel.loading()
-//        viewModel.makeRequest(inputEditText.text.toString())
-//    }
-
-//    private var isClickAllowed = true
-
 
     private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
@@ -252,18 +240,7 @@ class SearchActivity : AppCompatActivity() {
         historyRecycler.adapter = recentAdapter
         historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
-//    private fun clickDebounce() : Boolean {
-//        val current = isClickAllowed
-//        if (isClickAllowed) {
-//            isClickAllowed = false
-//            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-//        }
-//        return current
-//    }
-//    private fun searchDebounce() {
-//        handler.removeCallbacks(searchRunnable)
-//        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-//    }
+
     private fun showMessage(text: String, additionalMessage:String, holderImage: Int) {
         if (text.isNotEmpty()) {
             placeholderMessage.visibility = View.VISIBLE

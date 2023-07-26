@@ -38,8 +38,6 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         }
     }
 
-    private var latestSearchText: String? = null
-
     private val handler = Handler(Looper.getMainLooper())
 
     private var isClickAllowed = true
@@ -60,14 +58,6 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
-
-
-
-
-
-
-
-
 
     private val state = MutableLiveData<SearchState>()
     fun getSearchState() : LiveData<SearchState> = state
