@@ -10,9 +10,10 @@ class SearchInteractorImpl(private val search: Retrofit) : SearchInteractor {
 
     private val executor = Executors.newCachedThreadPool()
     override fun makeRequest(expression: String, consumer: SearchInteractor.Consumer) {
-        if(search.makeRequest(expression)!=null) {
+        val searchResult = search.makeRequest(expression)
+        if(searchResult!=null) {
             executor.execute {
-                consumer.consume(search.makeRequest(expression)!!)
+                consumer.consume(searchResult)
             }
         }
     }
