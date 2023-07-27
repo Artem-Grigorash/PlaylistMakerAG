@@ -3,8 +3,6 @@ package com.example.playlistmakerag.search.ui
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
-import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
@@ -85,7 +82,6 @@ class SearchActivity : AppCompatActivity() {
             //здесь лежит актуальный response
             actualResponse = res
             viewModel.searchTracks111(res, inputEditText.text.toString(), tracks)
-//            searchTracks(res)
         }
 
         setViews()
@@ -191,7 +187,6 @@ class SearchActivity : AppCompatActivity() {
         when(state){
             SearchState.BadConnection -> showBadConnection()
             SearchState.Data -> showData(actualResponse)
-//                viewModel.makeRequest(inputEditText.text.toString())
             SearchState.Loading -> showLoading()
             SearchState.NothingFound -> showNothingFound()
         }

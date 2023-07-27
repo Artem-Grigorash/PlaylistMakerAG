@@ -67,7 +67,6 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
 
 
     fun searchTracks111(response: Response<TrackResponse>, text: String, tracks: ArrayList<Track>) {
-        loading()
         if (text.isNotEmpty()) {
             if (response.code() == 200) {
                 if (response.body()?.results?.isNotEmpty() == true) {
@@ -76,7 +75,8 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
                 if (tracks.isEmpty()) {
                     nothingFound()
                 }
-            } else {
+            }
+            else {
                 badConnection()
             }
         }
