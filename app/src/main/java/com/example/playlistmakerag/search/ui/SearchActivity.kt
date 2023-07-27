@@ -81,7 +81,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.getSearchStateResponse().observe(this){ res->
             //здесь лежит актуальный response
             actualResponse = res
-            viewModel.searchTracks111(res, inputEditText.text.toString(), tracks)
+            viewModel.searchTracks(res, inputEditText.text.toString(), tracks)
         }
 
         setViews()
