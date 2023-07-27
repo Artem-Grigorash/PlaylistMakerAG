@@ -81,6 +81,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.getSearchStateResponse().observe(this){ res->
             //здесь лежит актуальный response
             actualResponse = res
+
             viewModel.searchTracks(res, inputEditText.text.toString(), tracks)
         }
 
@@ -202,6 +203,9 @@ class SearchActivity : AppCompatActivity() {
         reloadButton.isClickable = true
     }
     private fun showData(response: Response<TrackResponse>){
+        reloadButton.visibility = View.GONE
+        placeholder.visibility = View.GONE
+        placeholderMessage.visibility = View.GONE
         progressBar.visibility = View.GONE
         tracks.clear()
         tracks.addAll(response.body()?.results!!)

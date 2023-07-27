@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,11 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
+import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
+import com.example.playlistmakerag.search.ui.SearchActivity
 import retrofit2.Response
 
 
@@ -49,7 +52,6 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
     }
     fun searchDebounce(text: String) {
         val searchRunnable = Runnable() {
-            loading()
             makeRequest(text)
         }
         handler.removeCallbacks(searchRunnable)
@@ -69,7 +71,7 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
                 if (response.body()?.results?.isNotEmpty() == true) {
                     data()
                 }
-                else {
+                if (tracks.isEmpty()) {
                     nothingFound()
                 }
             }

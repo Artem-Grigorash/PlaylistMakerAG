@@ -22,8 +22,12 @@ class Retrofit : SearchInterface {
 
     private val trackService = retrofit.create(ItunesApi::class.java)
 
-    override fun makeRequest(text: String): Response<TrackResponse> {
-        return trackService.search(text).execute()
+    override fun makeRequest(text: String): Response<TrackResponse>? {
+        return try {
+            trackService.search(text).execute()
+        } catch (e : Exception){
+            null
+        }
     }
     fun provideSharedPreferences(context: Context) : SharedPreferences {
         return context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
