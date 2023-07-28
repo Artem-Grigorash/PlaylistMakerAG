@@ -18,14 +18,20 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val trackPicture: ImageView = itemView.findViewById(R.id.trackPicture)
 
     fun bind(model: Track){
-        trackName.text = model.trackName
+        trackName.text = short(model.trackName)
         val time = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
-        artistName.text = "${model.artistName} • $time"
+        artistName.text = "${short(model.artistName)} • $time"
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .placeholder(R.drawable.tracks_place_holder)
             .transform(RoundedCorners(10))
             .into(trackPicture)
 
+    }
+    private fun short(s : String) : String{
+        return if (s.length<=37)
+            s
+        else
+            s.substring(0,35) + "..."
     }
 }

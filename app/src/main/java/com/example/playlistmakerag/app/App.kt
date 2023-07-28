@@ -47,7 +47,7 @@ class App : Application() {
         return Player(url)
     }
 
-    fun provideViewModel(url:String): TrackInteractor {
+    fun provideTrackInteractor(url:String): TrackInteractor {
         return TrackInteractor(getPlayer(url))
     }
     private fun getRetrofit() : Retrofit{

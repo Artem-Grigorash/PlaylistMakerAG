@@ -3,8 +3,6 @@ package com.example.playlistmakerag.search.ui
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
-import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
@@ -31,8 +28,6 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val INPUT_TEXT = "INPUT_TEXT"
-        private const val SEARCH_DEBOUNCE_DELAY = 1000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 
@@ -49,16 +44,6 @@ class SearchActivity : AppCompatActivity() {
         val textValue = savedInstanceState.getString(INPUT_TEXT,"")
         inputEditText.setText(textValue)
     }
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val searchRunnable = Runnable {
-        viewModel.loading()
-        viewModel.makeRequest(inputEditText.text.toString())
-    }
-
-    private var isClickAllowed = true
-
 
     private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
@@ -80,9 +65,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var sharedPref: SharedPreferences
 
-
-
-
+    private lateinit var actualResponse : Response<TrackResponse>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,13 +77,17 @@ class SearchActivity : AppCompatActivity() {
             render(state)
         }
 
+
         viewModel.getSearchStateResponse().observe(this){ res->
-            searchTracks(res)
+            //здесь лежит актуальный response
+            actualResponse = res
+
+            viewModel.searchTracks(res, inputEditText.text.toString(), tracks)
         }
 
         setViews()
 
-        sharedPref = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
+        sharedPref = viewModel.provideSharedPreferences(applicationContext)
 
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             val tracks = SearchHistory().read(sharedPref)
@@ -118,17 +105,17 @@ class SearchActivity : AppCompatActivity() {
         }
 
         adapter.itemClickListener = { _, track ->
-            if(clickDebounce()) {
+            if(viewModel.clickDebounce()) {
                 openTrack(track)
             }
         }
 
         recentAdapter.itemClickListener = {_, track ->
-            if (clickDebounce()) {
+            if (viewModel.clickDebounce()) {
                 openTrack(track)
             }
         }
-//
+
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
             if (key == HISTORY_KEY) {
                 val tracks = SearchHistory().read(sharedPref)
@@ -147,8 +134,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         reloadButton.setOnClickListener{
-            viewModel.loading()
-            viewModel.makeRequest(inputEditText.text.toString())
+            viewModel.onReloadClicked(inputEditText.text.toString())
         }
 
         searchBack.setOnClickListener {
@@ -162,13 +148,16 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchDebounce()
+                viewModel.searchDebounce(s.toString())
                 clearButton.visibility = viewModel.clearButtonVisibility(s)
                 recyclerView.visibility = if(s?.isEmpty() == true) View.GONE else View.VISIBLE
+                progressBar.visibility = if(s?.isEmpty() == true) View.INVISIBLE else View.VISIBLE
                 hisrory.visibility = if(inputEditText.hasFocus() && s?.isEmpty() == true && recentTracks.size != 0) View.VISIBLE else View.GONE
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                progressBar.visibility = if(s?.isEmpty() == true) View.INVISIBLE else View.VISIBLE
+            }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
@@ -198,7 +187,7 @@ class SearchActivity : AppCompatActivity() {
     private fun render (state: SearchState){
         when(state){
             SearchState.BadConnection -> showBadConnection()
-            SearchState.Data -> viewModel.makeRequest(inputEditText.text.toString())
+            SearchState.Data -> showData(actualResponse)
             SearchState.Loading -> showLoading()
             SearchState.NothingFound -> showNothingFound()
         }
@@ -214,9 +203,11 @@ class SearchActivity : AppCompatActivity() {
         reloadButton.isClickable = true
     }
     private fun showData(response: Response<TrackResponse>){
+        reloadButton.visibility = View.GONE
+        placeholder.visibility = View.GONE
+        placeholderMessage.visibility = View.GONE
         progressBar.visibility = View.GONE
         tracks.clear()
-
         tracks.addAll(response.body()?.results!!)
         adapter.notifyDataSetChanged()
         recyclerView.visibility = View.VISIBLE
@@ -257,18 +248,7 @@ class SearchActivity : AppCompatActivity() {
         historyRecycler.adapter = recentAdapter
         historyRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
+
     private fun showMessage(text: String, additionalMessage:String, holderImage: Int) {
         if (text.isNotEmpty()) {
             placeholderMessage.visibility = View.VISIBLE
@@ -287,23 +267,24 @@ class SearchActivity : AppCompatActivity() {
             placeholder.visibility = View.GONE
         }
     }
-    private fun searchTracks(response: Response<TrackResponse>) {
-        viewModel.loading()
-        if (inputEditText.text.isNotEmpty()) {
-            if (response.code() == 200) {
-                if (response.body()?.results?.isNotEmpty() == true) {
-                    showData(response)
-                }
-                if (tracks.isEmpty()) {
-                    viewModel.nothingFound()
-                }
-            } else {
-                viewModel.badConnection()
-            }
-        }
-        else
-            progressBar.visibility = View.GONE
-    }
+//    private fun searchTracks(response: Response<TrackResponse>) {
+//        viewModel.loading()
+//        if (inputEditText.text.isNotEmpty()) {
+//            if (response.code() == 200) {
+//                if (response.body()?.results?.isNotEmpty() == true) {
+//                    showData(response)
+//                }
+//                if (tracks.isEmpty()) {
+//                    viewModel.nothingFound()
+//                }
+//            } else {
+//                viewModel.badConnection()
+//            }
+//        }
+//        else
+//            progressBar.visibility = View.GONE
+//    }
+
 
 }
 

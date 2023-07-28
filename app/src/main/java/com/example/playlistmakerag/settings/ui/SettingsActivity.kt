@@ -6,7 +6,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.app.DARK_THEME_KEY
-import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.settings.ui.view_models.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -27,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, SettingsViewModel.getSharingViewModelFactory())[SettingsViewModel::class.java]
 
-        val sharedPref = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
+        val sharedPref = viewModel.provideSharedPreferences(applicationContext)
         themeSwitcher.isChecked = (sharedPref.getBoolean(DARK_THEME_KEY, false))
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.onThemeClicked(checked, applicationContext, sharedPref)
