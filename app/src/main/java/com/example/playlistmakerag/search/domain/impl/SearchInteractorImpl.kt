@@ -10,11 +10,11 @@ class SearchInteractorImpl(private val search: Retrofit) : SearchInteractor {
 
     private val executor = Executors.newCachedThreadPool()
     override fun makeRequest(expression: String, consumer: SearchInteractor.Consumer) {
-        val searchResult = search.makeRequest(expression)
-        if(searchResult!=null) {
-            executor.execute {
-                consumer.consume(searchResult)
-            }
+        executor.execute {
+            val searchResult = search.makeRequest(expression)
+                if(searchResult!=null) {
+                        consumer.consume(searchResult)
+                }
         }
     }
     fun provideSharedPreferences(context: Context) : SharedPreferences {
