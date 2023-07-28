@@ -12,8 +12,8 @@ class SearchInteractorImpl(private val search: Retrofit) : SearchInteractor {
     override fun makeRequest(expression: String, consumer: SearchInteractor.Consumer) {
         executor.execute {
             val searchResult = search.makeRequest(expression)
-                if(searchResult!=null) {
-                        consumer.consume(searchResult)
+            if(searchResult!=null) {
+                    consumer.consume(searchResult)
                 }
         }
     }
