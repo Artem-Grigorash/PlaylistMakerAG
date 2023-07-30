@@ -2,8 +2,6 @@ package com.example.playlistmakerag.player.ui.view_models
 
 import android.os.Handler
 import android.os.Looper
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +14,7 @@ import com.example.playlistmakerag.player.domain.impl.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
+class TrackViewModel(private val interactor: TrackInteractor) : ViewModel() {
     companion object {
         private const val REFRESH_MILLIS = 200L
 
@@ -31,21 +29,21 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
     }
 
     private val state = MutableLiveData<TrackState>()
-    fun getTrackState() : LiveData<TrackState> = state
+    fun getTrackState(): LiveData<TrackState> = state
 
     private val time = MutableLiveData<String>()
-    fun getTime() : LiveData<String> = time
+    fun getTime(): LiveData<String> = time
 
     private var handler = Handler(Looper.getMainLooper())
 
-    fun onPlayClicked(){
-        if (state.value== TrackState.Play)
+    fun onPlayClicked() {
+        if (state.value == TrackState.Play)
             state.value = TrackState.Pause
         else
             state.value = TrackState.Play
     }
 
-    fun delete(){
+    fun delete() {
         interactor.delete()
         state.value = TrackState.Pause
     }
@@ -70,7 +68,7 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
         return object : Runnable {
             override fun run() {
 
-                if (state.value== TrackState.Play){
+                if (state.value == TrackState.Play) {
                     val elapsedTime = interactor.getPosition()
                     val duration = 29700
                     val remainingTime = duration - elapsedTime
@@ -80,7 +78,8 @@ class TrackViewModel(private val interactor: TrackInteractor): ViewModel() {
                             "mm:ss",
                             Locale.getDefault()
                         ).format(interactor.getPosition())
-                        handler.postDelayed(this,
+                        handler.postDelayed(
+                            this,
                             REFRESH_MILLIS
                         )
                     } else {

@@ -5,13 +5,15 @@ import com.example.playlistmakerag.player.domain.PlayerInterface
 class TrackInteractor(
     private val player: PlayerInterface
 ) {
-    fun playbackControl(){
+    fun playbackControl() {
         player.playbackControl()
     }
-    fun getPosition():Int{
+
+    fun getPosition(): Int {
         return player.getPosition()
     }
-    fun delete(){
+
+    fun delete() {
         player.delete()
     }
 }

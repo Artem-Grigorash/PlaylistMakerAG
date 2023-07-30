@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,13 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
-import com.example.playlistmakerag.app.PREFERENCES
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
-import com.example.playlistmakerag.search.ui.SearchActivity
 import retrofit2.Response
 
 
@@ -30,7 +27,8 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val interactor = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSearchViewModel()
+                val interactor =
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSearchViewModel()
                 SearchViewModel(
                     interactor
                 )
@@ -42,7 +40,7 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
 
     private var isClickAllowed = true
 
-    fun clickDebounce() : Boolean {
+    fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -50,8 +48,9 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         }
         return current
     }
+
     fun searchDebounce(text: String) {
-        val searchRunnable = Runnable() {
+        val searchRunnable = Runnable {
             makeRequest(text)
         }
         handler.removeCallbacks(searchRunnable)
@@ -59,10 +58,10 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
     }
 
     private val state = MutableLiveData<SearchState>()
-    fun getSearchState() : LiveData<SearchState> = state
+    fun getSearchState(): LiveData<SearchState> = state
 
     private val res = MutableLiveData<Response<TrackResponse>>()
-    fun getSearchStateResponse() : LiveData<Response<TrackResponse>> = res
+    fun getSearchStateResponse(): LiveData<Response<TrackResponse>> = res
 
 
     fun searchTracks(response: Response<TrackResponse>, text: String, tracks: ArrayList<Track>) {
@@ -74,8 +73,7 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
                 if (tracks.isEmpty()) {
                     nothingFound()
                 }
-            }
-            else {
+            } else {
                 badConnection()
             }
         }
@@ -84,38 +82,40 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
     }
 
 
-
-    fun loading(){
+    private fun loading() {
         state.value = SearchState.Loading
     }
-    fun nothingFound(){
+
+    private fun nothingFound() {
         state.value = SearchState.NothingFound
     }
-    fun badConnection(){
+
+    private fun badConnection() {
         state.value = SearchState.BadConnection
     }
-    fun data(){
+
+    fun data() {
         state.value = SearchState.Data
     }
 
-    fun provideSharedPreferences(context: Context) : SharedPreferences{
+    fun provideSharedPreferences(context: Context): SharedPreferences {
         return interactor.provideSharedPreferences(context)
     }
 
-    fun makeRequest(text: String){
-        interactor.makeRequest(text, object: SearchInteractor.Consumer {
-            override fun consume(response: Response<TrackResponse> ) {
+    private fun makeRequest(text: String) {
+        interactor.makeRequest(text, object : SearchInteractor.Consumer {
+            override fun consume(response: Response<TrackResponse>) {
                 res.postValue(response)
             }
         })
     }
 
-    fun onReloadClicked(text: String){
+    fun onReloadClicked(text: String) {
         loading()
         makeRequest(text)
     }
 
-    fun addTrack(track: Track, place : ArrayList<Track>){
+    private fun addTrack(track: Track, place: ArrayList<Track>) {
         if (place.size == 10)
             place.removeAt(9)
         if (place.contains(track))
@@ -123,15 +123,14 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
         place.add(0, track)
     }
 
-    fun clean(sharedPref : SharedPreferences){
-        val recentSongs : ArrayList<Track> = SearchHistory().read(sharedPref)
+    fun clean(sharedPref: SharedPreferences) {
+        val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
         recentSongs.clear()
-        SearchHistory().write(sharedPref,recentSongs)
+        SearchHistory().write(sharedPref, recentSongs)
     }
 
 
-
-    fun OnItemClicked(track: Track, sharedPref : SharedPreferences){
+    fun onItemClicked(track: Track, sharedPref: SharedPreferences) {
         val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
         addTrack(track, recentSongs)
         SearchHistory().write(sharedPref, recentSongs)

@@ -25,11 +25,12 @@ class Retrofit : SearchInterface {
     override fun makeRequest(text: String): Response<TrackResponse>? {
         return try {
             trackService.search(text).execute()
-        } catch (e : Exception){
+        } catch (e: Exception) {
             null
         }
     }
-    fun provideSharedPreferences(context: Context) : SharedPreferences {
+
+    fun provideSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     }
 }

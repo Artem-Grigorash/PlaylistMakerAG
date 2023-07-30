@@ -8,7 +8,7 @@ import com.example.playlistmakerag.player.domain.models.Track
 
 class TracksAdapter(
     private val tracks: ArrayList<Track>
-) : RecyclerView.Adapter<TracksViewHolder> (){
+) : RecyclerView.Adapter<TracksViewHolder>() {
 
     var itemClickListener: ((Int, Track) -> Unit)? = null
 
@@ -20,7 +20,7 @@ class TracksAdapter(
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
         val track = tracks[position]
         holder.bind(track)
-        holder.itemView.setOnClickListener{itemClickListener?.invoke(position, track)}
+        holder.itemView.setOnClickListener { itemClickListener?.invoke(position, track) }
     }
 
     override fun getItemCount(): Int {

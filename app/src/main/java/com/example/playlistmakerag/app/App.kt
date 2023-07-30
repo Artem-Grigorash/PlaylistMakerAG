@@ -32,41 +32,46 @@ class App : Application() {
         )
     }
 
-        fun switchTheme(darkThemeEnabled: Boolean) {
-            darkTheme = darkThemeEnabled
-            AppCompatDelegate.setDefaultNightMode(
-                if (darkThemeEnabled) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-            )
-        }
+    fun switchTheme(darkThemeEnabled: Boolean) {
+        darkTheme = darkThemeEnabled
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkThemeEnabled) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
+    }
 
-    private fun getPlayer(url:String): Player {
+    private fun getPlayer(url: String): Player {
         return Player(url)
     }
 
-    fun provideTrackInteractor(url:String): TrackInteractor {
+    fun provideTrackInteractor(url: String): TrackInteractor {
         return TrackInteractor(getPlayer(url))
     }
-    private fun getRetrofit() : Retrofit{
+
+    private fun getRetrofit(): Retrofit {
         return Retrofit()
     }
-    fun provideSearchViewModel() : SearchInteractorImpl{
+
+    fun provideSearchViewModel(): SearchInteractorImpl {
         return SearchInteractorImpl(getRetrofit())
     }
 
-    private fun getSwitchTheme() : SwitchTheme{
+    private fun getSwitchTheme(): SwitchTheme {
         return SwitchTheme()
     }
-    fun provideSettingsViewModel() : SettingsInteractorImpl {
+
+    fun provideSettingsViewModel(): SettingsInteractorImpl {
         return SettingsInteractorImpl(getSwitchTheme())
     }
-    private fun getNavigator() : ExternalNavigator{
+
+    private fun getNavigator(): ExternalNavigator {
         return ExternalNavigator()
     }
-    fun provideSharingViewModel() : SharingInteractorImpl {
+
+    fun provideSharingViewModel(): SharingInteractorImpl {
         return SharingInteractorImpl(getNavigator())
     }
 }

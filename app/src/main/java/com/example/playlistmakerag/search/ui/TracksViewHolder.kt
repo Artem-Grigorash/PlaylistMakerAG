@@ -11,13 +11,13 @@ import com.example.playlistmakerag.player.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.trackName)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
     private val trackPicture: ImageView = itemView.findViewById(R.id.trackPicture)
 
-    fun bind(model: Track){
+    fun bind(model: Track) {
         trackName.text = short(model.trackName)
         val time = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
         artistName.text = "${short(model.artistName)} • $time"
@@ -28,10 +28,11 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .into(trackPicture)
 
     }
-    private fun short(s : String) : String{
-        return if (s.length<=37)
+
+    private fun short(s: String): String {
+        return if (s.length <= 37)
             s
         else
-            s.substring(0,35) + "..."
+            s.substring(0, 35) + "..."
     }
 }

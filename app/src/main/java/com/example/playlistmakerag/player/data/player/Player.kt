@@ -3,13 +3,14 @@ package com.example.playlistmakerag.player.data.player
 import android.media.MediaPlayer
 import com.example.playlistmakerag.player.domain.PlayerInterface
 
-class Player(url:String) : PlayerInterface {
+class Player(url: String) : PlayerInterface {
 
     companion object {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
     }
+
     private var playerState = STATE_PAUSED
 
     private var mediaPlayer = MediaPlayer()
@@ -46,10 +47,11 @@ class Player(url:String) : PlayerInterface {
     }
 
     override fun playbackControl() {
-        when(playerState) {
+        when (playerState) {
             STATE_PLAYING -> {
                 pausePlayer()
             }
+
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
             }
