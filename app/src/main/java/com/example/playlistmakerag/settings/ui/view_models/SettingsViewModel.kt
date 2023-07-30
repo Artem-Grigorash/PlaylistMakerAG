@@ -32,6 +32,8 @@ class SettingsViewModel(
         }
     }
 
+    fun getChecked(sharedPref: SharedPreferences) = settingsInteractor.getChecked(sharedPref)
+
     fun provideSharedPreferences(context: Context): SharedPreferences {
         return settingsInteractor.provideSharedPreferences(context)
     }

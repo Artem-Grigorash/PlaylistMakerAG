@@ -22,4 +22,6 @@ class SwitchTheme {
     fun provideSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     }
+
+    fun getChecked(sharedPref: SharedPreferences) = sharedPref.getBoolean(DARK_THEME_KEY, false)
 }

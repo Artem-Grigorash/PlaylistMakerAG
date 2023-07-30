@@ -14,7 +14,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
-import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
 import retrofit2.Response
@@ -63,6 +62,13 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
     private val res = MutableLiveData<Response<TrackResponse>>()
     fun getSearchStateResponse(): LiveData<Response<TrackResponse>> = res
 
+    private val history = MutableLiveData<ArrayList<Track>>()
+    fun getHistory(): LiveData<ArrayList<Track>> = history
+
+    fun reloadTracks(sharedPref: SharedPreferences){
+        history.value = interactor.read(sharedPref)
+    }
+
 
     fun searchTracks(response: Response<TrackResponse>, text: String, tracks: ArrayList<Track>) {
         if (text.isNotEmpty()) {
@@ -77,8 +83,6 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
                 badConnection()
             }
         }
-//        else
-//            progressBar.visibility = View.GONE
     }
 
 
@@ -124,16 +128,16 @@ class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel(
     }
 
     fun clean(sharedPref: SharedPreferences) {
-        val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
+        val recentSongs: ArrayList<Track> = interactor.read(sharedPref)
         recentSongs.clear()
-        SearchHistory().write(sharedPref, recentSongs)
+        interactor.write(sharedPref, recentSongs)
     }
 
 
     fun onItemClicked(track: Track, sharedPref: SharedPreferences) {
-        val recentSongs: ArrayList<Track> = SearchHistory().read(sharedPref)
+        val recentSongs: ArrayList<Track> = interactor.read(sharedPref)
         addTrack(track, recentSongs)
-        SearchHistory().write(sharedPref, recentSongs)
+        interactor.write(sharedPref, recentSongs)
 
     }
 

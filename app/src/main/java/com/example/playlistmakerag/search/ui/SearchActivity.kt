@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.player.data.dto.TrackResponse
@@ -87,16 +86,20 @@ class SearchActivity : AppCompatActivity() {
             viewModel.searchTracks(res, inputEditText.text.toString(), tracks)
         }
 
+        viewModel.getHistory().observe(this){history ->
+            recentTracks.clear()
+            for (track in history)
+                recentTracks.add(track)
+            recentAdapter.notifyDataSetChanged()
+        }
+
+
         setViews()
 
         sharedPref = viewModel.provideSharedPreferences(applicationContext)
 
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            val tracks = SearchHistory().read(sharedPref)
-            recentTracks.clear()
-            for (track in tracks)
-                recentTracks.add(track)
-            recentAdapter.notifyDataSetChanged()
+            viewModel.reloadTracks(sharedPref)
             hisrory.visibility =
                 if (hasFocus && inputEditText.text.isEmpty() && recentTracks.size != 0) View.VISIBLE else View.GONE
         }
@@ -121,11 +124,7 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
             if (key == HISTORY_KEY) {
-                val tracks = SearchHistory().read(sharedPref)
-                recentTracks.clear()
-                for (track in tracks)
-                    recentTracks.add(track)
-                recentAdapter.notifyDataSetChanged()
+                viewModel.reloadTracks(sharedPref)
             }
         }
 

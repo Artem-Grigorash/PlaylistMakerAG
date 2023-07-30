@@ -11,4 +11,6 @@ interface SettingsInteractor {
     )
 
     fun provideSharedPreferences(context: Context): SharedPreferences
+
+    fun getChecked(sharedPref: SharedPreferences) : Boolean
 }
