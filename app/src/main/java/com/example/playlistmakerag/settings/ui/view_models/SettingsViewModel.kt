@@ -46,15 +46,15 @@ class SettingsViewModel(
         settingsInteractor.updateThemeSetting(checked, applicationContext, sharedPref)
     }
 
-    fun shareApp(context: Context): Intent {
-        return sharingInteractor.shareApp(context)
+    fun shareApp(link: String): Intent {
+        return sharingInteractor.shareApp(link)
     }
 
-    fun openTerms(context: Context): Intent {
-        return sharingInteractor.openTerms(context)
+    fun openTerms(link: String): Intent {
+        return sharingInteractor.openTerms(link)
     }
 
-    fun openSupport(context: Context): Intent {
-        return sharingInteractor.openSupport(context)
+    fun openSupport(message: String, massageTheme: String): Intent {
+        return sharingInteractor.openSupport(message, massageTheme)
     }
 }

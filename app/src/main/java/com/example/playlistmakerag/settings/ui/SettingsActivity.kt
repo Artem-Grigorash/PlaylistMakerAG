@@ -40,17 +40,17 @@ class SettingsActivity : AppCompatActivity() {
         }
         val context = applicationContext
         settingsShare.setOnClickListener {
-            val shareIntent = viewModel.shareApp(context)
+            val shareIntent = viewModel.shareApp(getString(R.string.practicum_url))
             startActivity(shareIntent)
         }
 
         settingsMail.setOnClickListener {
-            val mailIntent = viewModel.openSupport(context)
+            val mailIntent = viewModel.openSupport(getString(R.string.thanks),getString(R.string.subject))
             startActivity(mailIntent)
         }
 
         settingsAgreement.setOnClickListener {
-            val settingsIntent = viewModel.openTerms(context)
+            val settingsIntent = viewModel.openTerms(getString(R.string.legal_url))
             startActivity(settingsIntent)
         }
     }
