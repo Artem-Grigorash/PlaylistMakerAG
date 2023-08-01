@@ -184,6 +184,7 @@ class SearchActivity : AppCompatActivity() {
         val intent = Intent(this, TrackDisplayActivity::class.java)
         intent.putExtra("LAST_TRACK", trackJson)
         startActivity(intent)
+        recentAdapter.notifyDataSetChanged()
     }
 
     private fun render(state: SearchState) {

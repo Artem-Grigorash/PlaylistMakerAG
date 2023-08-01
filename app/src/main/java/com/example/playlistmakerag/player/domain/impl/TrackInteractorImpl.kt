@@ -1,19 +1,20 @@
 package com.example.playlistmakerag.player.domain.impl
 
 import com.example.playlistmakerag.player.domain.PlayerInterface
+import com.example.playlistmakerag.player.domain.TrackInteractor
 
-class TrackInteractor(
+class TrackInteractorImpl (
     private val player: PlayerInterface
-) {
-    fun playbackControl() {
+) : TrackInteractor{
+    override fun playbackControl() {
         player.playbackControl()
     }
 
-    fun getPosition(): Int {
+    override fun getPosition(): Int {
         return player.getPosition()
     }
 
-    fun delete() {
+    override fun delete() {
         player.delete()
     }
 }

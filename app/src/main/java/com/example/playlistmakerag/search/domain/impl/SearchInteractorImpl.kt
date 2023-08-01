@@ -28,7 +28,7 @@ class SearchInteractorImpl(private val search: Retrofit, private val history: Se
         history.write(pref, tracks)
     }
 
-    fun provideSharedPreferences(context: Context): SharedPreferences {
+    override fun provideSharedPreferences(context: Context): SharedPreferences {
         return search.provideSharedPreferences(context)
     }
 }

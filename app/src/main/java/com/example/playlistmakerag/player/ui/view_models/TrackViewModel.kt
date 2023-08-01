@@ -10,7 +10,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
-import com.example.playlistmakerag.player.domain.impl.TrackInteractor
+import com.example.playlistmakerag.player.domain.TrackInteractor
+import com.example.playlistmakerag.player.domain.impl.TrackInteractorImpl
 import java.text.SimpleDateFormat
 import java.util.Locale
 

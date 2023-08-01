@@ -19,7 +19,7 @@ import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
 import retrofit2.Response
 
 
-class SearchViewModel(private val interactor: SearchInteractorImpl) : ViewModel() {
+class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L

@@ -3,7 +3,7 @@ package com.example.playlistmakerag.app
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmakerag.player.data.player.Player
-import com.example.playlistmakerag.player.domain.impl.TrackInteractor
+import com.example.playlistmakerag.player.domain.impl.TrackInteractorImpl
 import com.example.playlistmakerag.search.data.Retrofit
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
@@ -48,8 +48,8 @@ class App : Application() {
         return Player(url)
     }
 
-    fun provideTrackInteractor(url: String): TrackInteractor {
-        return TrackInteractor(getPlayer(url))
+    fun provideTrackInteractor(url: String): TrackInteractorImpl {
+        return TrackInteractorImpl(getPlayer(url))
     }
 
     private fun getRetrofit(): Retrofit {

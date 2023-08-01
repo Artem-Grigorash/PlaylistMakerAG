@@ -8,12 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
+import com.example.playlistmakerag.settings.domain.SettingsInteractor
 import com.example.playlistmakerag.settings.domain.impl.SettingsInteractorImpl
+import com.example.playlistmakerag.sharing.domain.SharingInteractor
 import com.example.playlistmakerag.sharing.domain.impl.SharingInteractorImpl
 
 class SettingsViewModel(
-    private val sharingInteractor: SharingInteractorImpl,
-    private val settingsInteractor: SettingsInteractorImpl,
+    private val sharingInteractor: SharingInteractor,
+    private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
 
     companion object {
