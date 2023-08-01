@@ -2,7 +2,7 @@ package com.example.playlistmakerag.search.domain
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.search.data.dto.TrackResponse
 import com.example.playlistmakerag.player.domain.models.Track
 import retrofit2.Response
 

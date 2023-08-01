@@ -16,7 +16,7 @@ import com.example.playlistmakerag.R
 import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
-import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.search.data.dto.TrackResponse
 import com.example.playlistmakerag.search.ui.view_models.SearchState
 import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson

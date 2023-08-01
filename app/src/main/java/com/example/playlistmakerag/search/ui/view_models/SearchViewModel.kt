@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.search.data.dto.TrackResponse
 import com.example.playlistmakerag.search.domain.SearchInteractor
 
 

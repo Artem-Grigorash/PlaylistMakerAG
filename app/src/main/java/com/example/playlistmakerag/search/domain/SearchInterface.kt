@@ -1,6 +1,6 @@
 package com.example.playlistmakerag.search.domain
 
-import com.example.playlistmakerag.player.data.dto.TrackResponse
+import com.example.playlistmakerag.search.data.dto.TrackResponse
 import retrofit2.Response
 
 interface SearchInterface {

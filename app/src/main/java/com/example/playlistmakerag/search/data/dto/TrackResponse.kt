@@ -1,4 +1,4 @@
-package com.example.playlistmakerag.player.data.dto
+package com.example.playlistmakerag.search.data.dto
 
 import com.example.playlistmakerag.player.domain.models.Track
 
