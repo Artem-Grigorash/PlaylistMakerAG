@@ -15,8 +15,7 @@ import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.domain.SearchInteractor
-import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
-import retrofit2.Response
+
 
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
@@ -59,8 +58,8 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     private val state = MutableLiveData<SearchState>()
     fun getSearchState(): LiveData<SearchState> = state
 
-    private val res = MutableLiveData<Response<TrackResponse>>()
-    fun getSearchStateResponse(): LiveData<Response<TrackResponse>> = res
+    private val res = MutableLiveData<TrackResponse>()
+    fun getSearchStateResponse(): LiveData<TrackResponse> = res
 
     private val history = MutableLiveData<ArrayList<Track>>()
     fun getHistory(): LiveData<ArrayList<Track>> = history
@@ -70,10 +69,10 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     }
 
 
-    fun searchTracks(response: Response<TrackResponse>, text: String, tracks: ArrayList<Track>) {
+    fun searchTracks(response: TrackResponse, text: String, tracks: ArrayList<Track>) {
         if (text.isNotEmpty()) {
-            if (response.code() == 200) {
-                if (response.body()?.results?.isNotEmpty() == true) {
+            if (response.code == 200) {
+                if (response.results?.isNotEmpty() == true) {
                     data()
                 }
                 if (tracks.isEmpty()) {
@@ -108,7 +107,7 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
     private fun makeRequest(text: String) {
         interactor.makeRequest(text, object : SearchInteractor.Consumer {
-            override fun consume(response: Response<TrackResponse>) {
+            override fun consume(response: TrackResponse) {
                 res.postValue(response)
             }
         })

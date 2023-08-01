@@ -14,6 +14,6 @@ interface SearchInteractor {
 
     fun write(pref: SharedPreferences, tracks: ArrayList<Track>)
     interface Consumer {
-        fun consume(response: Response<TrackResponse>)
+        fun consume(response: TrackResponse)
     }
 }

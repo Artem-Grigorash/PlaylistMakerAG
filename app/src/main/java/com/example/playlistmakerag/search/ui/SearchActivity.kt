@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.player.data.dto.TrackResponse
 import com.example.playlistmakerag.search.ui.view_models.SearchState
 import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson
-import retrofit2.Response
 
 
 class SearchActivity : AppCompatActivity() {
@@ -63,11 +63,13 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var sharedPref: SharedPreferences
 
-    private lateinit var actualResponse: Response<TrackResponse>
+    private lateinit var actualResponse: TrackResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        Creator.init(application)
 
         viewModel = ViewModelProvider(
             this,
@@ -208,13 +210,13 @@ class SearchActivity : AppCompatActivity() {
         reloadButton.isClickable = true
     }
 
-    private fun showData(response: Response<TrackResponse>) {
+    private fun showData(response: TrackResponse) {
         reloadButton.visibility = View.GONE
         placeholder.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
         progressBar.visibility = View.GONE
         tracks.clear()
-        tracks.addAll(response.body()?.results!!)
+        tracks.addAll(response.results!!)
         adapter.notifyDataSetChanged()
         recyclerView.visibility = View.VISIBLE
     }
