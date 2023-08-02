@@ -9,9 +9,9 @@ import retrofit2.Response
 interface SearchInteractor {
     fun makeRequest(expression: String, consumer: Consumer)
     fun read(): ArrayList<Track>
-
     fun write(tracks: ArrayList<Track>)
+    fun getResponseState(): Boolean
     interface Consumer {
-        fun consume(response: TrackResponse)
+        fun consume(response: ArrayList<Track>)
     }
 }

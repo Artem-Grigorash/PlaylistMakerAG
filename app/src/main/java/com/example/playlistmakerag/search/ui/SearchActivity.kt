@@ -61,7 +61,7 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SearchViewModel
 
-    private lateinit var actualResponse: TrackResponse
+    private lateinit var actualResponse: ArrayList<Track>
 
 //    private lateinit var sharedPreferences : SharedPreferences
 
@@ -85,7 +85,7 @@ class SearchActivity : AppCompatActivity() {
             //здесь лежит актуальный response
             actualResponse = res
 
-            viewModel.searchTracks(res, inputEditText.text.toString(), tracks)
+            viewModel.searchTracks(res, inputEditText.text.toString())
         }
 
         viewModel.getHistory().observe(this){history ->
@@ -213,13 +213,13 @@ class SearchActivity : AppCompatActivity() {
         reloadButton.isClickable = true
     }
 
-    private fun showData(response: TrackResponse) {
+    private fun showData(response: ArrayList<Track>) {
         reloadButton.visibility = View.GONE
         placeholder.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
         progressBar.visibility = View.GONE
         tracks.clear()
-        tracks.addAll(response.results!!)
+        tracks.addAll(response)
         adapter.notifyDataSetChanged()
         recyclerView.visibility = View.VISIBLE
     }

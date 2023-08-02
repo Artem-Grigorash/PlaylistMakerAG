@@ -58,8 +58,8 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     private val state = MutableLiveData<SearchState>()
     fun getSearchState(): LiveData<SearchState> = state
 
-    private val res = MutableLiveData<TrackResponse>()
-    fun getSearchStateResponse(): LiveData<TrackResponse> = res
+    private val res = MutableLiveData<ArrayList<Track>>()
+    fun getSearchStateResponse(): LiveData<ArrayList<Track>> = res
 
     private val history = MutableLiveData<ArrayList<Track>>()
     fun getHistory(): LiveData<ArrayList<Track>> = history
@@ -69,17 +69,17 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     }
 
 
-    fun searchTracks(response: TrackResponse, text: String, tracks: ArrayList<Track>) {
+    fun searchTracks(response: ArrayList<Track>, text: String) {
         if (text.isNotEmpty()) {
-            if (response.code == 200) {
-                if (response.results?.isNotEmpty() == true) {
+            if (interactor.getResponseState()) {
+                badConnection()
+            }
+            else {
+                if (response.isNotEmpty()) {
                     data()
-                }
-                if (tracks.isEmpty()) {
+                } else {
                     nothingFound()
                 }
-            } else {
-                badConnection()
             }
         }
     }
@@ -103,7 +103,7 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
     private fun makeRequest(text: String) {
         interactor.makeRequest(text, object : SearchInteractor.Consumer {
-            override fun consume(response: TrackResponse) {
+            override fun consume(response: ArrayList<Track>) {
                 res.postValue(response)
             }
         })
