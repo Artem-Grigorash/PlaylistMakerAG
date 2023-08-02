@@ -65,7 +65,7 @@ class SearchActivity : AppCompatActivity() {
 
 //    private lateinit var sharedPreferences : SharedPreferences
 
-    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
+//    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +112,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         adapter.itemClickListener = { _, track ->
+
             if (viewModel.clickDebounce()) {
                 openTrack(track)
             }
@@ -123,15 +124,11 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == HISTORY_KEY) {
-                viewModel.reloadTracks()
-            }
-        }
-//        sharedPreferences = getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
-
-        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
-
+//        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+//            if (key == HISTORY_KEY) {
+//                viewModel.reloadTracks()
+//            }
+//        }
 
         cleanHistoryButton.setOnClickListener {
             viewModel.clean()
