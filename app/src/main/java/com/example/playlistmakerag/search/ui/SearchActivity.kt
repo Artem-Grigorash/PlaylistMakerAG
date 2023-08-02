@@ -112,13 +112,14 @@ class SearchActivity : AppCompatActivity() {
         }
 
         adapter.itemClickListener = { _, track ->
-
+            viewModel.addTrack(track, recentTracks)
             if (viewModel.clickDebounce()) {
                 openTrack(track)
             }
         }
 
         recentAdapter.itemClickListener = { _, track ->
+            viewModel.addTrack(track, recentTracks)
             if (viewModel.clickDebounce()) {
                 openTrack(track)
             }

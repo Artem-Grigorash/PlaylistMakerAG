@@ -114,7 +114,7 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         makeRequest(text)
     }
 
-    private fun addTrack(track: Track, place: ArrayList<Track>) {
+    fun addTrack(track: Track, place: ArrayList<Track>) {
         if (place.size == 10)
             place.removeAt(9)
         if (place.contains(track))
