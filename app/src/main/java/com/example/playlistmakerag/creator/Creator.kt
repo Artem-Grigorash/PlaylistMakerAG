@@ -12,11 +12,12 @@ object Creator {
     fun init(application: Application) {
         this.application = application
     }
+
     fun provideSharedPreferences(): SharedPreferences {
         return application.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     }
 
-    fun provideContext() : Context{
+    fun provideContext(): Context {
         return application.applicationContext
     }
 }

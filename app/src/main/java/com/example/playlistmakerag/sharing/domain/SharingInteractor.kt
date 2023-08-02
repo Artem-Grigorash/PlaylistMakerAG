@@ -1,6 +1,5 @@
 package com.example.playlistmakerag.sharing.domain
 
-import android.content.Context
 import android.content.Intent
 
 interface SharingInteractor {

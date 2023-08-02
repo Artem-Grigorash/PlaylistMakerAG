@@ -1,7 +1,6 @@
 package com.example.playlistmakerag.search.ui.view_models
 
-import android.content.Context
-import android.content.SharedPreferences
+
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -13,9 +12,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.search.data.dto.TrackResponse
 import com.example.playlistmakerag.search.domain.SearchInteractor
-
 
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
@@ -64,7 +61,7 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     private val history = MutableLiveData<ArrayList<Track>>()
     fun getHistory(): LiveData<ArrayList<Track>> = history
 
-    fun reloadTracks(){
+    fun reloadTracks() {
         history.value = interactor.read()
     }
 
@@ -73,8 +70,7 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         if (text.isNotEmpty()) {
             if (interactor.getResponseState()) {
                 badConnection()
-            }
-            else {
+            } else {
                 if (response.isNotEmpty()) {
                     data()
                 } else {

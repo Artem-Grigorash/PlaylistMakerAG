@@ -6,11 +6,12 @@ import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import java.util.concurrent.Executors
 
-class SearchInteractorImpl(private val search: Retrofit, private val history: SearchHistory) : SearchInteractor {
+class SearchInteractorImpl(private val search: Retrofit, private val history: SearchHistory) :
+    SearchInteractor {
 
     var responseIsEmpty = false
 
-    override fun getResponseState(): Boolean{
+    override fun getResponseState(): Boolean {
         return responseIsEmpty
     }
 
@@ -21,18 +22,17 @@ class SearchInteractorImpl(private val search: Retrofit, private val history: Se
             if (searchResult != null) {
                 responseIsEmpty = false
                 consumer.consume(searchResult)
-            }
-            else {
+            } else {
                 responseIsEmpty = true
             }
         }
     }
 
-    override fun read(): ArrayList<Track>{
+    override fun read(): ArrayList<Track> {
         return history.read()
     }
 
-    override fun write(tracks: ArrayList<Track>){
+    override fun write(tracks: ArrayList<Track>) {
         history.write(tracks)
     }
 

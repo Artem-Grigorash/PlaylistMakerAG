@@ -1,7 +1,6 @@
 package com.example.playlistmakerag.search.ui
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,12 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmakerag.search.data.HISTORY_KEY
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
-import com.example.playlistmakerag.search.data.dto.TrackResponse
 import com.example.playlistmakerag.search.ui.view_models.SearchState
 import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson
@@ -59,14 +56,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyRecycler: RecyclerView
     private lateinit var cleanHistoryButton: Button
     private lateinit var progressBar: ProgressBar
-
     private lateinit var viewModel: SearchViewModel
-
     private lateinit var actualResponse: ArrayList<Track>
-
-//    private lateinit var sharedPreferences : SharedPreferences
-
-//    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +82,7 @@ class SearchActivity : AppCompatActivity() {
             viewModel.searchTracks(res, inputEditText.text.toString())
         }
 
-        viewModel.getHistory().observe(this){history ->
+        viewModel.getHistory().observe(this) { history ->
             recentTracks.clear()
             for (track in history)
                 recentTracks.add(track)
@@ -127,12 +118,6 @@ class SearchActivity : AppCompatActivity() {
                 openTrack(track)
             }
         }
-
-//        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-//            if (key == HISTORY_KEY) {
-//                viewModel.reloadTracks()
-//            }
-//        }
 
         cleanHistoryButton.setOnClickListener {
             viewModel.clean()
