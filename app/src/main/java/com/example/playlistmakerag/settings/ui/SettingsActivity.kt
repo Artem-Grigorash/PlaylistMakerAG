@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.settings.ui.view_models.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -29,23 +30,25 @@ class SettingsActivity : AppCompatActivity() {
             SettingsViewModel.getSharingViewModelFactory()
         )[SettingsViewModel::class.java]
 
-        val sharedPref = viewModel.provideSharedPreferences(applicationContext)
-        themeSwitcher.isChecked = viewModel.getChecked(sharedPref)
+        Creator.init(application)
+
+        themeSwitcher.isChecked = viewModel.getChecked()
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            viewModel.onThemeClicked(checked, applicationContext, sharedPref)
+            viewModel.onThemeClicked(checked)
         }
 
         settingsBack.setOnClickListener {
             finish()
         }
-        val context = applicationContext
+
         settingsShare.setOnClickListener {
             val shareIntent = viewModel.shareApp(getString(R.string.practicum_url))
             startActivity(shareIntent)
         }
 
         settingsMail.setOnClickListener {
-            val mailIntent = viewModel.openSupport(getString(R.string.thanks),getString(R.string.subject))
+            val mailIntent =
+                viewModel.openSupport(getString(R.string.thanks), getString(R.string.subject))
             startActivity(mailIntent)
         }
 

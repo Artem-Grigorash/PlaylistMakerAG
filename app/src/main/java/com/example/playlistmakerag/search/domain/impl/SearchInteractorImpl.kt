@@ -20,15 +20,12 @@ class SearchInteractorImpl(private val search: Retrofit, private val history: Se
         }
     }
 
-    override fun read(pref: SharedPreferences): ArrayList<Track>{
-        return history.read(pref)
+    override fun read(): ArrayList<Track>{
+        return history.read()
     }
 
-    override fun write(pref: SharedPreferences, tracks: ArrayList<Track>){
-        history.write(pref, tracks)
+    override fun write(tracks: ArrayList<Track>){
+        history.write(tracks)
     }
 
-    override fun provideSharedPreferences(context: Context): SharedPreferences {
-        return search.provideSharedPreferences(context)
-    }
 }

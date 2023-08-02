@@ -1,8 +1,6 @@
 package com.example.playlistmakerag.search.data
 
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmakerag.app.PREFERENCES
+
 import com.example.playlistmakerag.search.data.dto.ItunesApi
 import com.example.playlistmakerag.search.data.dto.TrackResponse
 import com.example.playlistmakerag.search.domain.SearchInterface
@@ -29,7 +27,4 @@ class Retrofit : SearchInterface {
         }
     }
 
-    fun provideSharedPreferences(): SharedPreferences {
-        return application.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
-    }
 }

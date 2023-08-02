@@ -8,11 +8,9 @@ import retrofit2.Response
 
 interface SearchInteractor {
     fun makeRequest(expression: String, consumer: Consumer)
-    fun read(pref: SharedPreferences): ArrayList<Track>
+    fun read(): ArrayList<Track>
 
-    fun provideSharedPreferences(context: Context): SharedPreferences
-
-    fun write(pref: SharedPreferences, tracks: ArrayList<Track>)
+    fun write(tracks: ArrayList<Track>)
     interface Consumer {
         fun consume(response: TrackResponse)
     }

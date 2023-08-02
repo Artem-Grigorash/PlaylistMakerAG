@@ -64,8 +64,8 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     private val history = MutableLiveData<ArrayList<Track>>()
     fun getHistory(): LiveData<ArrayList<Track>> = history
 
-    fun reloadTracks(sharedPref: SharedPreferences){
-        history.value = interactor.read(sharedPref)
+    fun reloadTracks(){
+        history.value = interactor.read()
     }
 
 
@@ -101,10 +101,6 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         state.value = SearchState.Data
     }
 
-    fun provideSharedPreferences(context: Context): SharedPreferences {
-        return interactor.provideSharedPreferences(context)
-    }
-
     private fun makeRequest(text: String) {
         interactor.makeRequest(text, object : SearchInteractor.Consumer {
             override fun consume(response: TrackResponse) {
@@ -126,17 +122,17 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         place.add(0, track)
     }
 
-    fun clean(sharedPref: SharedPreferences) {
-        val recentSongs: ArrayList<Track> = interactor.read(sharedPref)
+    fun clean() {
+        val recentSongs: ArrayList<Track> = interactor.read()
         recentSongs.clear()
-        interactor.write(sharedPref, recentSongs)
+        interactor.write(recentSongs)
     }
 
 
-    fun onItemClicked(track: Track, sharedPref: SharedPreferences) {
-        val recentSongs: ArrayList<Track> = interactor.read(sharedPref)
+    fun onItemClicked(track: Track) {
+        val recentSongs: ArrayList<Track> = interactor.read()
         addTrack(track, recentSongs)
-        interactor.write(sharedPref, recentSongs)
+        interactor.write(recentSongs)
 
     }
 

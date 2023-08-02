@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.search.data.HISTORY_KEY
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.search.data.dto.TrackResponse
@@ -61,15 +60,16 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
 
     private lateinit var viewModel: SearchViewModel
-    private lateinit var sharedPref: SharedPreferences
 
     private lateinit var actualResponse: TrackResponse
+
+//    private lateinit var sharedPreferences : SharedPreferences
+
+    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-        Creator.init(application)
 
         viewModel = ViewModelProvider(
             this,
@@ -98,10 +98,9 @@ class SearchActivity : AppCompatActivity() {
 
         setViews()
 
-        sharedPref = viewModel.provideSharedPreferences(applicationContext)
 
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            viewModel.reloadTracks(sharedPref)
+            viewModel.reloadTracks()
             hisrory.visibility =
                 if (hasFocus && inputEditText.text.isEmpty() && recentTracks.size != 0) View.VISIBLE else View.GONE
         }
@@ -124,14 +123,18 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        sharedPref.registerOnSharedPreferenceChangeListener { _, key ->
+        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (key == HISTORY_KEY) {
-                viewModel.reloadTracks(sharedPref)
+                viewModel.reloadTracks()
             }
         }
+//        sharedPreferences = getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+
 
         cleanHistoryButton.setOnClickListener {
-            viewModel.clean(sharedPref)
+            viewModel.clean()
             recentTracks.clear()
             recentAdapter.notifyDataSetChanged()
             hisrory.visibility = View.GONE
@@ -181,7 +184,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun openTrack(track: Track) {
-        viewModel.onItemClicked(track, sharedPref)
+        viewModel.onItemClicked(track)
         val trackJson = Gson().toJson(track)
         val intent = Intent(this, TrackDisplayActivity::class.java)
         intent.putExtra("LAST_TRACK", trackJson)

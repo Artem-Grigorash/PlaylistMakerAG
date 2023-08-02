@@ -5,12 +5,8 @@ import android.content.SharedPreferences
 
 interface SettingsInteractor {
     fun updateThemeSetting(
-        checked: Boolean,
-        applicationContext: Context,
-        sharedPref: SharedPreferences
+        checked: Boolean
     )
 
-    fun provideSharedPreferences(context: Context): SharedPreferences
-
-    fun getChecked(sharedPref: SharedPreferences) : Boolean
+    fun getChecked() : Boolean
 }
