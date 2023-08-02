@@ -11,7 +11,10 @@ const val HISTORY_KEY = "key_for_history"
 class SearchHistory {
 
     val pref = provideSharedPreferences()
-
+    
+    fun getListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        pref.registerOnSharedPreferenceChangeListener(listener)
+    }
     fun read(): ArrayList<Track> {
         val json = pref.getString(HISTORY_KEY, null) ?: return ArrayList()
         return Gson().fromJson(json, object : TypeToken<ArrayList<Track>>() {}.type)
@@ -23,6 +26,7 @@ class SearchHistory {
             .putString(HISTORY_KEY, json)
             .apply()
     }
+
 
 
 }
