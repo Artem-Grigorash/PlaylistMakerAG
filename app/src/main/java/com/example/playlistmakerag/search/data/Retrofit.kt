@@ -1,15 +1,13 @@
 package com.example.playlistmakerag.search.data
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmakerag.app.PREFERENCES
-import com.example.playlistmakerag.player.data.dto.ItunesApi
-import com.example.playlistmakerag.player.data.dto.TrackResponse
+
+import com.example.playlistmakerag.player.domain.models.Track
+import com.example.playlistmakerag.search.data.dto.ItunesApi
+import com.example.playlistmakerag.search.data.dto.TrackResponse
 import com.example.playlistmakerag.search.domain.SearchInterface
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.ArrayList
 
 class Retrofit : SearchInterface {
 
@@ -22,14 +20,13 @@ class Retrofit : SearchInterface {
 
     private val trackService = retrofit.create(ItunesApi::class.java)
 
-    override fun makeRequest(text: String): Response<TrackResponse>? {
+    override fun makeRequest(text: String): ArrayList<Track>? {
         return try {
-            trackService.search(text).execute()
-        } catch (e : Exception){
-            null
+            val resp = trackService.search(text).execute()
+            resp.body()?.results
+        } catch (e: Exception) {
+            ArrayList<Track>()
         }
     }
-    fun provideSharedPreferences(context: Context) : SharedPreferences {
-        return context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
-    }
+
 }

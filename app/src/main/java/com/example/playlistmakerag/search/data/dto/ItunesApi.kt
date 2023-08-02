@@ -1,4 +1,4 @@
-package com.example.playlistmakerag.player.data.dto
+package com.example.playlistmakerag.search.data.dto
 
 import retrofit2.Call
 import retrofit2.http.GET

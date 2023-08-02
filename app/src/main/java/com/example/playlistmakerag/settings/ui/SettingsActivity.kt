@@ -5,53 +5,63 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmakerag.app.DARK_THEME_KEY
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.settings.ui.view_models.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
+
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var themeSwitcher : SwitchMaterial
-    private lateinit var settingsBack : ImageView
-    private lateinit var settingsShare : FrameLayout
-    private lateinit var settingsMail : FrameLayout
-    private lateinit var settingsAgreement : FrameLayout
+    private lateinit var themeSwitcher: SwitchMaterial
+    private lateinit var settingsBack: ImageView
+    private lateinit var settingsShare: FrameLayout
+    private lateinit var settingsMail: FrameLayout
+    private lateinit var settingsAgreement: FrameLayout
 
-    private lateinit var viewModel : SettingsViewModel
+    private lateinit var viewModel: SettingsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        Creator.init(application)
+
         setViews()
 
-        viewModel = ViewModelProvider(this, SettingsViewModel.getSharingViewModelFactory())[SettingsViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            SettingsViewModel.getSharingViewModelFactory()
+        )[SettingsViewModel::class.java]
 
-        val sharedPref = viewModel.provideSharedPreferences(applicationContext)
-        themeSwitcher.isChecked = (sharedPref.getBoolean(DARK_THEME_KEY, false))
+        Creator.init(application)
+
+        themeSwitcher.isChecked = viewModel.getChecked()
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            viewModel.onThemeClicked(checked, applicationContext, sharedPref)
+            viewModel.onThemeClicked(checked)
         }
 
         settingsBack.setOnClickListener {
             finish()
         }
-        val context = applicationContext
+
         settingsShare.setOnClickListener {
-            val shareIntent = viewModel.shareApp(context)
+            val shareIntent = viewModel.shareApp(getString(R.string.practicum_url))
             startActivity(shareIntent)
         }
 
-        settingsMail.setOnClickListener{
-            val mailIntent = viewModel.openSupport(context)
+        settingsMail.setOnClickListener {
+            val mailIntent =
+                viewModel.openSupport(getString(R.string.thanks), getString(R.string.subject))
             startActivity(mailIntent)
         }
 
-        settingsAgreement.setOnClickListener{
-            val settingsIntent = viewModel.openTerms(context)
+        settingsAgreement.setOnClickListener {
+            val settingsIntent = viewModel.openTerms(getString(R.string.legal_url))
             startActivity(settingsIntent)
         }
     }
-    private fun setViews(){
+
+    private fun setViews() {
         themeSwitcher = findViewById(R.id.theme_switcher)
         settingsBack = findViewById(R.id.settings_back)
         settingsShare = findViewById(R.id.settings_share)

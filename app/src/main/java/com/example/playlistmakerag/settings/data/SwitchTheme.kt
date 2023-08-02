@@ -6,15 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.app.DARK_THEME_KEY
 import com.example.playlistmakerag.app.PREFERENCES
+import com.example.playlistmakerag.creator.Creator.provideContext
+import com.example.playlistmakerag.creator.Creator.provideSharedPreferences
 
 class SwitchTheme {
-    fun updateThemeSetting(checked: Boolean, applicationContext: Context, sharedPref: SharedPreferences){
-        (applicationContext as App).switchTheme(checked)
+
+    val sharedPref = provideSharedPreferences()
+    val context = provideContext()
+
+    fun updateThemeSetting(
+        checked: Boolean,
+    ) {
+        (context as App).switchTheme(checked)
         sharedPref.edit()
             .putBoolean(DARK_THEME_KEY, checked)
             .apply()
     }
-    fun provideSharedPreferences(context: Context) : SharedPreferences{
-        return context.getSharedPreferences(PREFERENCES, AppCompatActivity.MODE_PRIVATE)
-    }
+    fun getChecked() = sharedPref.getBoolean(DARK_THEME_KEY, false)
 }

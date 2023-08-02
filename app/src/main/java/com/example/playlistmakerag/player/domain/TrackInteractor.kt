@@ -1,8 +1,9 @@
 package com.example.playlistmakerag.player.domain
 
-
-interface PlayerInterface {
+interface TrackInteractor {
     fun playbackControl()
+
     fun getPosition(): Int
+
     fun delete()
 }

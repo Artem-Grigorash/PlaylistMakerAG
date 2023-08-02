@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-    private fun setViews(){
+
+    private fun setViews() {
         searchButton = findViewById(R.id.search_button)
         mediatekaButton = findViewById(R.id.mediateka_button)
         settingsButton = findViewById(R.id.settings_button)

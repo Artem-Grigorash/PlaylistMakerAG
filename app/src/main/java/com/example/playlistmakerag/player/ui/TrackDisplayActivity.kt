@@ -1,10 +1,8 @@
 package com.example.playlistmakerag.player.ui
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.player.data.glide.GlideCreator
@@ -18,28 +16,29 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
-private lateinit var viewModel: TrackViewModel
+    private lateinit var viewModel: TrackViewModel
 
     private val glide = GlideCreator()
 
-    private lateinit var arrayBack : ImageView
+    private lateinit var arrayBack: ImageView
     private lateinit var trackPicture: ImageView
     private lateinit var nameOfTrack: TextView
     private lateinit var authorOfTrack: TextView
-    private lateinit var timeOfTrack : TextView
-    private lateinit var album : TextView
-    private lateinit var year : TextView
-    private lateinit var genre : TextView
-    private lateinit var country : TextView
-    private lateinit var play : FloatingActionButton
-    private lateinit var progress : TextView
+    private lateinit var timeOfTrack: TextView
+    private lateinit var album: TextView
+    private lateinit var year: TextView
+    private lateinit var genre: TextView
+    private lateinit var country: TextView
+    private lateinit var play: FloatingActionButton
+    private lateinit var progress: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track_display)
 
         setViews()
-        val lastTrack: Track = Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
+        val lastTrack: Track =
+            Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
         setInfo(lastTrack)
 
@@ -47,8 +46,11 @@ private lateinit var viewModel: TrackViewModel
             finish()
         }
 
-        val url : String = lastTrack.previewUrl
-        viewModel = ViewModelProvider(this, TrackViewModel.getViewModelFactory(url))[TrackViewModel::class.java]
+        val url: String = lastTrack.previewUrl
+        viewModel = ViewModelProvider(
+            this,
+            TrackViewModel.getViewModelFactory(url)
+        )[TrackViewModel::class.java]
 
         play.isEnabled = true
         play.setImageResource(R.drawable.play)
@@ -58,28 +60,28 @@ private lateinit var viewModel: TrackViewModel
         }
 
 
-        viewModel.getTrackState().observe(this){ state->
+        viewModel.getTrackState().observe(this) { state ->
             render(state)
             buttonControl(state)
         }
 
-        viewModel.getTime().observe(this){time ->
+        viewModel.getTime().observe(this) { time ->
             updateTime(time)
         }
     }
 
-    private fun updateTime(time:String){
+    private fun updateTime(time: String) {
         progress.text = time
     }
 
-    private fun buttonControl(state: TrackState){
+    private fun buttonControl(state: TrackState) {
         if (state == TrackState.Pause)
             play.setImageResource(R.drawable.play)
         else
             play.setImageResource(R.drawable.pause)
     }
 
-    private fun setViews(){
+    private fun setViews() {
         arrayBack = findViewById(R.id.arrayBack)
         trackPicture = findViewById(R.id.trackPicture)
         nameOfTrack = findViewById(R.id.name_of_track)
@@ -92,15 +94,16 @@ private lateinit var viewModel: TrackViewModel
         play = findViewById(R.id.play_button)
         progress = findViewById(R.id.time)
     }
+
     private fun setInfo(
         track: Track,
-    ){
+    ) {
         nameOfTrack.text = short(track.trackName)
         authorOfTrack.text = short(track.artistName)
         val timer = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
         timeOfTrack.text = timer
         album.text = short(track.collectionName)
-        year.text = track.releaseDate.substring(0,4)
+        year.text = track.releaseDate.substring(0, 4)
         genre.text = short(track.primaryGenreName)
         country.text = short(track.country)
         glide.setTrackPicture(trackPicture, track)
@@ -112,21 +115,24 @@ private lateinit var viewModel: TrackViewModel
     }
 
     override fun render(state: TrackState) {
-        when (state){
+        when (state) {
             is TrackState.Pause -> showPaused()
             is TrackState.Play -> showPlayed()
         }
     }
-    private fun short(s : String) : String{
-        return if (s.length<=27)
+
+    private fun short(s: String): String {
+        return if (s.length <= 27)
             s
         else
-            s.substring(0,24) + "..."
+            s.substring(0, 24) + "..."
     }
-    private fun showPlayed(){
+
+    private fun showPlayed() {
         viewModel.startPlayer()
     }
-    private fun showPaused(){
+
+    private fun showPaused() {
         viewModel.pausePlayer()
     }
 }
