@@ -6,4 +6,5 @@ interface TrackInteractor {
     fun getPosition(): Int
 
     fun delete()
+
 }

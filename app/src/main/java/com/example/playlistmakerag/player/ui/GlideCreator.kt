@@ -1,4 +1,4 @@
-package com.example.playlistmakerag.player.data.glide
+package com.example.playlistmakerag.player.ui
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

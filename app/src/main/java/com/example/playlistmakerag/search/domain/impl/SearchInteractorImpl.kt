@@ -1,12 +1,12 @@
 package com.example.playlistmakerag.search.domain.impl
 
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.search.data.Retrofit
+import com.example.playlistmakerag.search.data.RetrofitProvider
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import java.util.concurrent.Executors
 
-class SearchInteractorImpl(private val search: Retrofit, private val history: SearchHistory) :
+class SearchInteractorImpl(private val search: RetrofitProvider, private val history: SearchHistory) :
     SearchInteractor {
 
     var responseIsEmpty = false

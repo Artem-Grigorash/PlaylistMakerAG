@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.view_models.TrackState

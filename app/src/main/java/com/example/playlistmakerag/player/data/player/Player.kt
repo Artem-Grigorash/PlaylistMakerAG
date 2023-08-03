@@ -3,7 +3,7 @@ package com.example.playlistmakerag.player.data.player
 import android.media.MediaPlayer
 import com.example.playlistmakerag.player.domain.PlayerInterface
 
-class Player(url: String) : PlayerInterface {
+class Player(url: String, private val mediaPlayer: MediaPlayer) : PlayerInterface {
 
     companion object {
         private const val STATE_PREPARED = 1
@@ -12,8 +12,6 @@ class Player(url: String) : PlayerInterface {
     }
 
     private var playerState = STATE_PAUSED
-
-    private var mediaPlayer = MediaPlayer()
 
     init {
         mediaPlayer.setDataSource(url)
