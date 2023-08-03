@@ -2,14 +2,14 @@ package com.example.playlistmakerag.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmakerag.player.data.player.Player
+import com.example.playlistmakerag.creator.Creator.getHistory
+import com.example.playlistmakerag.creator.Creator.getNavigator
+import com.example.playlistmakerag.creator.Creator.getPlayer
+import com.example.playlistmakerag.creator.Creator.getRetrofit
+import com.example.playlistmakerag.creator.Creator.getSwitchTheme
 import com.example.playlistmakerag.player.domain.impl.TrackInteractorImpl
-import com.example.playlistmakerag.search.data.Retrofit
-import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
-import com.example.playlistmakerag.settings.data.SwitchTheme
 import com.example.playlistmakerag.settings.domain.impl.SettingsInteractorImpl
-import com.example.playlistmakerag.sharing.data.ExternalNavigator
 import com.example.playlistmakerag.sharing.domain.impl.SharingInteractorImpl
 
 
@@ -44,36 +44,16 @@ class App : Application() {
         )
     }
 
-    private fun getPlayer(url: String): Player {
-        return Player(url)
-    }
-
     fun provideTrackInteractor(url: String): TrackInteractorImpl {
         return TrackInteractorImpl(getPlayer(url))
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit()
     }
 
     fun provideSearchViewModel(): SearchInteractorImpl {
         return SearchInteractorImpl(getRetrofit(), getHistory())
     }
 
-    private fun getSwitchTheme(): SwitchTheme {
-        return SwitchTheme()
-    }
-
-    private fun getHistory(): SearchHistory {
-        return SearchHistory()
-    }
-
     fun provideSettingsViewModel(): SettingsInteractorImpl {
         return SettingsInteractorImpl(getSwitchTheme())
-    }
-
-    private fun getNavigator(): ExternalNavigator {
-        return ExternalNavigator()
     }
 
     fun provideSharingViewModel(): SharingInteractorImpl {
