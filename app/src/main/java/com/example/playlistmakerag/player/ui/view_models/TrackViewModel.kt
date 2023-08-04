@@ -5,28 +5,24 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.player.domain.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewModel(private val interactor: TrackInteractor) : ViewModel() {
+class TrackViewModel(private val interactor: TrackInteractor, private val url: String) : ViewModel() {
     companion object {
         private const val REFRESH_MILLIS = 200L
 
-        fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val interactor = (this[APPLICATION_KEY] as App).provideTrackInteractor(url)
-                TrackViewModel(
-                    interactor
-                )
-            }
-        }
+//        fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
+//            initializer {
+//                val interactor = (this[APPLICATION_KEY] as App).provideTrackInteractor(url)
+//                TrackViewModel(
+//                    interactor
+//                )
+//            }
+//        }
     }
+
 
     private val state = MutableLiveData<TrackState>()
     fun getTrackState(): LiveData<TrackState> = state
