@@ -1,8 +1,6 @@
 package com.example.playlistmakerag.search.domain.impl
 
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.search.data.RetrofitProvider
-import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.domain.HistoryInterface
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import com.example.playlistmakerag.search.domain.SearchInterface

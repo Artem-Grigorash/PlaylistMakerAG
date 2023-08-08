@@ -21,6 +21,4 @@ class TrackInteractorImpl(
     override fun setUrl(url: String) {
         player.setUrl(url)
     }
-
-
 }

@@ -10,21 +10,6 @@ class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
 
-    companion object {
-//        fun getSharingViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-//            initializer {
-//                val sharingInteractor =
-//                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSettingsViewModel()
-//                val settingsInteractor =
-//                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSharingViewModel()
-//
-//                SettingsViewModel(
-//                    settingsInteractor,
-//                    sharingInteractor
-//                )
-//            }
-//        }
-    }
 
     fun getChecked() = settingsInteractor.getChecked()
 

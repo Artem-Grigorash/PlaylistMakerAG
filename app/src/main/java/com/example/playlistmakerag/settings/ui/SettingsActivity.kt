@@ -25,8 +25,6 @@ class SettingsActivity : AppCompatActivity() {
 
         setViews()
 
-//        Creator.init(application)
-
         themeSwitcher.isChecked = viewModel.getChecked()
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.onThemeClicked(checked)

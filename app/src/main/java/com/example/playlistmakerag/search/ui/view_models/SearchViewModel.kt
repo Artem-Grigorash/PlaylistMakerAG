@@ -16,15 +16,6 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-//        fun getSearchViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-//            initializer {
-//                val interactor =
-//                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSearchViewModel()
-//                SearchViewModel(
-//                    interactor
-//                )
-//            }
-//        }
     }
 
 

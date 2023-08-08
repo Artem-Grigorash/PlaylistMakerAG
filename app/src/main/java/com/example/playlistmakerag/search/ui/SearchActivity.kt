@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
-//import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.search.ui.view_models.SearchState
@@ -64,17 +63,13 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-//        Creator.init(application)
-
         viewModel.getSearchState().observe(this) { state ->
             render(state)
         }
 
 
         viewModel.getSearchStateResponse().observe(this) { res ->
-            //здесь лежит актуальный response
             actualResponse = res
-
             viewModel.searchTracks(res, inputEditText.text.toString())
         }
 
