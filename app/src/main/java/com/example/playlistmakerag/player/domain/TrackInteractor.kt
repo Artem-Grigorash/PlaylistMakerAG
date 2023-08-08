@@ -6,5 +6,5 @@ interface TrackInteractor {
     fun getPosition(): Int
 
     fun delete()
-
+    fun setUrl(url: String)
 }

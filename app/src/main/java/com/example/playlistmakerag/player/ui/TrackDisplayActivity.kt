@@ -11,12 +11,17 @@ import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
-    private val viewModel by viewModel<TrackViewModel>()
+    private lateinit var url: String
+
+    private val viewModel: TrackViewModel by viewModel {
+        parametersOf(url)
+    }
 
     private val glide = GlideCreator()
 
@@ -40,14 +45,14 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         val lastTrack: Track =
             Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
+        url = lastTrack.previewUrl
+
         setInfo(lastTrack)
+
 
         arrayBack.setOnClickListener {
             finish()
         }
-
-        val url: String = lastTrack.previewUrl
-
         play.isEnabled = true
         play.setImageResource(R.drawable.play)
 

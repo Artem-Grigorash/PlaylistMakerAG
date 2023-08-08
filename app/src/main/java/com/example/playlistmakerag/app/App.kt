@@ -11,6 +11,7 @@ import com.example.playlistmakerag.search.di.viewModelModuleSearch
 import com.example.playlistmakerag.settings.di.dataModuleSettings
 import com.example.playlistmakerag.settings.di.interactorModuleSettings
 import com.example.playlistmakerag.settings.di.viewModelModuleSettings
+import com.example.playlistmakerag.sharing.di.dataModuleSharing
 import com.example.playlistmakerag.sharing.di.interactorModuleSharing
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -37,7 +38,7 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(dataModulePlayer, dataModuleSearch, dataModuleSettings,
+            modules(dataModulePlayer, dataModuleSearch, dataModuleSettings, dataModuleSharing,
                 interactorModuleSharing, interactorModuleSearch, interactorModuleSettings, interactorModulePlayer,
                 viewModelModuleSearch, viewModelModuleSettings, viewModelModulePlayer)
         }

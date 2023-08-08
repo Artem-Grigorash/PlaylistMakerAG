@@ -7,7 +7,7 @@ import org.koin.dsl.module
 
 val dataModulePlayer = module {
     single<PlayerInterface> {(url: String)->
-        Player(url,get())
+        Player(get())
     }
     single {
         MediaPlayer()

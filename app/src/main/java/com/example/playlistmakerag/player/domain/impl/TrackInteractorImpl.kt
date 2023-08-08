@@ -17,4 +17,10 @@ class TrackInteractorImpl(
     override fun delete() {
         player.delete()
     }
+
+    override fun setUrl(url: String) {
+        player.setUrl(url)
+    }
+
+
 }

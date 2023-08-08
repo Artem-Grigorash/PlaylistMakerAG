@@ -12,16 +12,10 @@ import java.util.Locale
 class TrackViewModel(private val interactor: TrackInteractor, private val url: String) : ViewModel() {
     companion object {
         private const val REFRESH_MILLIS = 200L
-
-//        fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
-//            initializer {
-//                val interactor = (this[APPLICATION_KEY] as App).provideTrackInteractor(url)
-//                TrackViewModel(
-//                    interactor
-//                )
-//            }
-//        }
     }
+     init {
+         interactor.setUrl(url)
+     }
 
 
     private val state = MutableLiveData<TrackState>()
