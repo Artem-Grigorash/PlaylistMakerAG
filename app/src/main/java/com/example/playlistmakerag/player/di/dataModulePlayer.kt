@@ -6,10 +6,10 @@ import com.example.playlistmakerag.player.domain.PlayerInterface
 import org.koin.dsl.module
 
 val dataModulePlayer = module {
-    single<PlayerInterface> {(url: String)->
+    factory <PlayerInterface> {
         Player(get())
     }
-    single {
+    factory {
         MediaPlayer()
     }
 }

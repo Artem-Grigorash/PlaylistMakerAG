@@ -9,7 +9,7 @@ import com.example.playlistmakerag.player.domain.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewModel(private val interactor: TrackInteractor, private val url: String) : ViewModel() {
+class TrackViewModel(private val interactor: TrackInteractor, url: String) : ViewModel() {
     companion object {
         private const val REFRESH_MILLIS = 200L
     }
