@@ -3,20 +3,21 @@ package com.example.playlistmakerag.sharing.data
 import android.content.Intent
 import android.net.Uri
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.sharing.domain.ExternalNavigatorInterface
 
-class ExternalNavigator {
-    fun shareLink(link: String): Intent {
+class ExternalNavigator: ExternalNavigatorInterface {
+    override fun shareLink(link: String): Intent {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.putExtra(Intent.EXTRA_TEXT, link)
         shareIntent.type = "text/plain"
         return shareIntent
     }
 
-    fun openLink(link: Uri): Intent {
+    override fun openLink(link: Uri): Intent {
         return Intent(Intent.ACTION_VIEW, link)
     }
 
-    fun openEmail(mail: EmailData): Intent {
+    override fun openEmail(mail: EmailData): Intent {
         val shareIntent = Intent(Intent.ACTION_SENDTO)
         shareIntent.data = Uri.parse("mailto:")
         shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.email))

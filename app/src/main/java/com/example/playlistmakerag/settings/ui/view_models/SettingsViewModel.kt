@@ -2,10 +2,6 @@ package com.example.playlistmakerag.settings.ui.view_models
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmakerag.app.App
 import com.example.playlistmakerag.settings.domain.SettingsInteractor
 import com.example.playlistmakerag.sharing.domain.SharingInteractor
 
@@ -14,21 +10,6 @@ class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
 
-    companion object {
-        fun getSharingViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val sharingInteractor =
-                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSettingsViewModel()
-                val settingsInteractor =
-                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App).provideSharingViewModel()
-
-                SettingsViewModel(
-                    settingsInteractor,
-                    sharingInteractor
-                )
-            }
-        }
-    }
 
     fun getChecked() = settingsInteractor.getChecked()
 

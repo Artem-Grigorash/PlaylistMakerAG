@@ -4,10 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import com.example.playlistmakerag.sharing.domain.SharingInteractor
 import com.example.playlistmakerag.sharing.data.EmailData
-import com.example.playlistmakerag.sharing.data.ExternalNavigator
+import com.example.playlistmakerag.sharing.domain.ExternalNavigatorInterface
 
 class SharingInteractorImpl(
-    private val externalNavigator: ExternalNavigator,
+    private val externalNavigator: ExternalNavigatorInterface,
 ) : SharingInteractor {
     override fun shareApp(link: String): Intent {
         return externalNavigator.shareLink(getShareAppLink(link))

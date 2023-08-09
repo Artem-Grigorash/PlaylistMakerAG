@@ -5,4 +5,5 @@ interface PlayerInterface {
     fun playbackControl()
     fun getPosition(): Int
     fun delete()
+    fun setUrl(url: String)
 }

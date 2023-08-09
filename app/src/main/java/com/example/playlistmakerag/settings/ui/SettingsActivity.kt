@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.settings.ui.view_models.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -18,22 +17,13 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var settingsMail: FrameLayout
     private lateinit var settingsAgreement: FrameLayout
 
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        Creator.init(application)
-
         setViews()
-
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getSharingViewModelFactory()
-        )[SettingsViewModel::class.java]
-
-        Creator.init(application)
 
         themeSwitcher.isChecked = viewModel.getChecked()
         themeSwitcher.setOnCheckedChangeListener { _, checked ->

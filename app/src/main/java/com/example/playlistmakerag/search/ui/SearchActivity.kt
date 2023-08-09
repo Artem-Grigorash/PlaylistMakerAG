@@ -7,16 +7,15 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
-import com.example.playlistmakerag.creator.Creator
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.search.ui.view_models.SearchState
 import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchActivity : AppCompatActivity() {
@@ -56,19 +55,13 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyRecycler: RecyclerView
     private lateinit var cleanHistoryButton: Button
     private lateinit var progressBar: ProgressBar
-    private lateinit var viewModel: SearchViewModel
     private lateinit var actualResponse: ArrayList<Track>
+
+    private val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-        Creator.init(application)
-
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getSearchViewModelFactory()
-        )[SearchViewModel::class.java]
 
         viewModel.getSearchState().observe(this) { state ->
             render(state)
@@ -76,9 +69,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         viewModel.getSearchStateResponse().observe(this) { res ->
-            //здесь лежит актуальный response
             actualResponse = res
-
             viewModel.searchTracks(res, inputEditText.text.toString())
         }
 

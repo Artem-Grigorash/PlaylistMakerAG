@@ -2,15 +2,19 @@ package com.example.playlistmakerag.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmakerag.creator.Creator.getHistory
-import com.example.playlistmakerag.creator.Creator.getNavigator
-import com.example.playlistmakerag.creator.Creator.getPlayer
-import com.example.playlistmakerag.creator.Creator.getRetrofit
-import com.example.playlistmakerag.creator.Creator.getSwitchTheme
-import com.example.playlistmakerag.player.domain.impl.TrackInteractorImpl
-import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
-import com.example.playlistmakerag.settings.domain.impl.SettingsInteractorImpl
-import com.example.playlistmakerag.sharing.domain.impl.SharingInteractorImpl
+import com.example.playlistmakerag.player.di.dataModulePlayer
+import com.example.playlistmakerag.player.di.interactorModulePlayer
+import com.example.playlistmakerag.player.di.viewModelModulePlayer
+import com.example.playlistmakerag.search.di.dataModuleSearch
+import com.example.playlistmakerag.search.di.interactorModuleSearch
+import com.example.playlistmakerag.search.di.viewModelModuleSearch
+import com.example.playlistmakerag.settings.di.dataModuleSettings
+import com.example.playlistmakerag.settings.di.interactorModuleSettings
+import com.example.playlistmakerag.settings.di.viewModelModuleSettings
+import com.example.playlistmakerag.sharing.di.dataModuleSharing
+import com.example.playlistmakerag.sharing.di.interactorModuleSharing
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
 
 const val PREFERENCES = "preferences"
@@ -31,6 +35,14 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+
+        startKoin {
+            androidContext(this@App)
+            modules(dataModulePlayer, dataModuleSearch, dataModuleSettings, dataModuleSharing,
+                interactorModuleSharing, interactorModuleSearch, interactorModuleSettings, interactorModulePlayer,
+                viewModelModuleSearch, viewModelModuleSettings, viewModelModulePlayer)
+        }
+
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
@@ -44,19 +56,4 @@ class App : Application() {
         )
     }
 
-    fun provideTrackInteractor(url: String): TrackInteractorImpl {
-        return TrackInteractorImpl(getPlayer(url))
-    }
-
-    fun provideSearchViewModel(): SearchInteractorImpl {
-        return SearchInteractorImpl(getRetrofit(), getHistory())
-    }
-
-    fun provideSettingsViewModel(): SettingsInteractorImpl {
-        return SettingsInteractorImpl(getSwitchTheme())
-    }
-
-    fun provideSharingViewModel(): SharingInteractorImpl {
-        return SharingInteractorImpl(getNavigator())
-    }
 }

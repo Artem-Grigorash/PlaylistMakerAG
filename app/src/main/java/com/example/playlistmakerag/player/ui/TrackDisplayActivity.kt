@@ -4,19 +4,24 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmakerag.player.data.glide.GlideCreator
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.view_models.TrackState
 import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
-    private lateinit var viewModel: TrackViewModel
+
+    private lateinit var url: String
+
+    private val viewModel: TrackViewModel by viewModel {
+        parametersOf(url)
+    }
 
     private val glide = GlideCreator()
 
@@ -40,18 +45,14 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         val lastTrack: Track =
             Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
+        url = lastTrack.previewUrl
+
         setInfo(lastTrack)
+
 
         arrayBack.setOnClickListener {
             finish()
         }
-
-        val url: String = lastTrack.previewUrl
-        viewModel = ViewModelProvider(
-            this,
-            TrackViewModel.getViewModelFactory(url)
-        )[TrackViewModel::class.java]
-
         play.isEnabled = true
         play.setImageResource(R.drawable.play)
 
