@@ -20,7 +20,7 @@
             style="@style/HeaderStyle"/>
 
         <ImageView
-            android:id="@+id/settings_back"
+            android:id="@+id/back"
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:paddingTop="10dp"
