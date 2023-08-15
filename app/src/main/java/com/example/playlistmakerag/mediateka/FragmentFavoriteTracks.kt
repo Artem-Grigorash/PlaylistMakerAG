@@ -40,6 +40,7 @@ class FragmentFavoriteTracks : Fragment() {
             }
             2 -> {
                 binding.placeholderMessage.text = "Вы не создали\nни одного плейлиста"
+                binding.placeholderMessage.isAllCaps = false
                 binding.placeholder.setImageResource(R.drawable.tracks_placeholder_nf)
                 binding.cleanHistoryButton.visibility = View.VISIBLE
             }
