@@ -13,6 +13,9 @@ class TracksViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
     }
 
     override fun createFragment(position: Int): Fragment {
-        return FragmentFavoriteTracks.newInstance(position + 1)
+        return if (position == 0)
+            FragmentFavoriteTracks.newInstance(position + 1)
+        else
+            FragmentPlaylists.newInstance(position+1)
     }
 }
