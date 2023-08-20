@@ -11,11 +11,11 @@ import com.example.playlistmakerag.mediateka.view_models.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class FragmentPlaylists: Fragment() {
+class PlaylistsFragment: Fragment() {
     companion object {
         private const val NUMBER = "number"
 
-        fun newInstance(number: Int) = FragmentPlaylists().apply {
+        fun newInstance(number: Int) = PlaylistsFragment().apply {
             arguments = Bundle().apply {
                 putInt(NUMBER, number)
             }

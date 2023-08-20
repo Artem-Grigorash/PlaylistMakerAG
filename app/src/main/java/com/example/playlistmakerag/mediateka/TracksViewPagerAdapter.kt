@@ -16,6 +16,6 @@ class TracksViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
         return if (position == 0)
             FavoriteTracksFragment.newInstance(position + 1)
         else
-            FragmentPlaylists.newInstance(position+1)
+            PlaylistsFragment.newInstance(position+1)
     }
 }

@@ -40,7 +40,7 @@
             android:background="@color/white_dark"
             app:tabTextColor="@color/classic_text"
             app:tabIndicatorColor="@color/classic_text"
-            app:tabTextAppearance="@style/MyCustomTextAppearance"/>
+            app:tabTextAppearance="@style/TabLayoutTextAppearance"/>
 
     </FrameLayout>
 
