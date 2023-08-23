@@ -1,31 +1,25 @@
 package com.example.playlistmakerag.mediateka
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import com.example.playlistmakerag.R
-import com.example.playlistmakerag.databinding.ActivityMediatekaBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.playlistmakerag.databinding.FragmentMediatekaBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MediatekaActivity : AppCompatActivity() {
+class MediatekaFragment : Fragment() {
 
-    private lateinit var binding: ActivityMediatekaBinding
-
+    private lateinit var binding: FragmentMediatekaBinding
     private lateinit var tabMediator: TabLayoutMediator
 
-    private lateinit var back : ImageView
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentMediatekaBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMediatekaBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        back = findViewById(R.id.back)
-
-        back.setOnClickListener{
-            finish()
-        }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewPager.adapter = TracksViewPagerAdapter(supportFragmentManager, lifecycle)
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->

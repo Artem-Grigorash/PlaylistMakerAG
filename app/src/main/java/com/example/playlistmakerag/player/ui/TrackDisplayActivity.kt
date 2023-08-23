@@ -17,123 +17,12 @@ import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
-    private lateinit var url: String
-
-    private val viewModel: TrackViewModel by viewModel {
-        parametersOf(url)
-    }
-
-    private val glide = GlideCreator()
-
-    private lateinit var arrayBack: ImageView
-    private lateinit var trackPicture: ImageView
-    private lateinit var nameOfTrack: TextView
-    private lateinit var authorOfTrack: TextView
-    private lateinit var timeOfTrack: TextView
-    private lateinit var album: TextView
-    private lateinit var year: TextView
-    private lateinit var genre: TextView
-    private lateinit var country: TextView
-    private lateinit var play: FloatingActionButton
-    private lateinit var progress: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_track_display)
-
-        setViews()
-        val lastTrack: Track =
-            Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
-
-        url = lastTrack.previewUrl
-
-        setInfo(lastTrack)
+        setContentView(R.layout.fragment_track_display)
 
 
-        arrayBack.setOnClickListener {
-            finish()
-        }
-        play.isEnabled = true
-        play.setImageResource(R.drawable.play)
-
-        play.setOnClickListener {
-            viewModel.onPlayClicked()
-        }
 
 
-        viewModel.getTrackState().observe(this) { state ->
-            render(state)
-            buttonControl(state)
-        }
-
-        viewModel.getTime().observe(this) { time ->
-            updateTime(time)
-        }
-    }
-
-    private fun updateTime(time: String) {
-        progress.text = time
-    }
-
-    private fun buttonControl(state: TrackState) {
-        if (state == TrackState.Pause)
-            play.setImageResource(R.drawable.play)
-        else
-            play.setImageResource(R.drawable.pause)
-    }
-
-    private fun setViews() {
-        arrayBack = findViewById(R.id.arrayBack)
-        trackPicture = findViewById(R.id.trackPicture)
-        nameOfTrack = findViewById(R.id.name_of_track)
-        authorOfTrack = findViewById(R.id.author_of_track)
-        timeOfTrack = findViewById(R.id.time_of_track_value)
-        album = findViewById(R.id.album_value)
-        year = findViewById(R.id.year_value)
-        genre = findViewById(R.id.genre_value)
-        country = findViewById(R.id.country_value)
-        play = findViewById(R.id.play_button)
-        progress = findViewById(R.id.time)
-    }
-
-    private fun setInfo(
-        track: Track,
-    ) {
-        nameOfTrack.text = short(track.trackName)
-        authorOfTrack.text = short(track.artistName)
-        val timer = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-        timeOfTrack.text = timer
-        album.text = short(track.collectionName)
-        year.text = track.releaseDate.substring(0, 4)
-        genre.text = short(track.primaryGenreName)
-        country.text = short(track.country)
-        glide.setTrackPicture(trackPicture, track)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.delete()
-    }
-
-    override fun render(state: TrackState) {
-        when (state) {
-            is TrackState.Pause -> showPaused()
-            is TrackState.Play -> showPlayed()
-        }
-    }
-
-    private fun short(s: String): String {
-        return if (s.length <= 27)
-            s
-        else
-            s.substring(0, 24) + "..."
-    }
-
-    private fun showPlayed() {
-        viewModel.startPlayer()
-    }
-
-    private fun showPaused() {
-        viewModel.pausePlayer()
-    }
 }
