@@ -70,12 +70,12 @@ class TrackDisplayFragment: Fragment(), TrackView{
         }
 
 
-        viewModel.getTrackState().observe(this) { state ->
+        viewModel.getTrackState().observe(viewLifecycleOwner) { state ->
             render(state)
             buttonControl(state)
         }
 
-        viewModel.getTime().observe(this) { time ->
+        viewModel.getTime().observe(viewLifecycleOwner) { time ->
             updateTime(time)
         }
     }

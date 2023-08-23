@@ -73,17 +73,17 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getSearchState().observe(this) { state ->
+        viewModel.getSearchState().observe(viewLifecycleOwner) { state ->
             render(state)
         }
 
 
-        viewModel.getSearchStateResponse().observe(this) { res ->
+        viewModel.getSearchStateResponse().observe(viewLifecycleOwner) { res ->
             actualResponse = res
             viewModel.searchTracks(res, inputEditText.text.toString())
         }
 
-        viewModel.getHistory().observe(this) { history ->
+        viewModel.getHistory().observe(viewLifecycleOwner) { history ->
             recentTracks.clear()
             for (track in history)
                 recentTracks.add(track)
@@ -242,11 +242,11 @@ class SearchFragment : Fragment() {
         progressBar = binding.progressBar
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         historyRecycler.adapter = recentAdapter
         historyRecycler.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     private fun showMessage(text: String, additionalMessage: String, holderImage: Int) {
@@ -258,7 +258,7 @@ class SearchFragment : Fragment() {
             placeholderMessage.text = text
             placeholder.setImageResource(holderImage)
             if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+                Toast.makeText(requireContext() , additionalMessage, Toast.LENGTH_LONG)
                     .show()
             }
         } else {
