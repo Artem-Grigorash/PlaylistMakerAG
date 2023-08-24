@@ -9,19 +9,19 @@
         android:name="com.example.playlistmakerag.mediateka.MediatekaFragment"
         android:label="MediatekaFragment" />
     <fragment
-        android:id="@+id/trackDisplayFragment"
-        android:name="com.example.playlistmakerag.player.ui.TrackDisplayFragment"
-        android:label="TrackDisplayFragment" />
-    <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.playlistmakerag.search.ui.SearchFragment"
         android:label="SearchFragment" >
         <action
-            android:id="@+id/action_searchFragment2_to_trackDisplayFragment"
-            app:destination="@id/trackDisplayFragment" />
+            android:id="@+id/action_searchFragment_to_trackDisplayActivity"
+            app:destination="@id/trackDisplayActivity" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmakerag.settings.ui.SettingsFragment"
         android:label="SettingsFragment" />
+    <activity
+        android:id="@+id/trackDisplayActivity"
+        android:name="com.example.playlistmakerag.player.ui.TrackDisplayActivity"
+        android:label="TrackDisplayActivity" />
 </navigation>

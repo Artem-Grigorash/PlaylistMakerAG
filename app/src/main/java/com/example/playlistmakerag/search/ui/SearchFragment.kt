@@ -1,6 +1,5 @@
 package com.example.playlistmakerag.search.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,11 +14,13 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentSearchBinding
 import com.example.playlistmakerag.player.domain.models.Track
+import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.search.ui.view_models.SearchState
 import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson
@@ -106,19 +107,19 @@ class SearchFragment : Fragment() {
             clear()
         }
 
-//        adapter.itemClickListener = { _, track ->
-//            viewModel.addTrack(track, recentTracks)
-//            if (viewModel.clickDebounce()) {
-//                openTrack(track)
-//            }
-//        }
-//
-//        recentAdapter.itemClickListener = { _, track ->
-//            viewModel.addTrack(track, recentTracks)
-//            if (viewModel.clickDebounce()) {
-//                openTrack(track)
-//            }
-//        }
+        adapter.itemClickListener = { _, track ->
+            viewModel.addTrack(track, recentTracks)
+            if (viewModel.clickDebounce()) {
+                openTrack(track)
+            }
+        }
+
+        recentAdapter.itemClickListener = { _, track ->
+            viewModel.addTrack(track, recentTracks)
+            if (viewModel.clickDebounce()) {
+                openTrack(track)
+            }
+        }
 
         cleanHistoryButton.setOnClickListener {
             viewModel.clean()
@@ -168,14 +169,16 @@ class SearchFragment : Fragment() {
         reloadButton.isClickable = false
     }
 
-//    private fun openTrack(track: Track) {
-//        viewModel.onItemClicked(track)
-//        val trackJson = Gson().toJson(track)
-//        val intent = Intent(this, TrackDisplayActivity::class.java)
-//        intent.putExtra("LAST_TRACK", trackJson)
-//        startActivity(intent)
-//        recentAdapter.notifyDataSetChanged()
-//    }
+    private fun openTrack(track: Track) {
+        viewModel.onItemClicked(track)
+        val trackJson = Gson().toJson(track)
+
+        findNavController().navigate(
+            R.id.action_searchFragment_to_trackDisplayActivity,
+            TrackDisplayActivity.createArgs(trackJson))
+
+        recentAdapter.notifyDataSetChanged()
+    }
 
     private fun render(state: SearchState) {
         when (state) {
