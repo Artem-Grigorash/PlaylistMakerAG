@@ -40,12 +40,12 @@ class SearchFragment : Fragment() {
         outState.putString(INPUT_TEXT, textValue)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val inputEditText = binding.searchEdit
-        val textValue = savedInstanceState.getString(INPUT_TEXT, "")
-        inputEditText.setText(textValue)
-    }
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        val inputEditText = binding.searchEdit
+//        val textValue = savedInstanceState.getString(INPUT_TEXT, "")
+//        inputEditText.setText(textValue)
+//    }
 
     private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
@@ -106,19 +106,19 @@ class SearchFragment : Fragment() {
             clear()
         }
 
-        adapter.itemClickListener = { _, track ->
-            viewModel.addTrack(track, recentTracks)
-            if (viewModel.clickDebounce()) {
-                openTrack(track)
-            }
-        }
-
-        recentAdapter.itemClickListener = { _, track ->
-            viewModel.addTrack(track, recentTracks)
-            if (viewModel.clickDebounce()) {
-                openTrack(track)
-            }
-        }
+//        adapter.itemClickListener = { _, track ->
+//            viewModel.addTrack(track, recentTracks)
+//            if (viewModel.clickDebounce()) {
+//                openTrack(track)
+//            }
+//        }
+//
+//        recentAdapter.itemClickListener = { _, track ->
+//            viewModel.addTrack(track, recentTracks)
+//            if (viewModel.clickDebounce()) {
+//                openTrack(track)
+//            }
+//        }
 
         cleanHistoryButton.setOnClickListener {
             viewModel.clean()
@@ -168,14 +168,14 @@ class SearchFragment : Fragment() {
         reloadButton.isClickable = false
     }
 
-    private fun openTrack(track: Track) {
-        viewModel.onItemClicked(track)
-        val trackJson = Gson().toJson(track)
-        val intent = Intent(this, TrackDisplayActivity::class.java)
-        intent.putExtra("LAST_TRACK", trackJson)
-        startActivity(intent)
-        recentAdapter.notifyDataSetChanged()
-    }
+//    private fun openTrack(track: Track) {
+//        viewModel.onItemClicked(track)
+//        val trackJson = Gson().toJson(track)
+//        val intent = Intent(this, TrackDisplayActivity::class.java)
+//        intent.putExtra("LAST_TRACK", trackJson)
+//        startActivity(intent)
+//        recentAdapter.notifyDataSetChanged()
+//    }
 
     private fun render(state: SearchState) {
         when (state) {

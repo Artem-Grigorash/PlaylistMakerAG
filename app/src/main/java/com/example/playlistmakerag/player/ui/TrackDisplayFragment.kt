@@ -50,17 +50,17 @@ class TrackDisplayFragment: Fragment(), TrackView{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setViews()
-        val lastTrack: Track =
-            Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
+//        val lastTrack: Track =
+//            Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
-        url = lastTrack.previewUrl
+//        url = lastTrack.previewUrl
+//
+//        setInfo(lastTrack)
 
-        setInfo(lastTrack)
 
-
-        arrayBack.setOnClickListener {
-            finish()
-        }
+//        arrayBack.setOnClickListener {
+//            finish()
+//        }
 
         play.isEnabled = true
         play.setImageResource(R.drawable.play)

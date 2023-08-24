@@ -20,7 +20,7 @@ class MediatekaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewPager.adapter = TracksViewPagerAdapter(supportFragmentManager, lifecycle)
+        binding.viewPager.adapter = TracksViewPagerAdapter(childFragmentManager, lifecycle)
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when(position) {
@@ -35,8 +35,8 @@ class MediatekaFragment : Fragment() {
         tabMediator.attach()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         tabMediator.detach()
     }
 
