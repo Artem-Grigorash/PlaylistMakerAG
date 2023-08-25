@@ -1,5 +1,6 @@
 package com.example.playlistmakerag.search.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -172,11 +173,9 @@ class SearchFragment : Fragment() {
     private fun openTrack(track: Track) {
         viewModel.onItemClicked(track)
         val trackJson = Gson().toJson(track)
-
-        findNavController().navigate(
-            R.id.action_searchFragment_to_trackDisplayActivity,
-            TrackDisplayActivity.createArgs(trackJson))
-
+        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
+        intent.putExtra("LAST_TRACK", trackJson)
+        startActivity(intent)
         recentAdapter.notifyDataSetChanged()
     }
 
@@ -186,6 +185,7 @@ class SearchFragment : Fragment() {
             SearchState.Data -> showData(actualResponse)
             SearchState.Loading -> showLoading()
             SearchState.NothingFound -> showNothingFound()
+
         }
     }
 

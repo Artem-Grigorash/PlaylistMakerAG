@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.view_models.TrackState
@@ -17,13 +16,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class TrackDisplayActivity : AppCompatActivity(), TrackView {
-
-    companion object {
-        private const val ARGS_TRACK = "track"
-
-        fun createArgs(track: String): Bundle =
-            bundleOf(ARGS_TRACK to track)
-    }
 
     private lateinit var url: String
 
@@ -50,12 +42,12 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         setContentView(R.layout.fragment_track_display)
 
         setViews()
+        val lastTrack: Track =
+            Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
-        val lastTrack: Track = Gson().fromJson(requireArguments().getString(TrackDisplayActivity.ARGS_TRACK), Track::class.java)
+        url = lastTrack.previewUrl
 
-//        url = lastTrack.previewUrl
-//
-//        setInfo(lastTrack)
+        setInfo(lastTrack)
 
 
         arrayBack.setOnClickListener {
