@@ -17,7 +17,6 @@ class TrackViewModel(private val interactor: TrackInteractor, url: String) : Vie
          interactor.setUrl(url)
      }
 
-
     private val state = MutableLiveData<TrackState>()
     fun getTrackState(): LiveData<TrackState> = state
 
