@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/mediatekaFragment">
+
+    <fragment
+        android:id="@+id/mediatekaFragment"
+        android:name="com.example.playlistmakerag.mediateka.MediatekaFragment"
+        android:label="MediatekaFragment" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.playlistmakerag.search.ui.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_trackDisplayActivity"
+            app:destination="@id/trackDisplayActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.playlistmakerag.settings.ui.SettingsFragment"
+        android:label="SettingsFragment" />
+    <activity
+        android:id="@+id/trackDisplayActivity"
+        android:name="com.example.playlistmakerag.player.ui.TrackDisplayActivity"
+        android:label="TrackDisplayActivity" />
+</navigation>

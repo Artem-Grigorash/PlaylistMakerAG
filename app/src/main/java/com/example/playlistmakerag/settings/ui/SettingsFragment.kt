@@ -1,37 +1,39 @@
 package com.example.playlistmakerag.settings.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.databinding.FragmentSettingsBinding
 import com.example.playlistmakerag.settings.ui.view_models.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment: Fragment() {
 
     private lateinit var themeSwitcher: SwitchMaterial
-    private lateinit var settingsBack: ImageView
     private lateinit var settingsShare: FrameLayout
     private lateinit var settingsMail: FrameLayout
     private lateinit var settingsAgreement: FrameLayout
 
     private val viewModel by viewModel<SettingsViewModel>()
+    private lateinit var binding: FragmentSettingsBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View    {
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setViews()
 
         themeSwitcher.isChecked = viewModel.getChecked()
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.onThemeClicked(checked)
-        }
-
-        settingsBack.setOnClickListener {
-            finish()
         }
 
         settingsShare.setOnClickListener {
@@ -52,10 +54,11 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setViews() {
-        themeSwitcher = findViewById(R.id.theme_switcher)
-        settingsBack = findViewById(R.id.settings_back)
-        settingsShare = findViewById(R.id.settings_share)
-        settingsMail = findViewById(R.id.settings_mail)
-        settingsAgreement = findViewById(R.id.settinds_agreement)
+        themeSwitcher = binding.themeSwitcher
+        settingsShare = binding.settingsShare
+        settingsMail = binding.settingsMail
+        settingsAgreement = binding.settindsAgreement
     }
+
+
 }

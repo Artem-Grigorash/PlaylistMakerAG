@@ -39,7 +39,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_track_display)
+        setContentView(R.layout.fragment_track_display)
 
         setViews()
         val lastTrack: Track =

@@ -4,12 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.databinding.FragmentSearchBinding
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayActivity
 import com.example.playlistmakerag.search.ui.view_models.SearchState
@@ -17,9 +27,9 @@ import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class SearchFragment : Fragment() {
 
-class SearchActivity : AppCompatActivity() {
-
+    private lateinit var binding: FragmentSearchBinding
     companion object {
         const val INPUT_TEXT = "INPUT_TEXT"
     }
@@ -27,17 +37,17 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val inputEditText = findViewById<EditText>(R.id.searchEdit)
+        val inputEditText = binding.searchEdit
         val textValue: String = inputEditText.text.toString()
         outState.putString(INPUT_TEXT, textValue)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val inputEditText = findViewById<EditText>(R.id.searchEdit)
-        val textValue = savedInstanceState.getString(INPUT_TEXT, "")
-        inputEditText.setText(textValue)
-    }
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        val inputEditText = binding.searchEdit
+//        val textValue = savedInstanceState.getString(INPUT_TEXT, "")
+//        inputEditText.setText(textValue)
+//    }
 
     private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
@@ -50,7 +60,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeholder: ImageView
     private lateinit var reloadButton: Button
-    private lateinit var searchBack: ImageView
     private lateinit var hisrory: LinearLayout
     private lateinit var historyRecycler: RecyclerView
     private lateinit var cleanHistoryButton: Button
@@ -59,21 +68,24 @@ class SearchActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewModel.getSearchState().observe(this) { state ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getSearchState().observe(viewLifecycleOwner) { state ->
             render(state)
         }
 
 
-        viewModel.getSearchStateResponse().observe(this) { res ->
+        viewModel.getSearchStateResponse().observe(viewLifecycleOwner) { res ->
             actualResponse = res
             viewModel.searchTracks(res, inputEditText.text.toString())
         }
 
-        viewModel.getHistory().observe(this) { history ->
+        viewModel.getHistory().observe(viewLifecycleOwner) { history ->
             recentTracks.clear()
             for (track in history)
                 recentTracks.add(track)
@@ -121,10 +133,6 @@ class SearchActivity : AppCompatActivity() {
             viewModel.onReloadClicked(inputEditText.text.toString())
         }
 
-        searchBack.setOnClickListener {
-            finish()
-        }
-
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 clearButton.visibility = View.GONE
@@ -149,6 +157,8 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+
+
     private fun clear() {
         inputEditText.setText("")
         tracks.clear()
@@ -163,7 +173,7 @@ class SearchActivity : AppCompatActivity() {
     private fun openTrack(track: Track) {
         viewModel.onItemClicked(track)
         val trackJson = Gson().toJson(track)
-        val intent = Intent(this, TrackDisplayActivity::class.java)
+        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
         intent.putExtra("LAST_TRACK", trackJson)
         startActivity(intent)
         recentAdapter.notifyDataSetChanged()
@@ -175,6 +185,7 @@ class SearchActivity : AppCompatActivity() {
             SearchState.Data -> showData(actualResponse)
             SearchState.Loading -> showLoading()
             SearchState.NothingFound -> showNothingFound()
+
         }
     }
 
@@ -222,24 +233,23 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setViews() {
-        recyclerView = findViewById(R.id.recyclerViewTracks)
-        inputEditText = findViewById(R.id.searchEdit)
-        clearButton = findViewById(R.id.clearIcon)
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        placeholder = findViewById(R.id.placeholderNF)
-        reloadButton = findViewById(R.id.reload_button)
-        searchBack = findViewById(R.id.search_back)
-        hisrory = findViewById(R.id.story)
-        historyRecycler = findViewById(R.id.search_history_recycler)
-        cleanHistoryButton = findViewById(R.id.clean_history_button)
-        progressBar = findViewById(R.id.progressBar)
+        recyclerView = binding.recyclerViewTracks
+        inputEditText = binding.searchEdit
+        clearButton = binding.clearIcon
+        placeholderMessage = binding.placeholderMessage
+        placeholder = binding.placeholderNF
+        reloadButton = binding.reloadButton
+        hisrory = binding.story
+        historyRecycler = binding.searchHistoryRecycler
+        cleanHistoryButton = binding.cleanHistoryButton
+        progressBar = binding.progressBar
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         historyRecycler.adapter = recentAdapter
         historyRecycler.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     private fun showMessage(text: String, additionalMessage: String, holderImage: Int) {
@@ -251,7 +261,7 @@ class SearchActivity : AppCompatActivity() {
             placeholderMessage.text = text
             placeholder.setImageResource(holderImage)
             if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+                Toast.makeText(requireContext() , additionalMessage, Toast.LENGTH_LONG)
                     .show()
             }
         } else {
@@ -260,4 +270,3 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 }
-
