@@ -3,10 +3,11 @@ package com.example.playlistmakerag.search.domain.impl
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.search.domain.HistoryInterface
 import com.example.playlistmakerag.search.domain.SearchInteractor
-import com.example.playlistmakerag.search.domain.SearchInterface
-import java.util.concurrent.Executors
+import com.example.playlistmakerag.search.data.TrackRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class SearchInteractorImpl(private val search: SearchInterface, private val history: HistoryInterface) :
+class SearchInteractorImpl(private val search: TrackRepository, private val history: HistoryInterface) :
     SearchInteractor {
 
     var responseIsEmpty = false
@@ -15,18 +16,20 @@ class SearchInteractorImpl(private val search: SearchInterface, private val hist
         return responseIsEmpty
     }
 
-    private val executor = Executors.newCachedThreadPool()
-    override fun makeRequest(expression: String, consumer: SearchInteractor.Consumer) {
-        executor.execute {
-            val searchResult = search.makeRequest(expression)
-            if (searchResult != null) {
-                responseIsEmpty = false
-                consumer.consume(searchResult)
-            } else {
-                responseIsEmpty = true
+    override fun makeRequest(expression: String): Flow<ArrayList<Track>> {
+            return search.makeRequest(expression).map { result ->
+                if (result != null) {
+                    responseIsEmpty = false
+                    result
+                } else {
+                    responseIsEmpty = true
+                    ArrayList()
+                }
             }
-        }
+
     }
+
+
 
     override fun read(): ArrayList<Track> {
         return history.read()

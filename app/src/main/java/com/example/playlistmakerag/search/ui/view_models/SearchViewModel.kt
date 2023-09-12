@@ -94,11 +94,13 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     }
 
     private fun makeRequest(text: String) {
-        interactor.makeRequest(text, object : SearchInteractor.Consumer {
-            override fun consume(response: ArrayList<Track>) {
-                res.postValue(response)
-            }
-        })
+        viewModelScope.launch{
+            interactor
+                .makeRequest(text)
+                .collect{response ->
+                    res.postValue(response)
+                }
+        }
     }
 
     fun onReloadClicked(text: String) {
