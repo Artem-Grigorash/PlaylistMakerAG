@@ -46,9 +46,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
         url = lastTrack.previewUrl
-
         setInfo(lastTrack)
-
 
         arrayBack.setOnClickListener {
             finish()
@@ -60,7 +58,6 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             viewModel.onPlayClicked()
         }
 
-
         viewModel.getTrackState().observe(this) { state ->
             render(state)
             buttonControl(state)
@@ -69,6 +66,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         viewModel.getTime().observe(this) { time ->
             updateTime(time)
         }
+
     }
 
     private fun updateTime(time: String) {
