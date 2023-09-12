@@ -15,7 +15,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
@@ -42,12 +41,6 @@ class SearchFragment : Fragment() {
         outState.putString(INPUT_TEXT, textValue)
     }
 
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//        val inputEditText = binding.searchEdit
-//        val textValue = savedInstanceState.getString(INPUT_TEXT, "")
-//        inputEditText.setText(textValue)
-//    }
 
     private val tracks = ArrayList<Track>()
     private val recentTracks = ArrayList<Track>()
@@ -75,6 +68,9 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        actualResponse= ArrayList()
+
         viewModel.getSearchState().observe(viewLifecycleOwner) { state ->
             render(state)
         }
