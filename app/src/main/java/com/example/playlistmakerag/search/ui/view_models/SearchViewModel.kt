@@ -1,15 +1,15 @@
 package com.example.playlistmakerag.search.ui.view_models
 
-
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.search.domain.SearchInteractor
-
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
 
@@ -18,8 +18,8 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-
-    private val handler = Handler(Looper.getMainLooper())
+    private var latestSearchText: String? = null
+    private var searchJob: Job? = null
 
     private var isClickAllowed = true
 
@@ -27,17 +27,25 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
 
     fun searchDebounce(text: String) {
-        val searchRunnable = Runnable {
+        if (latestSearchText == text) {
+            return
+        }
+        latestSearchText = text
+
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
             makeRequest(text)
         }
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private val state = MutableLiveData<SearchState>()
@@ -86,11 +94,13 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     }
 
     private fun makeRequest(text: String) {
-        interactor.makeRequest(text, object : SearchInteractor.Consumer {
-            override fun consume(response: ArrayList<Track>) {
-                res.postValue(response)
-            }
-        })
+        viewModelScope.launch{
+            interactor
+                .makeRequest(text)
+                .collect{response ->
+                    res.postValue(response)
+                }
+        }
     }
 
     fun onReloadClicked(text: String) {

@@ -6,7 +6,7 @@ import com.example.playlistmakerag.search.data.RetrofitProvider
 import com.example.playlistmakerag.search.data.SearchHistory
 import com.example.playlistmakerag.search.data.dto.ItunesApi
 import com.example.playlistmakerag.search.domain.HistoryInterface
-import com.example.playlistmakerag.search.domain.SearchInterface
+import com.example.playlistmakerag.search.data.SearchInterface
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
