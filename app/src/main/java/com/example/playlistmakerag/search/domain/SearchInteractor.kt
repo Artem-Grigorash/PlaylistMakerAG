@@ -9,7 +9,4 @@ interface SearchInteractor {
     fun getResponseState(): Boolean
 
     fun makeRequest(expression: String) : Flow<ArrayList<Track>?>
-//    interface Consumer {
-//        fun consume(response: ArrayList<Track>)
-//    }
 }

@@ -18,7 +18,6 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    private var latestSearchText: String? = null
     private var searchJob: Job? = null
 
     private var isClickAllowed = true
@@ -36,10 +35,6 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     }
 
     fun searchDebounce(text: String) {
-        if (latestSearchText == text) {
-            return
-        }
-        latestSearchText = text
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {

@@ -10,12 +10,6 @@ import java.util.ArrayList
 class RetrofitProvider (private val trackService: ItunesApi): SearchInterface {
 
     override suspend fun makeRequest(text: String): ArrayList<Track>? {
-//        return try {
-//            val resp = trackService.search(text).execute()
-//            resp.body()?.results
-//        } catch (e: Exception) {
-//            ArrayList<Track>()
-//        }
 
         return withContext(Dispatchers.IO) {
             try {
