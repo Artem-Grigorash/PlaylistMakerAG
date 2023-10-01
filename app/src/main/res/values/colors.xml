@@ -18,4 +18,5 @@
     <color name="search_field">#E6E8EB</color>
     <color name="text_gray">#AEAFB4</color>
     <color name="bar_blue">#6200EE</color>
+    <color name="like">#ffffff</color>
 </resources>

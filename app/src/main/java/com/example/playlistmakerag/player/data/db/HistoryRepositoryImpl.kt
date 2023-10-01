@@ -13,12 +13,12 @@ class HistoryRepositoryImpl(
     private val trackDbConvertor: TrackDbConvertor,
 ) : HistoryRepository {
 
-    override fun addTrack(track: TrackEntity) {
-        appDatabase.trackDao().insertTrackEntity(track)
+    override fun addTrack(track: Track) {
+        appDatabase.trackDao().insertTrackEntity(trackDbConvertor.map(track))
     }
 
-    override fun deleteTrack(track: TrackEntity) {
-        appDatabase.trackDao().deleteTrackEntity(track)
+    override fun deleteTrack(track: Track) {
+        appDatabase.trackDao().deleteTrackEntity(trackDbConvertor.map(track))
     }
 
     override fun historyTracks(): Flow<List<Track>> = flow {

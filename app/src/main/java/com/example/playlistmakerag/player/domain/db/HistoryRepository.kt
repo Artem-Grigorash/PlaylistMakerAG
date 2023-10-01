@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface HistoryRepository {
 
-    fun addTrack(track: TrackEntity)
+    fun addTrack(track: Track)
 
-    fun deleteTrack(track: TrackEntity)
+    fun deleteTrack(track: Track)
 
     fun historyTracks(): Flow<List<Track>>
 

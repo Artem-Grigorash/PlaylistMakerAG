@@ -13,6 +13,6 @@ val interactorModuleSearch = module {
     }
 
     single<TrackRepository> {
-        TrackRepositoryImpl(get())
+        TrackRepositoryImpl(get(),get(),get())
     }
 }

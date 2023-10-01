@@ -15,18 +15,15 @@ class TrackRepositoryImpl(
     private val movieDbConvertor: TrackDbConvertor
 ) : TrackRepository {
     override fun makeRequest(expression: String): Flow<ArrayList<Track>?> = flow {
+
+        val favorite = appDatabase.trackDao().getTracks().map { track -> movieDbConvertor.map(track) }
         val response = networkClient.makeRequest(expression)
-        with(response as TrackResponse) {
-            val data = results.map {
-                Track(it.id, it.resultType, it.image, it.title, it.description)
-            }
-            //сохраняем список фильмов в базу данных
-            saveTrack(results)
-            emit(response)
+        response?.map { track: Track ->
+            if (favorite.contains(track))
+                track.isFavorite=true
         }
-    }
-    private suspend fun saveTrack(track: TrackDao) {
-        val movieEntities =  movieDbConvertor.map(track)
-        appDatabase.trackDao().insertTrackEntity(movieEntities)
+        emit(response)
     }
 }
+
+
