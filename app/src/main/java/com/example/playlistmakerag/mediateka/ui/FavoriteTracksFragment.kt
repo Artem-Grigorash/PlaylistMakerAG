@@ -1,4 +1,4 @@
-package com.example.playlistmakerag.mediateka
+package com.example.playlistmakerag.mediateka.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

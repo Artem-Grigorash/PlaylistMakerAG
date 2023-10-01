@@ -46,7 +46,6 @@ class TrackViewModel(private val interactor: TrackInteractor, private val hictor
     fun getIsFavorite(): LiveData<Boolean> = isFavorite
 
     fun onLikeClicked(){
-
         if(isFavorite.value==true){
             isFavorite.value=false
             viewModelScope.launch {
