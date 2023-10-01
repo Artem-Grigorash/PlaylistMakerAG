@@ -49,11 +49,15 @@ class TrackViewModel(private val interactor: TrackInteractor, private val hictor
 
         if(isFavorite.value==true){
             isFavorite.value=false
-            hictoryInteractor.deleteTrack(actualTrack)
+            viewModelScope.launch {
+                hictoryInteractor.deleteTrack(actualTrack)
+            }
         }
         else{
             isFavorite.value=true
-            hictoryInteractor.addTrack(actualTrack)
+            viewModelScope.launch {
+                hictoryInteractor.addTrack(actualTrack)
+            }
         }
     }
 

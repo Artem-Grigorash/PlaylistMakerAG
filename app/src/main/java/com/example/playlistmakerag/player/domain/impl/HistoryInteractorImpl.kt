@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.Flow
 
 class HistoryInteractorImpl(private val historyRepository: HistoryRepository) : HistoryInteractor {
 
-    override fun addTrack(track: Track) {
+    override suspend fun addTrack(track: Track) {
         historyRepository.addTrack(track)
     }
 
-    override fun deleteTrack(track: Track) {
+    override suspend fun deleteTrack(track: Track) {
         historyRepository.deleteTrack(track)
     }
 

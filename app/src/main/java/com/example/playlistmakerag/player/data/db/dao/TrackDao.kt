@@ -10,13 +10,13 @@ import com.example.playlistmakerag.player.data.db.entity.TrackEntity
 @Dao
 interface TrackDao {
     @Insert(entity = TrackEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertTrackEntity(track: TrackEntity)
+    suspend fun insertTrackEntity(track: TrackEntity)
 
     @Query("SELECT * FROM track_table")
     suspend fun getTracks(): List<TrackEntity>
 
     @Delete(entity = TrackEntity::class)
-    fun deleteTrackEntity(track: TrackEntity)
+    suspend fun deleteTrackEntity(track: TrackEntity)
 
     @Query("SELECT trackId FROM track_table")
     suspend fun getId(): List<String>
