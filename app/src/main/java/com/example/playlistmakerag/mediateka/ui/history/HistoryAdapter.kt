@@ -3,15 +3,14 @@ package com.example.playlistmakerag.mediateka.ui.history
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.search.ui.TracksViewHolder
 
-class HistoryAdapter : RecyclerView.Adapter<TracksViewHolder>() {
+class HistoryAdapter : RecyclerView.Adapter<HistoryViewHolder>() {
 
     var tracks = ArrayList<Track>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder = TracksViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder = HistoryViewHolder(parent)
 
-    override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.bind(tracks.get(position))
     }
 

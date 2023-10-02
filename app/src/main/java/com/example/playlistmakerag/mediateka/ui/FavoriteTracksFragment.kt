@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -43,6 +44,7 @@ class FavoriteTracksFragment : Fragment() {
     private lateinit var placeholderMessage: TextView
     private lateinit var historyList: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var placeholderImage: ImageView
 
 
 
@@ -53,14 +55,15 @@ class FavoriteTracksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.placeholderMessage.text = getString(R.string.empty_tracks)
-        binding.placeholder.setImageResource(R.drawable.tracks_placeholder_nf)
+//        binding.placeholderMessage.text = getString(R.string.empty_tracks)
+//        binding.placeholder.setImageResource(R.drawable.tracks_placeholder_nf)
         adapter = HistoryAdapter()
 
         placeholderMessage = binding.placeholderMessage
+        placeholderImage = binding.placeholder
         historyList = binding.historyList
         progressBar = binding.progressBar3
-
+        placeholderImage.setImageResource(R.drawable.tracks_placeholder_nf)
         historyList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         historyList.adapter = adapter
 
@@ -89,6 +92,7 @@ class FavoriteTracksFragment : Fragment() {
     private fun showLoading() {
         historyList.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
+        placeholderImage.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
@@ -96,7 +100,7 @@ class FavoriteTracksFragment : Fragment() {
         historyList.visibility = View.GONE
         placeholderMessage.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
-
+        placeholderImage.visibility = View.VISIBLE
         placeholderMessage.text = message
     }
 
@@ -104,7 +108,7 @@ class FavoriteTracksFragment : Fragment() {
         historyList.visibility = View.VISIBLE
         placeholderMessage.visibility = View.GONE
         progressBar.visibility = View.GONE
-
+        placeholderImage.visibility = View.GONE
         adapter?.tracks?.clear()
         adapter?.tracks?.addAll(movies)
         adapter?.notifyDataSetChanged()
