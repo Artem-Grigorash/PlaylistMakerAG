@@ -83,8 +83,18 @@ class SearchFragment : Fragment() {
 
         viewModel.getHistory().observe(viewLifecycleOwner) { history ->
             recentTracks.clear()
-            for (track in history)
+
+            for (track in history) {
+                val favorite = appDatabase.trackDao().getTracks().map { track -> movieDbConvertor.map(track) }
+                    if (favorite.contains(track))
+                        track.isFavorite=true
                 recentTracks.add(track)
+            }
+
+
+
+
+            uyviu
             recentAdapter.notifyDataSetChanged()
         }
 

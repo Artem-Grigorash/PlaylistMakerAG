@@ -55,10 +55,8 @@ class FavoriteTracksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.placeholderMessage.text = getString(R.string.empty_tracks)
-//        binding.placeholder.setImageResource(R.drawable.tracks_placeholder_nf)
-        adapter = HistoryAdapter()
 
+        adapter = HistoryAdapter()
         placeholderMessage = binding.placeholderMessage
         placeholderImage = binding.placeholder
         historyList = binding.historyList
@@ -110,7 +108,7 @@ class FavoriteTracksFragment : Fragment() {
         progressBar.visibility = View.GONE
         placeholderImage.visibility = View.GONE
         adapter?.tracks?.clear()
-        adapter?.tracks?.addAll(movies)
+        adapter?.tracks?.addAll(movies.reversed())
         adapter?.notifyDataSetChanged()
     }
 }
