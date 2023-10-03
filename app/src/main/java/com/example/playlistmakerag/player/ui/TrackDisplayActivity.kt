@@ -50,9 +50,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         url = lastTrack.previewUrl
         setInfo(lastTrack)
 
+        viewModel.getTrack(lastTrack)
+
         lastTrack.isFavorite=viewModel.checkIsFavorite(lastTrack)
 
-        viewModel.getTrack(lastTrack)
 
         arrayBack.setOnClickListener {
             finish()
