@@ -46,8 +46,11 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         val lastTrack: Track =
             Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
+
         url = lastTrack.previewUrl
         setInfo(lastTrack)
+
+        lastTrack.isFavorite=viewModel.checkIsFavorite(lastTrack)
 
         viewModel.getTrack(lastTrack)
 

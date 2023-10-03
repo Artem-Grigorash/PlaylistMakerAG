@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmakerag.R
+import com.example.playlistmakerag.mediateka.ui.history.HistoryState
 import com.example.playlistmakerag.player.domain.TrackInteractor
 import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.models.Track
@@ -13,7 +15,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewModel(private val interactor: TrackInteractor, private val hictoryInteractor : HistoryInteractor, url: String) : ViewModel() {
+class TrackViewModel(private val interactor: TrackInteractor, private val historyInteractor : HistoryInteractor, url: String) : ViewModel() {
     companion object {
         private const val REFRESH_MILLIS = 300L
     }
@@ -49,16 +51,30 @@ class TrackViewModel(private val interactor: TrackInteractor, private val hictor
         if(isFavorite.value==true){
             isFavorite.value=false
             viewModelScope.launch {
-                hictoryInteractor.deleteTrack(actualTrack)
+                historyInteractor.deleteTrack(actualTrack)
             }
         }
         else{
             isFavorite.value=true
             viewModelScope.launch {
-                hictoryInteractor.addTrack(actualTrack)
+                historyInteractor.addTrack(actualTrack)
             }
         }
     }
+
+
+    fun checkIsFavorite(track: Track) : Boolean{
+        var favorite: List<Track> = ArrayList()
+        viewModelScope.launch {
+            historyInteractor
+                .historyTracks()
+                .collect { tracks ->
+                    favorite=tracks
+                }
+        }
+        return favorite.contains(track)
+    }
+
 
     fun delete() {
         interactor.delete()

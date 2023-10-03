@@ -118,13 +118,18 @@ class FavoriteTracksFragment : Fragment() {
         placeholderMessage.text = message
     }
 
-    private fun showContent(movies: List<Track>) {
+    private fun showContent(tracks: List<Track>) {
         historyList.visibility = View.VISIBLE
         placeholderMessage.visibility = View.GONE
         progressBar.visibility = View.GONE
         placeholderImage.visibility = View.GONE
         adapter?.tracks?.clear()
-        adapter?.tracks?.addAll(movies.reversed())
+        for (track in tracks)
+            track.isFavorite=true
+        adapter?.tracks?.addAll(tracks.reversed())
         adapter?.notifyDataSetChanged()
+    }
+    fun reloadFavorites(){
+
     }
 }
