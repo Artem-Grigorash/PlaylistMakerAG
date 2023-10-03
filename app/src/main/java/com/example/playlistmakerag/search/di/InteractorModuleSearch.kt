@@ -9,7 +9,7 @@ import org.koin.dsl.module
 val interactorModuleSearch = module {
 
     single<SearchInteractor> {
-        SearchInteractorImpl(get(),get())
+        SearchInteractorImpl(get(),get(),get(),get())
     }
 
     single<TrackRepository> {

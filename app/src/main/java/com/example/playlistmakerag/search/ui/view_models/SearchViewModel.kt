@@ -53,7 +53,9 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     fun getHistory(): LiveData<ArrayList<Track>> = history
 
     fun reloadTracks() {
-        history.value = interactor.read()
+        viewModelScope.launch {
+            history.value = interactor.read()
+        }
     }
 
 
@@ -115,16 +117,20 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     }
 
     fun clean() {
-        val recentSongs: ArrayList<Track> = interactor.read()
-        recentSongs.clear()
-        interactor.write(recentSongs)
+        viewModelScope.launch {
+            val recentSongs: ArrayList<Track> = interactor.read()
+            recentSongs.clear()
+            interactor.write(recentSongs)
+        }
     }
 
 
     fun onItemClicked(track: Track) {
-        val recentSongs: ArrayList<Track> = interactor.read()
-        addTrack(track, recentSongs)
-        interactor.write(recentSongs)
+        viewModelScope.launch {
+            val recentSongs: ArrayList<Track> = interactor.read()
+            addTrack(track, recentSongs)
+            interactor.write(recentSongs)
+        }
 
     }
 

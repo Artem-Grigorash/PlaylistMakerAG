@@ -1,5 +1,6 @@
 package com.example.playlistmakerag.mediateka.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +15,11 @@ import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentFavoriteTracksBinding
 import com.example.playlistmakerag.mediateka.ui.history.HistoryAdapter
 import com.example.playlistmakerag.mediateka.ui.history.HistoryState
-import com.example.playlistmakerag.mediateka.view_models.FavouriteTracksViewModel
-import com.example.playlistmakerag.mediateka.view_models.HistoryViewModel
+import com.example.playlistmakerag.mediateka.ui.view_models.FavouriteTracksViewModel
+import com.example.playlistmakerag.mediateka.ui.view_models.HistoryViewModel
 import com.example.playlistmakerag.player.domain.models.Track
+import com.example.playlistmakerag.player.ui.TrackDisplayActivity
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -71,6 +74,19 @@ class FavoriteTracksFragment : Fragment() {
             render(it)
         }
 
+        adapter!!.itemClickListener = { _, track ->
+            if (viewModel.clickDebounce()) {
+                openTrack(track)
+            }
+        }
+
+    }
+
+    private fun openTrack(track: Track) {
+        val trackJson = Gson().toJson(track)
+        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
+        intent.putExtra("LAST_TRACK", trackJson)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

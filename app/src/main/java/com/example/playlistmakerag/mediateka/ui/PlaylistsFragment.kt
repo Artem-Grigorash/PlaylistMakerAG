@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentPlaylistsBinding
-import com.example.playlistmakerag.mediateka.view_models.PlaylistsViewModel
+import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
