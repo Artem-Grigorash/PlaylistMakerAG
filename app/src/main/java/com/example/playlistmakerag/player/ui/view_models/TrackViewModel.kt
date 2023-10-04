@@ -21,7 +21,17 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
     }
      init {
          interactor.setUrl(url)
+
+         viewModelScope.launch {
+             historyInteractor
+                 .historyTracks()
+                 .collect { tracks ->
+                     favorite=tracks
+                 }
+         }
      }
+
+    var favorite: List<Track> = ArrayList()
 
     lateinit var actualTrack : Track
     fun getTrack(track: Track){
@@ -64,14 +74,6 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
 
 
     fun checkIsFavorite(track: Track) : Boolean{
-        var favorite: List<Track> = ArrayList()
-        viewModelScope.launch {
-            historyInteractor
-                .historyTracks()
-                .collect { tracks ->
-                    favorite=tracks
-                }
-        }
         return favorite.contains(track)
     }
 

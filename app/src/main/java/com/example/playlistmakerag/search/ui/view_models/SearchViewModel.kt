@@ -5,17 +5,35 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
+class SearchViewModel(private val interactor: SearchInteractor, private val historyInteractor : HistoryInteractor) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
+
+    init {
+
+        viewModelScope.launch {
+            historyInteractor
+                .historyTracks()
+                .collect { tracks ->
+                    favorite=tracks
+                }
+        }
+    }
+
+    var favorite: List<Track> = ArrayList()
+
+    fun checkIsFavorite(track: Track) : Boolean{
+        return favorite.contains(track)
     }
 
     private var searchJob: Job? = null
@@ -114,6 +132,14 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         if (ids.contains(track.trackId))
             place.remove(track)
         place.add(0, track)
+        val copy = ArrayList<Track>()
+        for (song in place){
+            song.isFavorite = checkIsFavorite(song)
+            copy.add(song)
+        }
+        place.clear()
+        for (song in copy)
+            place.add(song)
     }
 
     fun clean() {
