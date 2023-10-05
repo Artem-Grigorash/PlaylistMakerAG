@@ -52,7 +52,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
         viewModel.getTrack(lastTrack)
 
-        lastTrack.isFavorite=viewModel.checkIsFavorite(lastTrack)
+        viewModel.checkIsFavorite()
 
 
         arrayBack.setOnClickListener {

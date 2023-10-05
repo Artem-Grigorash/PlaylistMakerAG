@@ -22,13 +22,6 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
      init {
          interactor.setUrl(url)
 
-         viewModelScope.launch {
-             historyInteractor
-                 .historyTracks()
-                 .collect { tracks ->
-                     favorite=tracks
-                 }
-         }
      }
 
     var favorite: List<Track> = ArrayList()
@@ -36,7 +29,7 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
     lateinit var actualTrack : Track
     fun getTrack(track: Track){
         actualTrack = track
-        isFavorite.value = actualTrack.isFavorite
+        checkIsFavorite()
     }
 
     private val state = MutableLiveData<TrackState>()
@@ -73,8 +66,15 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
     }
 
 
-    fun checkIsFavorite(track: Track) : Boolean{
-        return favorite.contains(track)
+    fun checkIsFavorite(){
+        viewModelScope.launch {
+             historyInteractor
+                 .historyTracks()
+                 .collect { tracks ->
+                     favorite=tracks
+                     isFavorite.value = favorite.contains(actualTrack)
+                 }
+         }
     }
 
 
