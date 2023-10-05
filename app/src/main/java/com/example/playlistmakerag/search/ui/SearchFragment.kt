@@ -43,7 +43,7 @@ class SearchFragment : Fragment() {
 
 
     private val tracks = ArrayList<Track>()
-    private val recentTracks = ArrayList<Track>()
+    private var recentTracks = ArrayList<Track>()
     private val adapter = TracksAdapter(tracks)
     private val recentAdapter = TracksAdapter(recentTracks)
 
@@ -108,14 +108,14 @@ class SearchFragment : Fragment() {
         }
 
         adapter.itemClickListener = { _, track ->
-            viewModel.addTrack(track, recentTracks)
+            recentTracks = viewModel.addTrack(track, recentTracks)
             if (viewModel.clickDebounce()) {
                 openTrack(track)
             }
         }
 
         recentAdapter.itemClickListener = { _, track ->
-            viewModel.addTrack(track, recentTracks)
+            recentTracks = viewModel.addTrack(track, recentTracks)
             if (viewModel.clickDebounce()) {
                 openTrack(track)
             }

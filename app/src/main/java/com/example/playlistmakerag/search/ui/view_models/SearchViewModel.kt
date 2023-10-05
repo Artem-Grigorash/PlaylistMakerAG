@@ -123,7 +123,7 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
         makeRequest(text)
     }
 
-    fun addTrack(track: Track, place: ArrayList<Track>) {
+    fun addTrack(track: Track, place: ArrayList<Track>): ArrayList<Track> {
         if (place.size == 10)
             place.removeAt(9)
         val ids = ArrayList<String>()
@@ -137,9 +137,10 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
             song.isFavorite = checkIsFavorite(song)
             copy.add(song)
         }
-        place.clear()
-        for (song in copy)
-            place.add(song)
+        return copy
+//        place.clear()
+//        for (song in copy)
+//            place.add(song)
     }
 
     fun clean() {
