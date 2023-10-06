@@ -72,7 +72,7 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
                  .historyTracks()
                  .collect { tracks ->
                      favorite=tracks
-                     isFavorite.value = favorite.contains(actualTrack)
+                     isFavorite.value = tracks.map { it.trackId }.contains(actualTrack.trackId)
                  }
          }
     }
