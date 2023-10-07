@@ -18,9 +18,8 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
-
+    private val history = MutableLiveData<ArrayList<Track>>()
     init {
-
         viewModelScope.launch {
             historyInteractor
                 .historyTracks()
@@ -32,7 +31,7 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
 
     var favorite: List<Track> = ArrayList()
 
-    fun checkIsFavorite(track: Track) : Boolean{
+    private fun checkIsFavorite(track: Track) : Boolean{
         return favorite.contains(track)
     }
 
@@ -67,7 +66,6 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
     private val res = MutableLiveData<ArrayList<Track>>()
     fun getSearchStateResponse(): LiveData<ArrayList<Track>> = res
 
-    private val history = MutableLiveData<ArrayList<Track>>()
     fun getHistory(): LiveData<ArrayList<Track>> = history
 
     fun reloadTracks() {
@@ -124,7 +122,7 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
     }
 
     fun addTrack(track: Track, place: ArrayList<Track>): ArrayList<Track> {
-        if (place.size == 10)
+        if (place.size >= 10)
             place.removeAt(9)
         val ids = ArrayList<String>()
         for (element in place)
@@ -138,9 +136,6 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
             copy.add(song)
         }
         return copy
-//        place.clear()
-//        for (song in copy)
-//            place.add(song)
     }
 
     fun clean() {

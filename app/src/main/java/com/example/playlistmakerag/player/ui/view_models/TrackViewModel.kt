@@ -66,7 +66,7 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
     }
 
 
-    fun checkIsFavorite(){
+    private fun checkIsFavorite(){
         viewModelScope.launch {
              historyInteractor
                  .historyTracks()
