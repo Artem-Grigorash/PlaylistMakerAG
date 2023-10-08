@@ -26,12 +26,8 @@ class HistoryRepositoryImpl(
         emit(convertFromTrackEntity(tracks))
     }
 
-
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
         return tracks.map { track -> trackDbConvertor.map(track) }
     }
 
-//    private fun convertFromTrackEntitySingle (track: TrackEntity): Track{
-//        return trackDbConvertor.map(track)
-//    }
 }

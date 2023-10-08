@@ -26,20 +26,6 @@ import org.koin.core.parameter.parametersOf
 
 class FavoriteTracksFragment : Fragment() {
 
-    companion object {
-        private const val NUMBER = "number"
-
-        fun newInstance(number: Int) = FavoriteTracksFragment().apply {
-            arguments = Bundle().apply {
-                putInt(NUMBER, number)
-            }
-        }
-    }
-
-    private val favoriteTracksViewModel: FavouriteTracksViewModel by viewModel {
-        parametersOf()
-    }
-
     private lateinit var binding: FragmentFavoriteTracksBinding
     private val viewModel by viewModel<HistoryViewModel>()
     private var adapter: HistoryAdapter? = null
@@ -124,12 +110,17 @@ class FavoriteTracksFragment : Fragment() {
         progressBar.visibility = View.GONE
         placeholderImage.visibility = View.GONE
         adapter?.tracks?.clear()
-        for (track in tracks)
-            track.isFavorite=true
         adapter?.tracks?.addAll(tracks.reversed())
         adapter?.notifyDataSetChanged()
     }
-    fun reloadFavorites(){
 
+    companion object {
+        private const val NUMBER = "number"
+
+        fun newInstance(number: Int) = FavoriteTracksFragment().apply {
+            arguments = Bundle().apply {
+                putInt(NUMBER, number)
+            }
+        }
     }
 }

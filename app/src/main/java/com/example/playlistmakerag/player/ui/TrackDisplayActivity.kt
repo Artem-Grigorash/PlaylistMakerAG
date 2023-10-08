@@ -36,7 +36,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
     private lateinit var country: TextView
     private lateinit var play: FloatingActionButton
     private lateinit var progress: TextView
-    private lateinit var like : FloatingActionButton
+    private lateinit var like : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
