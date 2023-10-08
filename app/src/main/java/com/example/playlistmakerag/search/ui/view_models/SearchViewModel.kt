@@ -70,7 +70,7 @@ class SearchViewModel(private val interactor: SearchInteractor, private val hist
 
     fun reloadTracks() {
         viewModelScope.launch {
-            history.value = interactor.read()
+            history.value = interactor.read().distinct().toCollection(ArrayList())
         }
     }
 
