@@ -216,7 +216,7 @@
         app:layout_constraintTop_toTopOf="@+id/play_button"
         app:srcCompat="@drawable/add_track" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
         android:id="@+id/like_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -225,9 +225,6 @@
         app:fabCustomSize="50dp"
         app:maxImageSize="50dp"
         android:foregroundGravity="center"
-        android:backgroundTint="@color/text_gray"
-        app:backgroundTint="@color/button_white"
-        app:tint="@color/button_white"
         app:layout_constraintBottom_toBottomOf="@+id/play_button"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintTop_toTopOf="@+id/play_button"

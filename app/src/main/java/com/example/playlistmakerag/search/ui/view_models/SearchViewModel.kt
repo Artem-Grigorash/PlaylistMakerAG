@@ -5,20 +5,36 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.search.domain.SearchInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
+class SearchViewModel(private val interactor: SearchInteractor, private val historyInteractor : HistoryInteractor) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
+    private val history = MutableLiveData<ArrayList<Track>>()
+    init {
+        viewModelScope.launch {
+            historyInteractor
+                .historyTracks()
+                .collect { tracks ->
+                    favorite=tracks
+                }
+        }
+    }
 
-    private var latestSearchText: String? = null
+    var favorite: List<Track> = ArrayList()
+
+    private fun checkIsFavorite(track: Track) : Boolean{
+        return favorite.contains(track)
+    }
+
     private var searchJob: Job? = null
 
     private var isClickAllowed = true
@@ -36,10 +52,6 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     }
 
     fun searchDebounce(text: String) {
-        if (latestSearchText == text) {
-            return
-        }
-        latestSearchText = text
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -54,11 +66,12 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
     private val res = MutableLiveData<ArrayList<Track>>()
     fun getSearchStateResponse(): LiveData<ArrayList<Track>> = res
 
-    private val history = MutableLiveData<ArrayList<Track>>()
     fun getHistory(): LiveData<ArrayList<Track>> = history
 
     fun reloadTracks() {
-        history.value = interactor.read()
+        viewModelScope.launch {
+            history.value = interactor.read().distinct().toCollection(ArrayList())
+        }
     }
 
 
@@ -108,25 +121,38 @@ class SearchViewModel(private val interactor: SearchInteractor) : ViewModel() {
         makeRequest(text)
     }
 
-    fun addTrack(track: Track, place: ArrayList<Track>) {
-        if (place.size == 10)
+    fun addTrack(track: Track, place: ArrayList<Track>): ArrayList<Track> {
+        if (place.size >= 10)
             place.removeAt(9)
-        if (place.contains(track))
+        val ids = ArrayList<String>()
+        for (element in place)
+            ids.add(element.trackId)
+        if (ids.contains(track.trackId))
             place.remove(track)
         place.add(0, track)
+        val copy = ArrayList<Track>()
+        for (song in place){
+            song.isFavorite = checkIsFavorite(song)
+            copy.add(song)
+        }
+        return copy
     }
 
     fun clean() {
-        val recentSongs: ArrayList<Track> = interactor.read()
-        recentSongs.clear()
-        interactor.write(recentSongs)
+        viewModelScope.launch {
+            val recentSongs: ArrayList<Track> = interactor.read()
+            recentSongs.clear()
+            interactor.write(recentSongs)
+        }
     }
 
 
     fun onItemClicked(track: Track) {
-        val recentSongs: ArrayList<Track> = interactor.read()
-        addTrack(track, recentSongs)
-        interactor.write(recentSongs)
+        viewModelScope.launch {
+            val recentSongs: ArrayList<Track> = interactor.read()
+            addTrack(track, recentSongs)
+            interactor.write(recentSongs)
+        }
 
     }
 

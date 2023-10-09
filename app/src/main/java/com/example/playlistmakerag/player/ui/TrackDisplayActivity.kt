@@ -36,6 +36,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
     private lateinit var country: TextView
     private lateinit var play: FloatingActionButton
     private lateinit var progress: TextView
+    private lateinit var like : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +46,11 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         val lastTrack: Track =
             Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
+
         url = lastTrack.previewUrl
         setInfo(lastTrack)
+
+        viewModel.getTrack(lastTrack)
 
         arrayBack.setOnClickListener {
             finish()
@@ -58,6 +62,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             viewModel.onPlayClicked()
         }
 
+        like.setOnClickListener {
+            viewModel.onLikeClicked()
+        }
+
         viewModel.getTrackState().observe(this) { state ->
             render(state)
             buttonControl(state)
@@ -67,10 +75,21 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             updateTime(time)
         }
 
+        viewModel.getIsFavorite().observe(this) {isFavorite ->
+            updateLikeButton(isFavorite)
+        }
+
     }
 
     private fun updateTime(time: String) {
         progress.text = time
+    }
+
+    private fun updateLikeButton(isFavorite: Boolean){
+        if (isFavorite)
+            like.setImageResource(R.drawable.liked)
+        else
+            like.setImageResource(R.drawable.like)
     }
 
     private fun buttonControl(state: TrackState) {
@@ -92,6 +111,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         country = findViewById(R.id.country_value)
         play = findViewById(R.id.play_button)
         progress = findViewById(R.id.time)
+        like = findViewById(R.id.like_button)
     }
 
     private fun setInfo(

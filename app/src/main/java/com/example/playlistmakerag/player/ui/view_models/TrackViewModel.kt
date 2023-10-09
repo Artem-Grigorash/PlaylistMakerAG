@@ -4,20 +4,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmakerag.R
+import com.example.playlistmakerag.mediateka.ui.history.HistoryState
 import com.example.playlistmakerag.player.domain.TrackInteractor
+import com.example.playlistmakerag.player.domain.db.HistoryInteractor
+import com.example.playlistmakerag.player.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewModel(private val interactor: TrackInteractor, url: String) : ViewModel() {
+class TrackViewModel(private val interactor: TrackInteractor, private val historyInteractor : HistoryInteractor, url: String) : ViewModel() {
     companion object {
         private const val REFRESH_MILLIS = 300L
     }
      init {
          interactor.setUrl(url)
+
      }
+
+    var favorite: List<Track> = ArrayList()
+
+    lateinit var actualTrack : Track
+    fun getTrack(track: Track){
+        actualTrack = track
+        checkIsFavorite()
+    }
 
     private val state = MutableLiveData<TrackState>()
     fun getTrackState(): LiveData<TrackState> = state
@@ -33,6 +46,37 @@ class TrackViewModel(private val interactor: TrackInteractor, url: String) : Vie
         else
             state.value = TrackState.Play
     }
+
+    private val isFavorite  = MutableLiveData<Boolean>()
+    fun getIsFavorite(): LiveData<Boolean> = isFavorite
+
+    fun onLikeClicked(){
+        if(isFavorite.value==true){
+            isFavorite.value=false
+            viewModelScope.launch {
+                historyInteractor.deleteTrack(actualTrack)
+            }
+        }
+        else{
+            isFavorite.value=true
+            viewModelScope.launch {
+                historyInteractor.addTrack(actualTrack)
+            }
+        }
+    }
+
+
+    private fun checkIsFavorite(){
+        viewModelScope.launch {
+             historyInteractor
+                 .historyTracks()
+                 .collect { tracks ->
+                     favorite=tracks
+                     isFavorite.value = tracks.map { it.trackId }.contains(actualTrack.trackId)
+                 }
+         }
+    }
+
 
     fun delete() {
         interactor.delete()

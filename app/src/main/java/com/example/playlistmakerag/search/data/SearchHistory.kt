@@ -1,6 +1,8 @@
 package com.example.playlistmakerag.search.data
 
 import android.content.SharedPreferences
+import com.example.playlistmakerag.player.data.converters.TrackDbConvertor
+import com.example.playlistmakerag.player.data.db.AppDatabase
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.search.domain.HistoryInterface
 import com.google.gson.Gson

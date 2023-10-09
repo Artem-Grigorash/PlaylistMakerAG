@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/mediatekaFragment"
-        android:name="com.example.playlistmakerag.mediateka.MediatekaFragment"
+        android:name="com.example.playlistmakerag.mediateka.ui.MediatekaFragment"
         android:label="MediatekaFragment" />
     <fragment
         android:id="@+id/searchFragment"

@@ -1,18 +1,18 @@
 package com.example.playlistmakerag.search.di
 
-import com.example.playlistmakerag.search.data.TrackRepository
+import com.example.playlistmakerag.search.domain.TrackRepository
 import com.example.playlistmakerag.search.domain.SearchInteractor
-import com.example.playlistmakerag.search.domain.TrackRepositoryImpl
+import com.example.playlistmakerag.search.data.TrackRepositoryImpl
 import com.example.playlistmakerag.search.domain.impl.SearchInteractorImpl
 import org.koin.dsl.module
 
 val interactorModuleSearch = module {
 
     single<SearchInteractor> {
-        SearchInteractorImpl(get(),get())
+        SearchInteractorImpl(get(),get(),get(),get())
     }
 
     single<TrackRepository> {
-        TrackRepositoryImpl(get())
+        TrackRepositoryImpl(get(),get(),get())
     }
 }
