@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentPlaylistsBinding
 import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistsViewModel
@@ -40,6 +42,10 @@ class PlaylistsFragment: Fragment() {
         binding.placeholder.setImageResource(R.drawable.tracks_placeholder_nf)
         binding.restart.visibility = View.VISIBLE
         binding.restart.text = getString(R.string.new_playlist)
+
+        view.findViewById<Button>(R.id.restart).setOnClickListener {
+            findNavController().navigate(R.id.action_mediatekaFragment_to_addPlaylistFragment)
+        }
 
     }
 }

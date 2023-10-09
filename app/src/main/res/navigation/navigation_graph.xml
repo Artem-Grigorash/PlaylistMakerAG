@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
     app:startDestination="@id/mediatekaFragment">
 
     <fragment
         android:id="@+id/mediatekaFragment"
         android:name="com.example.playlistmakerag.mediateka.ui.MediatekaFragment"
-        android:label="MediatekaFragment" />
+        android:label="MediatekaFragment" >
+        <action
+            android:id="@+id/action_mediatekaFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.playlistmakerag.search.ui.SearchFragment"
@@ -24,4 +29,9 @@
         android:id="@+id/trackDisplayActivity"
         android:name="com.example.playlistmakerag.player.ui.TrackDisplayActivity"
         android:label="TrackDisplayActivity" />
+    <fragment
+        android:id="@+id/addPlaylistFragment"
+        android:name="com.example.playlistmakerag.mediateka.ui.AddPlaylistFragment"
+        android:label="fragment_add_playlist"
+        tools:layout="@layout/fragment_add_playlist" />
 </navigation>
