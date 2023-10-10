@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mediateka.ui.AddPlaylistFragment">
+    tools:context=".mediateka.ui.AddPlaylistFragment"
+    android:background="@color/white_dark">
 
 
     <TextView
@@ -16,7 +17,7 @@
         android:paddingTop="5dp"
         android:text="@string/new_playlist"
         app:layout_constraintBottom_toTopOf="@+id/bottomBorder"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -70,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/backButton"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/array_back"
@@ -121,7 +122,7 @@
         style="@style/SaveTextStyle"
         android:clickable="true"
         android:textAllCaps="false"
-        android:backgroundTint="@color/permanentGray"
+        android:enabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder" />

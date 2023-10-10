@@ -33,5 +33,9 @@
         android:id="@+id/addPlaylistFragment"
         android:name="com.example.playlistmakerag.mediateka.ui.AddPlaylistFragment"
         android:label="fragment_add_playlist"
-        tools:layout="@layout/fragment_add_playlist" />
+        tools:layout="@layout/fragment_add_playlist" >
+        <action
+            android:id="@+id/action_addPlaylistFragment_to_mediatekaFragment"
+            app:destination="@id/mediatekaFragment" />
+    </fragment>
 </navigation>
