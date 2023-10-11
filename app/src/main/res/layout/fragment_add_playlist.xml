@@ -53,13 +53,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/add_picture"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintBottom_toBottomOf="@+id/pickImage"
+        app:layout_constraintEnd_toEndOf="@+id/pickImage"
+        app:layout_constraintStart_toStartOf="@+id/pickImage"
+        app:layout_constraintTop_toTopOf="@+id/pickImage" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/pickImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="h,1:1"
@@ -94,7 +94,7 @@
         android:maxLength="25"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/pickImage" />
 
     <EditText
         android:id="@+id/editDescription"
