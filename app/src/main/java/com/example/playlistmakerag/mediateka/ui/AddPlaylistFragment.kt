@@ -14,12 +14,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentAddPlaylistBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.io.FileOutputStream
 
@@ -31,6 +36,9 @@ class AddPlaylistFragment : Fragment() {
     private lateinit var descriptionEditText: EditText
     private lateinit var saveButton: Button
     private lateinit var backButton: ImageView
+
+    lateinit var confirmDialog: MaterialAlertDialogBuilder
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
@@ -63,12 +71,18 @@ class AddPlaylistFragment : Fragment() {
         }
         nameEditText.addTextChangedListener(textWatcher)
 
-
+        var flag = false
         //регистрируем событие, которое вызывает photo picker
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
                 if (uri != null) {
-                    binding.pickImage.setImageURI(uri)
+                    flag=true
+//                    binding.pickImage.setImageURI(uri)
+                    Glide.with(requireContext())
+                        .load(uri)
+                        .placeholder(R.drawable.tracks_place_holder)
+                        .transform(RoundedCorners(10))
+                        .into(binding.pickImage)
                     saveImageToPrivateStorage(uri)
                 } else {
                     Log.d("PhotoPicker", "No media selected")
@@ -79,6 +93,37 @@ class AddPlaylistFragment : Fragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
+        binding.saveButton.setOnClickListener{
+            showMessage("Плейлист ${nameEditText.text} создан")
+            findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+        }
+
+        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Завершить создание плейлиста?")
+            .setNeutralButton("Отмена") { dialog, which ->
+                // ничего не делаем
+            }.setPositiveButton("Завершить") { dialog, which ->
+                // сохраняем изменения и выходим
+                findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+            }
+
+        binding.backButton.setOnClickListener {
+            if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
+                confirmDialog.show()
+            else
+                findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+        }
+
+        // добавление слушателя для обработки нажатия на кнопку Back
+//        onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                confirmDialog.show()
+//            }
+//        })
+    }
+
+    private fun showMessage(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 
     private fun saveImageToPrivateStorage(uri: Uri) {
