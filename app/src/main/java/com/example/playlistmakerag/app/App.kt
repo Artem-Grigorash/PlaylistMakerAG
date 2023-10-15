@@ -2,6 +2,7 @@ package com.example.playlistmakerag.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmakerag.mediateka.di.repositoryModuleMediateka
 import com.example.playlistmakerag.mediateka.di.viewModelModuleMediateka
 import com.example.playlistmakerag.player.di.dataModulePlayer
 import com.example.playlistmakerag.player.di.interactorModulePlayer
@@ -43,7 +44,7 @@ class App : Application() {
             modules(dataModulePlayer, dataModuleSearch, dataModuleSettings, dataModuleSharing,
                 interactorModuleSharing, interactorModuleSearch, interactorModuleSettings, interactorModulePlayer,
                 viewModelModuleSearch, viewModelModuleSettings, viewModelModulePlayer, viewModelModuleMediateka,
-            repositoryModule)
+            repositoryModule, repositoryModuleMediateka)
         }
 
     }

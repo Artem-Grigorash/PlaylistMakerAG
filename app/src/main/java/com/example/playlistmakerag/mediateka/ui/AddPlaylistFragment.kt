@@ -77,7 +77,6 @@ class AddPlaylistFragment : Fragment() {
                 //обрабатываем событие выбора пользователем фотографии
                 if (uri != null) {
                     flag=true
-//                    binding.pickImage.setImageURI(uri)
                     Glide.with(requireContext())
                         .load(uri)
                         .placeholder(R.drawable.tracks_place_holder)
@@ -115,11 +114,11 @@ class AddPlaylistFragment : Fragment() {
         }
 
         // добавление слушателя для обработки нажатия на кнопку Back
-//        onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                confirmDialog.show()
-//            }
-//        })
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                confirmDialog.show()
+            }
+        })
     }
 
     private fun showMessage(text: String) {
