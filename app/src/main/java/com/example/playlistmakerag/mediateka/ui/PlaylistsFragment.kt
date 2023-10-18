@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentPlaylistsBinding
 import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistsViewModel
@@ -42,6 +43,11 @@ class PlaylistsFragment: Fragment() {
         binding.placeholder.setImageResource(R.drawable.tracks_placeholder_nf)
         binding.restart.visibility = View.VISIBLE
         binding.restart.text = getString(R.string.new_playlist)
+
+        val recyclerView = binding.recyclerView
+
+        recyclerView.layoutManager = GridLayoutManager(requireContext(),  2)
+        recyclerView.adapter = PlaylistAdapter()
 
         view.findViewById<Button>(R.id.restart).setOnClickListener {
             findNavController().navigate(R.id.action_mediatekaFragment_to_addPlaylistFragment)
