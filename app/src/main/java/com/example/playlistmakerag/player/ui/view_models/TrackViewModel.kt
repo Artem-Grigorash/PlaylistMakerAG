@@ -19,7 +19,6 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
     }
      init {
          interactor.setUrl(url)
-
      }
 
     var favorite: List<Track> = ArrayList()

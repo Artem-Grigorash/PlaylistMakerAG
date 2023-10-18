@@ -24,7 +24,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentAddPlaylistBinding
+import com.example.playlistmakerag.mediateka.ui.view_models.AddPlaylistViewModel
+import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
@@ -39,6 +42,7 @@ class AddPlaylistFragment : Fragment() {
 
     lateinit var confirmDialog: MaterialAlertDialogBuilder
 
+    private val viewModel by viewModel<AddPlaylistViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
@@ -70,17 +74,18 @@ class AddPlaylistFragment : Fragment() {
             }
         }
         nameEditText.addTextChangedListener(textWatcher)
-
+        var actualUri: Uri? = null
         var flag = false
         //регистрируем событие, которое вызывает photo picker
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
+            actualUri=uri
                 if (uri != null) {
                     flag=true
                     Glide.with(requireContext())
                         .load(uri)
                         .placeholder(R.drawable.tracks_place_holder)
-                        .transform(RoundedCorners(10))
+                        .transform(RoundedCorners(R.dimen.corner_radius))
                         .into(binding.pickImage)
                     saveImageToPrivateStorage(uri)
                 } else {
@@ -93,6 +98,7 @@ class AddPlaylistFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener{
+            viewModel.savePlaylist(nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri)
             showMessage("Плейлист ${nameEditText.text} создан")
             findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
         }
