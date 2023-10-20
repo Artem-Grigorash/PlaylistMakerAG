@@ -8,8 +8,11 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentPlaylistsBinding
+import com.example.playlistmakerag.mediateka.domain.models.Playlist
+import com.example.playlistmakerag.mediateka.ui.view_models.HistoryViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -25,9 +28,11 @@ class PlaylistsFragment: Fragment() {
         }
     }
 
-    private val playlistsViewModel: PlaylistsViewModel by viewModel {
-        parametersOf()
-    }
+    private var adapter: PlaylistAdapter? = null
+    private lateinit var recyclerView: RecyclerView
+
+    private val viewModel by viewModel<PlaylistsViewModel>()
+
 
     private lateinit var binding: FragmentPlaylistsBinding
 
@@ -44,14 +49,60 @@ class PlaylistsFragment: Fragment() {
         binding.restart.visibility = View.VISIBLE
         binding.restart.text = getString(R.string.new_playlist)
 
-        val recyclerView = binding.recyclerView
+        adapter = PlaylistAdapter()
+        recyclerView = binding.recyclerView
+
+        viewModel.fillData()
+
+        viewModel.observeState().observe(viewLifecycleOwner) {
+            render(it)
+        }
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(),  2)
-        recyclerView.adapter = PlaylistAdapter()
+        recyclerView.adapter = adapter
 
         view.findViewById<Button>(R.id.restart).setOnClickListener {
             findNavController().navigate(R.id.action_mediatekaFragment_to_addPlaylistFragment)
         }
 
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+        recyclerView.adapter = null
+    }
+
+    private fun render(state: PlaylistsState) {
+        when (state) {
+            is PlaylistsState.Content -> showContent(state.playlists)
+            is PlaylistsState.Empty -> showEmpty()
+            is PlaylistsState.Loading -> showLoading()
+        }
+    }
+
+    private fun showLoading() {
+        binding.restart.visibility = View.VISIBLE
+        binding.placeholder.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+    }
+
+    private fun showEmpty() {
+        binding.restart.visibility = View.VISIBLE
+        binding.placeholder.visibility = View.VISIBLE
+        binding.placeholderMessage.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+    }
+
+    private fun showContent(movies: List<Playlist>) {
+        binding.restart.visibility = View.VISIBLE
+        binding.placeholder.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.GONE
+
+        adapter?.playlists?.clear()
+        adapter?.playlists?.addAll(movies)
+        adapter?.notifyDataSetChanged()
     }
 }

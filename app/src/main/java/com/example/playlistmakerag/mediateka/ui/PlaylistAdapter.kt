@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
 
-class PlaylistAdapter(private val playlists: List<Playlist>): RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(): RecyclerView.Adapter<PlaylistViewHolder>() {
+
+    var playlists = ArrayList<Playlist>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.tracks_view, parent, false)
         return PlaylistViewHolder(view)

@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
     android:background="@null"
-    card_view:cardElevation="5dp">
+    card_view:cardElevation="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,23 +16,22 @@
         android:orientation="vertical"
         android:paddingHorizontal="13dp">
 
+        <ImageView
+            android:id="@+id/trackPicture"
+            android:layout_gravity="start"
+            android:layout_height="350dp"
+            android:layout_width="match_parent"
+            app:srcCompat="@drawable/tracks_place_holder"/>
+
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/classic_text"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:text="ЗАГОЛОВОК ЗАГОЛОВОК ЗАГОЛОВОК ЗАГОЛОВОК" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/black" />
+            android:maxLines="1"
+            style="@style/ClassicTextStyle"
+            tools:text="Заголовок" />
 
         <TextView
             android:id="@+id/description"
@@ -41,9 +41,8 @@
             android:layout_marginBottom="14dp"
             android:ellipsize="end"
             android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            tools:text="ОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписаниеОписание" />
+            style="@style/ClassicTextStyle"
+            tools:text="Описание" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
