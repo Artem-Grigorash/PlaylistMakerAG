@@ -2,6 +2,7 @@ package com.example.playlistmakerag.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmakerag.mediateka.di.interactorModuleMediateka
 import com.example.playlistmakerag.mediateka.di.repositoryModuleMediateka
 import com.example.playlistmakerag.mediateka.di.viewModelModuleMediateka
 import com.example.playlistmakerag.player.di.dataModulePlayer
@@ -42,7 +43,7 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(dataModulePlayer, dataModuleSearch, dataModuleSettings, dataModuleSharing,
-                interactorModuleSharing, interactorModuleSearch, interactorModuleSettings, interactorModulePlayer,
+                interactorModuleSharing, interactorModuleSearch, interactorModuleSettings, interactorModulePlayer, interactorModuleMediateka,
                 viewModelModuleSearch, viewModelModuleSettings, viewModelModulePlayer, viewModelModuleMediateka,
             repositoryModule, repositoryModuleMediateka)
         }
