@@ -1,6 +1,5 @@
 package com.example.playlistmakerag.mediateka.data.db.entity
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,7 +8,7 @@ data class PlaylistEntity(
     @PrimaryKey
     val playlistName: String,
     val playlistDescription: String?,
-    val imageUri: Uri?,
+    val imageUri: String?,
     val trackAmount: Int,
-    val addedTracks: ArrayList<String>
+    val addedTracks: String?
 )
