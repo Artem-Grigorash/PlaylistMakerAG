@@ -122,7 +122,10 @@ class AddPlaylistFragment : Fragment() {
         // добавление слушателя для обработки нажатия на кнопку Back
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                confirmDialog.show()
+                if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
+                    confirmDialog.show()
+                else
+                    findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
             }
         })
     }
