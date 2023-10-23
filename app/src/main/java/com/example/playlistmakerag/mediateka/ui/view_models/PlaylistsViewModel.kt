@@ -31,11 +31,11 @@ class PlaylistsViewModel(
         }
     }
 
-    private fun processResult(movies: List<Playlist>) {
-        if (movies.isEmpty()) {
+    private fun processResult(playlists: List<Playlist>) {
+        if (playlists.isEmpty()) {
             renderState(PlaylistsState.Empty(context.getString(R.string.nothing_searched_yet)))
         } else {
-            renderState(PlaylistsState.Content(movies))
+            renderState(PlaylistsState.Content(playlists))
         }
     }
 

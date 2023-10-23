@@ -87,6 +87,8 @@ class PlaylistsFragment: Fragment() {
         binding.placeholder.visibility = View.GONE
         binding.placeholderMessage.visibility = View.GONE
         recyclerView.visibility = View.GONE
+        adapter?.notifyDataSetChanged()
+
     }
 
     private fun showEmpty() {
@@ -94,6 +96,8 @@ class PlaylistsFragment: Fragment() {
         binding.placeholder.visibility = View.VISIBLE
         binding.placeholderMessage.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
+        adapter?.notifyDataSetChanged()
+
     }
 
     private fun showContent(movies: List<Playlist>) {
