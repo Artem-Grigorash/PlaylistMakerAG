@@ -20,11 +20,13 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI.navigateUp
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentAddPlaylistBinding
 import com.example.playlistmakerag.mediateka.ui.view_models.AddPlaylistViewModel
+import com.example.playlistmakerag.root.MainActivity
 import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -109,14 +111,22 @@ class AddPlaylistFragment : Fragment() {
                 // ничего не делаем
             }.setPositiveButton("Завершить") { dialog, which ->
                 // сохраняем изменения и выходим
-                findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+                findNavController().navigateUp()
+//                if(requireActivity()==MainActivity())
+//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+//                else
+//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_searchFragment)
             }
 
         binding.backButton.setOnClickListener {
             if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
                 confirmDialog.show()
             else
-                findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+                findNavController().navigateUp()
+//                if(requireActivity()==MainActivity())
+//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+//                else
+//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_searchFragment)
         }
 
         // добавление слушателя для обработки нажатия на кнопку Back
@@ -125,7 +135,11 @@ class AddPlaylistFragment : Fragment() {
                 if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
                     confirmDialog.show()
                 else
-                    findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+                    findNavController().navigateUp()
+//                    if(requireActivity()==MainActivity())
+//                        findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+//                    else
+//                        findNavController().navigate(R.id.action_addPlaylistFragment_to_searchFragment)
             }
         })
     }

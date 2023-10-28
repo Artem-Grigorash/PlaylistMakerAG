@@ -62,6 +62,13 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
         }
     }
 
+    fun addToPlaylist(){
+        //show dialog
+//        viewModelScope.launch {
+//            historyInteractor.addToPlaylist(actualTrack)
+//        }
+    }
+
 
     private fun checkIsFavorite(){
         viewModelScope.launch {

@@ -1,13 +1,21 @@
 package com.example.playlistmakerag.player.ui
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmakerag.R
+import com.example.playlistmakerag.mediateka.ui.AddPlaylistFragment
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.view_models.TrackState
 import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,6 +45,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
     private lateinit var play: FloatingActionButton
     private lateinit var progress: TextView
     private lateinit var like : ImageView
+    private lateinit var addTrackButton: FloatingActionButton
+    private lateinit var mainPart:  ConstraintLayout
+    private lateinit var overlay: View
+    private lateinit var newPlaylist: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +78,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             viewModel.onLikeClicked()
         }
 
+        addTrackButton.setOnClickListener {
+            viewModel.addToPlaylist()
+        }
+
         viewModel.getTrackState().observe(this) { state ->
             render(state)
             buttonControl(state)
@@ -78,6 +94,51 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         viewModel.getIsFavorite().observe(this) {isFavorite ->
             updateLikeButton(isFavorite)
         }
+
+        newPlaylist.setOnClickListener {
+            if (savedInstanceState == null)
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.fragment_container_view, AddPlaylistFragment())
+                    .commit()
+        }
+
+
+
+
+
+
+        val bottomSheetContainer = findViewById<LinearLayout>(R.id.standard_bottom_sheet)
+
+        //  BottomSheetBehavior.from() — вспомогательная функция, позволяющая получить объект BottomSheetBehavior, связанный с контейнером BottomSheet
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        addTrackButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // newState — новое состояние BottomSheet
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+
+
+
+
+
 
     }
 
@@ -112,6 +173,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         play = findViewById(R.id.play_button)
         progress = findViewById(R.id.time)
         like = findViewById(R.id.like_button)
+        addTrackButton = findViewById(R.id.add_track_button)
+        mainPart=findViewById(R.id.mainPart)
+        overlay = findViewById(R.id.overlay)
+        newPlaylist = findViewById(R.id.new_playlist)
     }
 
     private fun setInfo(

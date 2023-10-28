@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_searchFragment_to_trackDisplayActivity"
             app:destination="@id/trackDisplayActivity" />
+        <action
+            android:id="@+id/action_searchFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -37,5 +40,8 @@
         <action
             android:id="@+id/action_addPlaylistFragment_to_mediatekaFragment"
             app:destination="@id/mediatekaFragment" />
+        <action
+            android:id="@+id/action_addPlaylistFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 </navigation>
