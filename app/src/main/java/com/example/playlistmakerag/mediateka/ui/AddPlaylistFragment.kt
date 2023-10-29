@@ -87,7 +87,7 @@ class AddPlaylistFragment : Fragment() {
                     Glide.with(requireContext())
                         .load(uri)
                         .placeholder(R.drawable.tracks_place_holder)
-                        .transform(RoundedCorners(R.dimen.corner_radius))
+//                        .transform(RoundedCorners(R.dimen.small_corner_radius))
                         .into(binding.pickImage)
                     saveImageToPrivateStorage(uri)
                 } else {

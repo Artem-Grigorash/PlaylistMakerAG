@@ -104,6 +104,7 @@ class PlaylistsFragment: Fragment() {
         binding.restart.visibility = View.VISIBLE
         binding.placeholder.visibility = View.GONE
         binding.placeholderMessage.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
 
         adapter?.playlists?.clear()
         adapter?.playlists?.addAll(movies)

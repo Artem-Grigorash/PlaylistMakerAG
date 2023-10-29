@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
 
-class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class PlaylistOnTrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     private val title: TextView = itemView.findViewById(R.id.title)
     private val description: TextView = itemView.findViewById(R.id.description)
@@ -22,7 +22,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
             Glide.with(itemView)
                 .load(playlist.imageUri)
                 .placeholder(R.drawable.tracks_place_holder)
-//                .transform(RoundedCorners(R.dimen.small_corner_radius))
+                .transform(RoundedCorners(R.dimen.corner_radius))
                 .into(picture)
     }
 }
