@@ -10,8 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.ui.AddPlaylistFragment
+import com.example.playlistmakerag.mediateka.ui.PlaylistAdapter
+import com.example.playlistmakerag.mediateka.ui.PlaylistOnTrackAdapter
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.view_models.TrackState
 import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
@@ -49,6 +54,8 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
     private lateinit var mainPart:  ConstraintLayout
     private lateinit var overlay: View
     private lateinit var newPlaylist: Button
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: PlaylistOnTrackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,14 +109,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
                     .commit()
         }
 
-
-
-
-
-
         val bottomSheetContainer = findViewById<LinearLayout>(R.id.standard_bottom_sheet)
-
-        //  BottomSheetBehavior.from() — вспомогательная функция, позволяющая получить объект BottomSheetBehavior, связанный с контейнером BottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -120,7 +120,6 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                // newState — новое состояние BottomSheet
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         overlay.visibility = View.GONE
@@ -134,12 +133,9 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-
-
-
-
-
-
+        adapter = PlaylistOnTrackAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
     }
 
     private fun updateTime(time: String) {
@@ -177,6 +173,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         mainPart=findViewById(R.id.mainPart)
         overlay = findViewById(R.id.overlay)
         newPlaylist = findViewById(R.id.new_playlist)
+        recyclerView = findViewById(R.id.recyclerView)
     }
 
     private fun setInfo(

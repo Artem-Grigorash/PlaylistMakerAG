@@ -14,7 +14,7 @@
         android:layout_height="30dp"
         android:paddingStart="55dp"
         android:paddingBottom="10dp"
-        tools:text="Very important news text" />
+        tools:text="Name of plalist" />
 
     <TextView
         android:id="@+id/artistName"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="55dp"
         android:paddingTop="20dp"
-        tools:text="author and time"
+        tools:text="Amount of added tracks"
         />
 
     <ImageView

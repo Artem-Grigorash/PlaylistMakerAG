@@ -301,32 +301,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp"
-            android:text="Фильмы в одиночку"
-            android:textColor="@color/classic_text" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp"
-            android:text="Посмотреть, когда будет грустно и дождик"
-            android:textColor="@color/classic_text" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp"
-            android:text="Фильмы для просмотра вместе"
-            android:textColor="@color/classic_text" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/small_playlist_view"/>
 
     </LinearLayout>
 
