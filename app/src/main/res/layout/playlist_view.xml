@@ -35,11 +35,10 @@
 
         <TextView
             android:id="@+id/description"
-            style="@style/ClassicTextStyle"
+            style="@style/LittleTextStyleBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:textColor="@color/black"
             tools:text="Описание" />
     </LinearLayout>
 

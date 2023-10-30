@@ -17,12 +17,12 @@ class PlaylistOnTrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     fun bind(playlist: Playlist) {
         title.text = playlist.playlistName
-        description.text = playlist.playlistDescription
+        description.text = "${ playlist.trackAmount.toString() } треков"
         if(playlist.imageUri!=null)
             Glide.with(itemView)
                 .load(playlist.imageUri)
                 .placeholder(R.drawable.tracks_place_holder)
-                .transform(RoundedCorners(R.dimen.corner_radius))
+//                .transform(RoundedCorners(R.dimen.small_corner_radius))
                 .into(picture)
     }
 }

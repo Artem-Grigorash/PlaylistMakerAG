@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmakerag.mediateka.domain.db.PlaylistInteractor
+import com.example.playlistmakerag.mediateka.domain.models.Playlist
+import com.example.playlistmakerag.mediateka.ui.PlaylistsState
 import com.example.playlistmakerag.player.domain.TrackInteractor
 import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.models.Track
@@ -13,7 +16,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewModel(private val interactor: TrackInteractor, private val historyInteractor : HistoryInteractor, url: String) : ViewModel() {
+class TrackViewModel(private val interactor: TrackInteractor, private val historyInteractor : HistoryInteractor, url: String, private val playlistInteractor: PlaylistInteractor) : ViewModel() {
     companion object {
         private const val REFRESH_MILLIS = 300L
     }
@@ -69,6 +72,19 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
 //        }
     }
 
+    private val stateLiveData = MutableLiveData<List<Playlist>>()
+
+    fun observeState(): LiveData<List<Playlist>> = stateLiveData
+
+    fun fillData() {
+        viewModelScope.launch {
+            playlistInteractor
+                .historyPlaylists()
+                .collect { playlist ->
+                    stateLiveData.postValue(playlist)
+                }
+        }
+    }
 
     private fun checkIsFavorite(){
         viewModelScope.launch {

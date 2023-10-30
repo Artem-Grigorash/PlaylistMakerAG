@@ -17,6 +17,7 @@ import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.ui.AddPlaylistFragment
 import com.example.playlistmakerag.mediateka.ui.PlaylistAdapter
 import com.example.playlistmakerag.mediateka.ui.PlaylistOnTrackAdapter
+import com.example.playlistmakerag.mediateka.ui.PlaylistsState
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.view_models.TrackState
 import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
@@ -66,9 +67,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
 
+
         url = lastTrack.previewUrl
         setInfo(lastTrack)
-
+        viewModel.fillData()
         viewModel.getTrack(lastTrack)
 
         arrayBack.setOnClickListener {
@@ -136,6 +138,14 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         adapter = PlaylistOnTrackAdapter()
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
+
+        viewModel.observeState().observe(this) {
+            recyclerView.visibility = View.VISIBLE
+            adapter.playlists.clear()
+            adapter.playlists.addAll(it)
+            adapter.notifyDataSetChanged()
+        }
+
     }
 
     private fun updateTime(time: String) {
@@ -173,7 +183,7 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         mainPart=findViewById(R.id.mainPart)
         overlay = findViewById(R.id.overlay)
         newPlaylist = findViewById(R.id.new_playlist)
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.historyList)
     }
 
     private fun setInfo(

@@ -7,7 +7,7 @@ import org.koin.dsl.module
 val viewModelModulePlayer = module {
 
     viewModel {(url: String)->
-        TrackViewModel(get(),get(),url)
+        TrackViewModel(get(),get(),url,get())
     }
 
 }

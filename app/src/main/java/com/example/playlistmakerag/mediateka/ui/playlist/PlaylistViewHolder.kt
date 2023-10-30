@@ -16,7 +16,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     fun bind(playlist: Playlist) {
         title.text = playlist.playlistName
-        amountOfTracks.text = playlist.trackAmount.toString() + R.string.tracks
+        amountOfTracks.text = "${ playlist.trackAmount.toString() } треков"
         if(playlist.imageUri!=null)
             Glide.with(itemView)
                 .load(playlist.imageUri)
