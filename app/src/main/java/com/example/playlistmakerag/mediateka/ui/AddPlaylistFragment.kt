@@ -8,12 +8,14 @@ import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -144,8 +146,18 @@ class AddPlaylistFragment : Fragment() {
         })
     }
 
-    private fun showMessage(text: String) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    private fun showMessage(textInp: String) {
+        val inflater = layoutInflater
+        val container = requireActivity().findViewById<ViewGroup>(R.id.custom_toast_container)
+        val layout: View = inflater.inflate(R.layout.custom_toast, container)
+        val text: TextView = layout.findViewById(R.id.text)
+        text.text = textInp
+        with (Toast(requireContext())) {
+            setGravity(Gravity.BOTTOM, 0, 0)
+            duration = Toast.LENGTH_LONG
+            view = layout
+            show()
+        }
     }
 
     private fun saveImageToPrivateStorage(uri: Uri) {
