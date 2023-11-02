@@ -22,7 +22,7 @@ class PlaylistOnTrackViewHolder(view: View): RecyclerView.ViewHolder(view) {
             Glide.with(itemView)
                 .load(playlist.imageUri)
                 .placeholder(R.drawable.tracks_place_holder)
-                .transform(RoundedCorners(R.dimen.small_corner_radius))
+                .transform(RoundedCorners(10))
                 .into(picture)
     }
 }

@@ -104,7 +104,7 @@ class AddPlaylistFragment : Fragment() {
         binding.saveButton.setOnClickListener{
             viewModel.savePlaylist(nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri)
             showMessage("Плейлист ${nameEditText.text} создан")
-            findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
+            findNavController().navigateUp()
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())

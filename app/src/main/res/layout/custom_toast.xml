@@ -3,7 +3,7 @@
     android:id="@+id/custom_toast_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/classic_text"
+    android:background="@drawable/toast_background"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Плейлист создан"
-        android:textSize="20sp"
-        android:padding="40dp"
+        android:textSize="14sp"
+        android:paddingHorizontal="40dp"
+        android:paddingTop="10dp"
         android:textColor="@color/button_white" />
 </LinearLayout>

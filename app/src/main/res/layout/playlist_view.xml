@@ -8,7 +8,7 @@
     android:background="@color/white_dark"
     app:cardElevation="0dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white_dark"
@@ -17,10 +17,14 @@
 
         <ImageView
             android:id="@+id/trackPicture"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
             android:layout_gravity="start"
             android:scaleType="centerCrop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/tracks_place_holder" />
 
         <TextView
@@ -28,9 +32,10 @@
             style="@style/ClassicTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@+id/trackPicture"
+            tools:layout_editor_absoluteX="3dp"
             tools:text="Заголовок" />
 
         <TextView
@@ -38,8 +43,13 @@
             style="@style/LittleTextStyleBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="@+id/title"
+            tools:layout_editor_absoluteX="3dp"
             tools:text="Описание" />
-    </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
