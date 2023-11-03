@@ -304,6 +304,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/historyList"
             android:layout_width="match_parent"
+            android:paddingTop="20dp"
             android:layout_height="match_parent"
             tools:listitem="@layout/small_playlist_view"/>
 

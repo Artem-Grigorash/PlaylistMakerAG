@@ -2,6 +2,7 @@ package com.example.playlistmakerag.mediateka.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -65,16 +66,28 @@ class AddPlaylistFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 saveButton.isClickable = s?.isNotEmpty() == true
                 saveButton.isEnabled = s?.isNotEmpty() == true
+                if (s?.isNotEmpty() == true)
+                    nameEditText.setBackgroundColor(Color.parseColor("#3772E7"))
+                else
+                    nameEditText.setBackgroundColor(Color.GRAY)
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 saveButton.isClickable = s?.isNotEmpty() == true
                 saveButton.isEnabled = s?.isNotEmpty() == true
+                if (s?.isNotEmpty() == true)
+                    nameEditText.setBackgroundColor(Color.parseColor("#3772E7"))
+                else
+                    nameEditText.setBackgroundColor(Color.GRAY)
             }
 
             override fun afterTextChanged(s: Editable?) {
                 saveButton.isClickable = s?.isNotEmpty() == true
                 saveButton.isEnabled = s?.isNotEmpty() == true
+                if (s?.isNotEmpty() == true)
+                    nameEditText.setBackgroundColor(Color.parseColor("#3772E7"))
+                else
+                    nameEditText.setBackgroundColor(Color.GRAY)
             }
         }
         nameEditText.addTextChangedListener(textWatcher)
@@ -89,7 +102,7 @@ class AddPlaylistFragment : Fragment() {
                     Glide.with(requireContext())
                         .load(uri)
                         .placeholder(R.drawable.tracks_place_holder)
-//                        .transform(RoundedCorners(R.dimen.small_corner_radius))
+                        .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius)))
                         .into(binding.pickImage)
                     saveImageToPrivateStorage(uri)
                 } else {

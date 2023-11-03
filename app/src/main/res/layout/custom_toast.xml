@@ -16,5 +16,5 @@
         android:textSize="14sp"
         android:paddingHorizontal="40dp"
         android:paddingTop="10dp"
-        android:textColor="@color/button_white" />
+        android:textColor="@color/white_dark" />
 </LinearLayout>

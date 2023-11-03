@@ -32,6 +32,9 @@
         android:id="@+id/trackDisplayActivity"
         android:name="com.example.playlistmakerag.player.ui.TrackDisplayActivity"
         android:label="TrackDisplayActivity" />
+        <action
+            android:id="@+id/action_trackDisplayActivity_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
     <fragment
         android:id="@+id/addPlaylistFragment"
         android:name="com.example.playlistmakerag.mediateka.ui.AddPlaylistFragment"

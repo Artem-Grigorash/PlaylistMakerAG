@@ -106,9 +106,10 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
 
         newPlaylist.setOnClickListener {
             if (savedInstanceState == null)
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container_view, AddPlaylistFragment())
-                    .commit()
+                it.findNavController().navigate(R.id.action_trackDisplayActivity_to_addPlaylistFragment)
+//                supportFragmentManager.beginTransaction()
+//                    .add(R.id.fragment_container_view, AddPlaylistFragment())
+//                    .commit()
         }
 
         val bottomSheetContainer = findViewById<LinearLayout>(R.id.standard_bottom_sheet)
