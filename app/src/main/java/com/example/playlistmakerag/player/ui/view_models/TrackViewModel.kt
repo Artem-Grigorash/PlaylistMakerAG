@@ -1,5 +1,7 @@
 package com.example.playlistmakerag.player.ui.view_models
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,6 +40,9 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
     private val time = MutableLiveData<String>()
     fun getTime(): LiveData<String> = time
 
+    private val message = MutableLiveData<String>()
+    fun getMessage(): LiveData<String> = message
+
     private var timerJob: Job? = null
 
     fun onPlayClicked() {
@@ -65,11 +70,13 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
         }
     }
 
-    fun addToPlaylist(){
-        //show dialog
-//        viewModelScope.launch {
-//            historyInteractor.addToPlaylist(actualTrack)
-//        }
+    fun addToPlaylist(playlist: Playlist){
+        if(playlist.addedTracks?.contains(actualTrack.trackId) == true)
+            message.postValue("Трек уже добавлен в плейлист ${playlist.playlistName}")
+        else {
+            message.postValue("Добавлено в плейлист ${playlist.playlistName}")
+            playlist.addedTracks
+        }
     }
 
     private val stateLiveData = MutableLiveData<List<Playlist>>()
@@ -96,6 +103,7 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
                  }
          }
     }
+
 
 
     fun delete() {

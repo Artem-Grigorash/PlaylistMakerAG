@@ -1,11 +1,13 @@
 package com.example.playlistmakerag.player.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
@@ -85,9 +87,6 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             viewModel.onLikeClicked()
         }
 
-        addTrackButton.setOnClickListener {
-            viewModel.addToPlaylist()
-        }
 
         viewModel.getTrackState().observe(this) { state ->
             render(state)
@@ -144,6 +143,20 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
             adapter.notifyDataSetChanged()
         }
 
+
+        adapter.itemClickListener = { _, playlist ->
+                viewModel.addToPlaylist(playlist)
+        }
+
+        viewModel.getMessage().observe(this) { message ->
+            showToast(this,message)
+        }
+
+    }
+
+    private fun showToast(context: Context, message: String) {
+        val toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        toast.show()
     }
 
     private fun updateTime(time: String) {

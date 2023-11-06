@@ -5,10 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
+import com.example.playlistmakerag.player.domain.models.Track
 
 class PlaylistOnTrackAdapter(): RecyclerView.Adapter<PlaylistOnTrackViewHolder>() {
 
     var playlists = ArrayList<Playlist>()
+
+    var itemClickListener: ((Int, Playlist) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistOnTrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.small_playlist_view, parent, false)
