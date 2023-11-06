@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.navigateUp
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentAddPlaylistBinding
@@ -102,7 +103,7 @@ class AddPlaylistFragment : Fragment() {
                     Glide.with(requireContext())
                         .load(uri)
                         .placeholder(R.drawable.tracks_place_holder)
-                        .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius)))
+                        .transform(CenterCrop(), RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_radius)))
                         .into(binding.pickImage)
                     saveImageToPrivateStorage(uri)
                 } else {

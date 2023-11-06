@@ -66,8 +66,6 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         val lastTrack: Track =
             Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
 
-
-
         url = lastTrack.previewUrl
         setInfo(lastTrack)
         viewModel.fillData()
@@ -107,9 +105,8 @@ class TrackDisplayActivity : AppCompatActivity(), TrackView {
         newPlaylist.setOnClickListener {
             if (savedInstanceState == null)
                 it.findNavController().navigate(R.id.action_trackDisplayActivity_to_addPlaylistFragment)
-//                supportFragmentManager.beginTransaction()
-//                    .add(R.id.fragment_container_view, AddPlaylistFragment())
-//                    .commit()
+
+
         }
 
         val bottomSheetContainer = findViewById<LinearLayout>(R.id.standard_bottom_sheet)
