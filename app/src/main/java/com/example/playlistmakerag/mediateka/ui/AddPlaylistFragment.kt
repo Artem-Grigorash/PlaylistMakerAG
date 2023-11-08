@@ -63,32 +63,55 @@ class AddPlaylistFragment : Fragment() {
         backButton.setOnClickListener {
             findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
         }
+
+        binding.smallName.visibility = View.GONE
+        binding.nameShape.visibility = View.GONE
+        binding.descriptionShape.visibility = View.GONE
+
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 saveButton.isClickable = s?.isNotEmpty() == true
                 saveButton.isEnabled = s?.isNotEmpty() == true
-                if (s?.isNotEmpty() == true)
-                    nameEditText.setBackgroundColor(Color.parseColor("#3772E7"))
-                else
-                    nameEditText.setBackgroundColor(Color.GRAY)
+                if (s?.isNotEmpty() == true) {
+                    binding.smallName.visibility = View.VISIBLE
+                    binding.nameShape.visibility = View.VISIBLE
+                    binding.descriptionShape.visibility = View.VISIBLE
+                }
+                else{
+                    binding.smallName.visibility = View.GONE
+                    binding.nameShape.visibility = View.GONE
+                    binding.descriptionShape.visibility = View.GONE
+                }
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 saveButton.isClickable = s?.isNotEmpty() == true
                 saveButton.isEnabled = s?.isNotEmpty() == true
-                if (s?.isNotEmpty() == true)
-                    nameEditText.setBackgroundColor(Color.parseColor("#3772E7"))
-                else
-                    nameEditText.setBackgroundColor(Color.GRAY)
+                if (s?.isNotEmpty() == true) {
+                    binding.smallName.visibility = View.VISIBLE
+                    binding.nameShape.visibility = View.VISIBLE
+                    binding.descriptionShape.visibility = View.VISIBLE
+                }
+                else{
+                    binding.smallName.visibility = View.GONE
+                    binding.nameShape.visibility = View.GONE
+                    binding.descriptionShape.visibility = View.GONE
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
                 saveButton.isClickable = s?.isNotEmpty() == true
                 saveButton.isEnabled = s?.isNotEmpty() == true
-                if (s?.isNotEmpty() == true)
-                    nameEditText.setBackgroundColor(Color.parseColor("#3772E7"))
-                else
-                    nameEditText.setBackgroundColor(Color.GRAY)
+                if (s?.isNotEmpty() == true) {
+                    binding.smallName.visibility = View.VISIBLE
+                    binding.nameShape.visibility = View.VISIBLE
+                    binding.descriptionShape.visibility = View.VISIBLE
+                }
+                else{
+                    binding.smallName.visibility = View.GONE
+                    binding.nameShape.visibility = View.GONE
+                    binding.descriptionShape.visibility = View.GONE
+                }
             }
         }
         nameEditText.addTextChangedListener(textWatcher)

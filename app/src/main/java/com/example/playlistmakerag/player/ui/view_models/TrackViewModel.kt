@@ -1,14 +1,12 @@
 package com.example.playlistmakerag.player.ui.view_models
 
-import android.content.Context
-import android.widget.Toast
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmakerag.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
-import com.example.playlistmakerag.mediateka.ui.PlaylistsState
 import com.example.playlistmakerag.player.domain.TrackInteractor
 import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.models.Track
