@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.navigateUp
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
@@ -65,31 +65,19 @@ class TrackDisplayFragment : Fragment(), TrackView {
     }
 
     companion object {
+        const val ARGS_SONG = "song"
 
-        private const val ARGS_SONG = "movie_id"
-
-        // Тег для использования во FragmentManager
-        const val TAG = "TrackDisplayFragment"
-
-        fun newInstance(song: String): Fragment {
-            return TrackDisplayFragment().apply {
-                // Пробрасываем аргументы в Bundle
-                arguments = bundleOf(
-                    ARGS_SONG to song,
-                )
-            }
-        }
-
+        fun createArgs(song: String): Bundle =
+            bundleOf(ARGS_SONG to song)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val song = requireArguments().getString(ARGS_SONG) ?: ""
-
         setViews()
-        val lastTrack: Track =
-            Gson().fromJson(intent?.getStringExtra("LAST_TRACK"), Track::class.java)
+
+        val song = requireArguments().getString(ARGS_SONG)
+        val lastTrack: Track = Gson().fromJson(song, Track::class.java)
 
         url = lastTrack.previewUrl
         setInfo(lastTrack)
@@ -97,7 +85,7 @@ class TrackDisplayFragment : Fragment(), TrackView {
         viewModel.getTrack(lastTrack)
 
         arrayBack.setOnClickListener {
-            navigateUp()
+            findNavController().navigateUp()
         }
         play.isEnabled = true
         play.setImageResource(R.drawable.play)
@@ -124,10 +112,11 @@ class TrackDisplayFragment : Fragment(), TrackView {
         }
 
         newPlaylist.setOnClickListener {
-            if (savedInstanceState == null)
-                it.findNavController().navigate(R.id.action_trackDisplayActivity_to_addPlaylistFragment)
-
-
+            if (savedInstanceState == null) {
+                it.findNavController()
+                    .navigate(R.id.action_trackDisplayActivity_to_addPlaylistFragment)
+                viewModel.onPlayClicked()
+            }
         }
 
         val bottomSheetContainer = binding.standardBottomSheet

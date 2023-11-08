@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
@@ -18,7 +20,7 @@ import com.example.playlistmakerag.mediateka.ui.history.HistoryState
 import com.example.playlistmakerag.mediateka.ui.view_models.FavouriteTracksViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.HistoryViewModel
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.player.ui.TrackDisplayActivity
+import com.example.playlistmakerag.player.ui.TrackDisplayFragment
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -70,9 +72,13 @@ class FavoriteTracksFragment : Fragment() {
 
     private fun openTrack(track: Track) {
         val trackJson = Gson().toJson(track)
-        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
-        intent.putExtra("LAST_TRACK", trackJson)
-        startActivity(intent)
+//        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
+//        intent.putExtra("LAST_TRACK", trackJson)
+//        startActivity(intent)
+        findNavController().navigate(
+            R.id.action_mediatekaFragment_to_trackDisplayFragment2,
+            TrackDisplayFragment.createArgs(trackJson)
+        )
     }
 
     override fun onDestroyView() {

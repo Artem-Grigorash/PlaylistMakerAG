@@ -14,13 +14,15 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentSearchBinding
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.player.ui.TrackDisplayActivity
+import com.example.playlistmakerag.player.ui.TrackDisplayFragment
 import com.example.playlistmakerag.search.ui.view_models.SearchState
 import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.gson.Gson
@@ -172,9 +174,13 @@ class SearchFragment : Fragment() {
     private fun openTrack(track: Track) {
         viewModel.onItemClicked(track)
         val trackJson = Gson().toJson(track)
-        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
-        intent.putExtra("LAST_TRACK", trackJson)
-        startActivity(intent)
+//        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
+//        intent.putExtra("LAST_TRACK", trackJson)
+//        startActivity(intent)
+        findNavController().navigate(
+            R.id.action_searchFragment_to_trackDisplayFragment,
+            TrackDisplayFragment.createArgs(trackJson)
+        )
         recentAdapter.notifyDataSetChanged()
     }
 
