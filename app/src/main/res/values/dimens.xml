@@ -5,6 +5,7 @@
     <dimen name="search_big_text">20sp</dimen>
     <dimen name="search_text">16sp</dimen>
     <dimen name="small_text">14sp</dimen>
+    <dimen name="tiny_text">12sp</dimen>
     <dimen name="save_text">16sp</dimen>
     <dimen name="header_text">25sp</dimen>
     <dimen name="corner_radius">16dp</dimen>

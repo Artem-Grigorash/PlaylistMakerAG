@@ -2,7 +2,6 @@ package com.example.playlistmakerag.mediateka.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -23,15 +22,12 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI.navigateUp
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentAddPlaylistBinding
 import com.example.playlistmakerag.mediateka.ui.view_models.AddPlaylistViewModel
-import com.example.playlistmakerag.root.MainActivity
-import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -65,6 +61,7 @@ class AddPlaylistFragment : Fragment() {
         }
 
         binding.smallName.visibility = View.GONE
+        binding.smallDescription.visibility = View.GONE
         binding.nameShape.visibility = View.GONE
         binding.descriptionShape.visibility = View.GONE
 
@@ -75,12 +72,10 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallName.visibility = View.VISIBLE
                     binding.nameShape.visibility = View.VISIBLE
-                    binding.descriptionShape.visibility = View.VISIBLE
                 }
                 else{
                     binding.smallName.visibility = View.GONE
                     binding.nameShape.visibility = View.GONE
-                    binding.descriptionShape.visibility = View.GONE
                 }
             }
 
@@ -90,12 +85,10 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallName.visibility = View.VISIBLE
                     binding.nameShape.visibility = View.VISIBLE
-                    binding.descriptionShape.visibility = View.VISIBLE
                 }
                 else{
                     binding.smallName.visibility = View.GONE
                     binding.nameShape.visibility = View.GONE
-                    binding.descriptionShape.visibility = View.GONE
                 }
             }
 
@@ -105,16 +98,58 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallName.visibility = View.VISIBLE
                     binding.nameShape.visibility = View.VISIBLE
-                    binding.descriptionShape.visibility = View.VISIBLE
                 }
                 else{
                     binding.smallName.visibility = View.GONE
                     binding.nameShape.visibility = View.GONE
-                    binding.descriptionShape.visibility = View.GONE
                 }
             }
         }
         nameEditText.addTextChangedListener(textWatcher)
+
+
+
+
+        val textWatcherDescription = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if (s?.isNotEmpty() == true) {
+                    binding.smallDescription.visibility = View.VISIBLE
+                    binding.descriptionShape.visibility = View.VISIBLE
+                }
+                else{
+                    binding.smallDescription.visibility = View.GONE
+                    binding.descriptionShape.visibility = View.GONE
+                }
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.isNotEmpty() == true) {
+                    binding.smallDescription.visibility = View.VISIBLE
+                    binding.descriptionShape.visibility = View.VISIBLE
+                }
+                else{
+                    binding.smallDescription.visibility = View.GONE
+                    binding.descriptionShape.visibility = View.GONE
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s?.isNotEmpty() == true) {
+                    binding.smallDescription.visibility = View.VISIBLE
+                    binding.descriptionShape.visibility = View.VISIBLE
+                }
+                else{
+                    binding.smallDescription.visibility = View.GONE
+                    binding.descriptionShape.visibility = View.GONE
+                }
+            }
+        }
+        descriptionEditText.addTextChangedListener(textWatcherDescription)
+
+
+
+
+
         var actualUri: Uri? = null
         var flag = false
         //регистрируем событие, которое вызывает photo picker
@@ -151,10 +186,6 @@ class AddPlaylistFragment : Fragment() {
             }.setPositiveButton("Завершить") { dialog, which ->
                 // сохраняем изменения и выходим
                 findNavController().navigateUp()
-//                if(requireActivity()==MainActivity())
-//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
-//                else
-//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_searchFragment)
             }
 
         binding.backButton.setOnClickListener {
@@ -162,23 +193,14 @@ class AddPlaylistFragment : Fragment() {
                 confirmDialog.show()
             else
                 findNavController().navigateUp()
-//                if(requireActivity()==MainActivity())
-//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
-//                else
-//                    findNavController().navigate(R.id.action_addPlaylistFragment_to_searchFragment)
         }
 
-        // добавление слушателя для обработки нажатия на кнопку Back
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
                     confirmDialog.show()
                 else
                     findNavController().navigateUp()
-//                    if(requireActivity()==MainActivity())
-//                        findNavController().navigate(R.id.action_addPlaylistFragment_to_mediatekaFragment)
-//                    else
-//                        findNavController().navigate(R.id.action_addPlaylistFragment_to_searchFragment)
             }
         })
     }
