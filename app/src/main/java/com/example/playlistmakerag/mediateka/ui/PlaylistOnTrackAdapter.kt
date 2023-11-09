@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
-import com.example.playlistmakerag.player.domain.models.Track
 
 class PlaylistOnTrackAdapter(): RecyclerView.Adapter<PlaylistOnTrackViewHolder>() {
 
@@ -23,6 +22,8 @@ class PlaylistOnTrackAdapter(): RecyclerView.Adapter<PlaylistOnTrackViewHolder>(
     }
 
     override fun onBindViewHolder(holder: PlaylistOnTrackViewHolder, position: Int) {
-        holder.bind(playlists[position])
+        val playlist = playlists[position]
+        holder.bind(playlist)
+        holder.itemView.setOnClickListener { itemClickListener?.invoke(position, playlist) }
     }
 }

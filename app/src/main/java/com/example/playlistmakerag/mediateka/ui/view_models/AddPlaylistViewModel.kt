@@ -17,6 +17,6 @@ class AddPlaylistViewModel(private val interactor: PlaylistInteractor): ViewMode
         }
 
     private fun createPlaylist(name: String, description: String?, uri: Uri?): Playlist{
-        return Playlist(name,description, uri.toString(), 0, null)
+        return Playlist(name,description, uri.toString(), 0, "")
     }
 }

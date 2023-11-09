@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentTrackDisplayBinding
+import com.example.playlistmakerag.mediateka.domain.models.Playlist
 import com.example.playlistmakerag.mediateka.ui.PlaylistOnTrackAdapter
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.view_models.TrackState
@@ -27,6 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class TrackDisplayFragment : Fragment(), TrackView {
 
@@ -107,7 +110,7 @@ class TrackDisplayFragment : Fragment(), TrackView {
             updateTime(time)
         }
 
-        viewModel.getIsFavorite().observe(viewLifecycleOwner) {isFavorite ->
+        viewModel.getIsFavorite().observe(viewLifecycleOwner) { isFavorite ->
             updateLikeButton(isFavorite)
         }
 
@@ -129,12 +132,14 @@ class TrackDisplayFragment : Fragment(), TrackView {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         overlay.visibility = View.GONE
                     }
+
                     else -> {
                         overlay.visibility = View.VISIBLE
                     }
@@ -145,7 +150,8 @@ class TrackDisplayFragment : Fragment(), TrackView {
         })
 
         adapter = PlaylistOnTrackAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
         viewModel.observeState().observe(viewLifecycleOwner) {
@@ -155,9 +161,21 @@ class TrackDisplayFragment : Fragment(), TrackView {
             adapter.notifyDataSetChanged()
         }
 
-
+        adapter.itemClickListener = { _, playlist ->
+            val tracks: ArrayList<Track> = Gson().fromJson(playlist.addedTracks, ArrayList<Track>())
+            if (lastTrack in tracks) {
+                val toast = Toast.makeText(requireContext(), "Трек уже добавлен в плейлист ${playlist.playlistName}", Toast.LENGTH_LONG)
+                toast.show()
+            } else {
+                val toast = Toast.makeText(
+                    requireContext(),
+                    "Добавлено в плейлист ${playlist.playlistName}",
+                    Toast.LENGTH_LONG
+                )
+                toast.show()
+            }
+        }
     }
-
 
 
 

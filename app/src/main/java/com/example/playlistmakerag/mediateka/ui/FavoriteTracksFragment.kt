@@ -72,9 +72,6 @@ class FavoriteTracksFragment : Fragment() {
 
     private fun openTrack(track: Track) {
         val trackJson = Gson().toJson(track)
-//        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
-//        intent.putExtra("LAST_TRACK", trackJson)
-//        startActivity(intent)
         findNavController().navigate(
             R.id.action_mediatekaFragment_to_trackDisplayFragment2,
             TrackDisplayFragment.createArgs(trackJson)
