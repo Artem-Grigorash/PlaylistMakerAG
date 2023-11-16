@@ -25,8 +25,10 @@ import com.example.playlistmakerag.player.ui.view_models.TrackViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -162,11 +164,14 @@ class TrackDisplayFragment : Fragment(), TrackView {
         }
 
         adapter.itemClickListener = { _, playlist ->
-            val tracks: ArrayList<Track> = Gson().fromJson(playlist.addedTracks, ArrayList<Track>())
+            val listType: Type = object : TypeToken<ArrayList<Track?>?>() {}.type
+            val tracks: ArrayList<Track> = Gson().fromJson(playlist.addedTracks, listType)
             if (lastTrack in tracks) {
                 val toast = Toast.makeText(requireContext(), "Трек уже добавлен в плейлист ${playlist.playlistName}", Toast.LENGTH_LONG)
                 toast.show()
             } else {
+
+
                 val toast = Toast.makeText(
                     requireContext(),
                     "Добавлено в плейлист ${playlist.playlistName}",
