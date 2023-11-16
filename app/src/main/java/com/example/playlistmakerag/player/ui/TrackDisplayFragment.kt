@@ -116,6 +116,15 @@ class TrackDisplayFragment : Fragment(), TrackView {
             updateLikeButton(isFavorite)
         }
 
+        viewModel.getMessage().observe(viewLifecycleOwner) { message ->
+            val toast = Toast.makeText(
+                requireContext(),
+                message,
+                Toast.LENGTH_LONG
+            )
+            toast.show()
+        }
+
         newPlaylist.setOnClickListener {
             if (savedInstanceState == null) {
                 it.findNavController()
@@ -164,22 +173,10 @@ class TrackDisplayFragment : Fragment(), TrackView {
         }
 
         adapter.itemClickListener = { _, playlist ->
-            val listType: Type = object : TypeToken<ArrayList<Track?>?>() {}.type
-            val tracks: ArrayList<Track> = Gson().fromJson(playlist.addedTracks, listType)
-            if (lastTrack in tracks) {
-                val toast = Toast.makeText(requireContext(), "Трек уже добавлен в плейлист ${playlist.playlistName}", Toast.LENGTH_LONG)
-                toast.show()
-            } else {
-
-
-                val toast = Toast.makeText(
-                    requireContext(),
-                    "Добавлено в плейлист ${playlist.playlistName}",
-                    Toast.LENGTH_LONG
-                )
-                toast.show()
-            }
+            viewModel.onPlaylistClicked(playlist)
+            adapter.notifyDataSetChanged()
         }
+
     }
 
 

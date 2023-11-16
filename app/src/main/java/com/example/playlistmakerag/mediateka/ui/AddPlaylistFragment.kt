@@ -107,9 +107,6 @@ class AddPlaylistFragment : Fragment() {
         }
         nameEditText.addTextChangedListener(textWatcher)
 
-
-
-
         val textWatcherDescription = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 if (s?.isNotEmpty() == true) {
@@ -145,10 +142,6 @@ class AddPlaylistFragment : Fragment() {
             }
         }
         descriptionEditText.addTextChangedListener(textWatcherDescription)
-
-
-
-
 
         var actualUri: Uri? = null
         var flag = false

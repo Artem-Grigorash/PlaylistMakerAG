@@ -6,6 +6,6 @@ data class Playlist (
     val playlistName: String,
     val playlistDescription: String?,
     val imageUri: String?,
-    val trackAmount: Int?,
+    val trackAmount: Int,
     val addedTracks: String
 )
