@@ -74,17 +74,18 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
 
     fun onPlaylistClicked(playlist: Playlist){
         val listType: Type = object : TypeToken<ArrayList<Track?>?>() {}.type
-        val tracks: ArrayList<Track> = Gson().fromJson(playlist.addedTracks, listType)
-        if (actualTrack in tracks) {
+        val tracks: ArrayList<Track>? = Gson().fromJson(playlist.addedTracks, listType)
+        if (tracks?.contains(actualTrack) == true) {
             message.postValue("Трек уже добавлен в плейлист ${playlist.playlistName}")
         }
         else {
             viewModelScope.launch {
                 playlistInteractor.deletePlaylist(playlist)
             }
-            tracks.add(actualTrack)
+            tracks?.add(actualTrack)
             val newString = Gson().toJson(tracks)
-            val newPlaylist = Playlist(playlist.playlistName, playlist.playlistDescription, playlist.imageUri, playlist.trackAmount+1, newString)
+            val newPlaylist = Playlist(playlist.playlistName, playlist.playlistDescription, playlist.imageUri,
+                playlist.trackAmount?.plus(1), newString)
             viewModelScope.launch {
                 playlistInteractor.addPlaylist(newPlaylist)
             }
