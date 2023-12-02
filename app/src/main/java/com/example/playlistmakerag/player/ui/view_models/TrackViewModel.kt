@@ -1,7 +1,6 @@
 package com.example.playlistmakerag.player.ui.view_models
 
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -74,7 +73,7 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
 
     fun onPlaylistClicked(playlist: Playlist){
         val listType: Type = object : TypeToken<ArrayList<Track?>?>() {}.type
-        val tracks: ArrayList<Track>? = Gson().fromJson(playlist.addedTracks, listType)
+        var tracks: ArrayList<Track>? = Gson().fromJson(playlist.addedTracks, listType)
         if (tracks?.contains(actualTrack) == true) {
             message.postValue("Трек уже добавлен в плейлист ${playlist.playlistName}")
         }
@@ -82,32 +81,23 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
             viewModelScope.launch {
                 playlistInteractor.deletePlaylist(playlist)
             }
-            tracks?.add(actualTrack)
+            if (tracks != null) {
+                tracks.add(actualTrack)
+            } else {
+                tracks = ArrayList<Track>().apply { add(actualTrack) }
+            }
             val newString = Gson().toJson(tracks)
             val newPlaylist = Playlist(playlist.playlistName, playlist.playlistDescription, playlist.imageUri,
                 playlist.trackAmount?.plus(1), newString)
             viewModelScope.launch {
                 playlistInteractor.addPlaylist(newPlaylist)
+                fillData()
             }
             message.postValue("Добавлено в плейлист ${playlist.playlistName}")
 
-//            val toast = Toast.makeText(
-//                requireContext(),
-//                "Добавлено в плейлист ${playlist.playlistName}",
-//                Toast.LENGTH_LONG
-//            )
-//            toast.show()
+
         }
     }
-
-//    fun addToPlaylist(playlist: Playlist){
-//        if(playlist.addedTracks?.contains(actualTrack.trackId) == true)
-//            message.postValue("Трек уже добавлен в плейлист ${playlist.playlistName}")
-//        else {
-//            message.postValue("Добавлено в плейлист ${playlist.playlistName}")
-//            playlist.addedTracks
-//        }
-//    }
 
     private val stateLiveData = MutableLiveData<List<Playlist>>()
 
@@ -133,7 +123,6 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
                  }
          }
     }
-
 
 
     fun delete() {
