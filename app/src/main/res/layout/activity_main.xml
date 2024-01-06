@@ -30,4 +30,11 @@
         app:itemIconTint="@color/bnv_tab_item_foreground"
         app:itemTextColor="@color/bnv_tab_item_foreground"
         app:menu="@menu/bottom_navigation_menu" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_darker"
+        app:layout_constraintBottom_toBottomOf="@+id/container_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>

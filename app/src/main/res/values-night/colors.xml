@@ -9,6 +9,7 @@
     <color name="totalBlack">#FFFFFF</color>
     <color name="white_dark">#1A1B22</color>
     <color name="gray">#FFFFFF</color>
+    <color name="gray_darker">#E6E8EB</color>
     <color name="permanentGray">#AEAFB4</color>
     <color name="button_white">#FFFFFF</color>
     <color name="background_main">#DD2500FD</color>
