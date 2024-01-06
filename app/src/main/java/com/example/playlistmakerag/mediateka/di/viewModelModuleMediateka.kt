@@ -1,5 +1,6 @@
 package com.example.playlistmakerag.mediateka.di
 
+import com.example.playlistmakerag.mediateka.ui.view_models.AddPlaylistViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.FavouriteTracksViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.HistoryViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistsViewModel
@@ -14,9 +15,13 @@ val viewModelModuleMediateka = module {
     }
 
     viewModel {
-        PlaylistsViewModel()
+        PlaylistsViewModel(androidContext(), get())
     }
     viewModel {
         HistoryViewModel(androidContext(), get())
+    }
+
+    viewModel{
+        AddPlaylistViewModel(get())
     }
 }

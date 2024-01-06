@@ -1,0 +1,26 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="250dp"
+        android:height="250dp"
+        android:gravity="center">
+
+        <shape
+            android:shape="rectangle">
+            <stroke
+                android:color="#AEAFB4"
+                android:width="2dp"
+                android:dashWidth="50dp"
+                android:dashGap="50dp"/>
+            <corners android:radius="10dp"/>
+        </shape>
+
+    </item>
+
+    <item
+        android:width="140dp"
+        android:height="140dp"
+        android:gravity="center">
+
+
+    </item>
+</layer-list>

@@ -1,6 +1,5 @@
 package com.example.playlistmakerag.player.domain.impl
 
-import com.example.playlistmakerag.player.data.db.entity.TrackEntity
 import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.db.HistoryRepository
 import com.example.playlistmakerag.player.domain.models.Track

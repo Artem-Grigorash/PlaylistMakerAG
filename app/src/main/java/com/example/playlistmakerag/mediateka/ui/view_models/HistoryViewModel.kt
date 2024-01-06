@@ -9,7 +9,6 @@ import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.ui.history.HistoryState
 import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.models.Track
-import com.example.playlistmakerag.search.ui.view_models.SearchViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -45,19 +44,8 @@ class HistoryViewModel(
         stateLiveData.postValue(state)
     }
 
-    fun addTrack(track: Track, place: ArrayList<Track>) {
-        if (place.size == 10)
-            place.removeAt(9)
-        val ids = ArrayList<String>()
-        for (element in place)
-            ids.add(element.trackId)
-        if (ids.contains(track.trackId))
-            place.remove(track)
-        place.add(0, track)
-    }
 
     private var isClickAllowed = true
-
 
     fun clickDebounce(): Boolean {
         val current = isClickAllowed

@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
     app:startDestination="@id/mediatekaFragment">
 
     <fragment
         android:id="@+id/mediatekaFragment"
         android:name="com.example.playlistmakerag.mediateka.ui.MediatekaFragment"
-        android:label="MediatekaFragment" />
+        android:label="MediatekaFragment" >
+        <action
+            android:id="@+id/action_mediatekaFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediatekaFragment_to_trackDisplayFragment2"
+            app:destination="@id/trackDisplayFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.playlistmakerag.search.ui.SearchFragment"
         android:label="SearchFragment" >
+
         <action
-            android:id="@+id/action_searchFragment_to_trackDisplayActivity"
-            app:destination="@id/trackDisplayActivity" />
+            android:id="@+id/action_searchFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_trackDisplayFragment"
+            app:destination="@id/trackDisplayFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmakerag.settings.ui.SettingsFragment"
         android:label="SettingsFragment" />
-    <activity
-        android:id="@+id/trackDisplayActivity"
-        android:name="com.example.playlistmakerag.player.ui.TrackDisplayActivity"
-        android:label="TrackDisplayActivity" />
+    <action
+            android:id="@+id/action_trackDisplayActivity_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
+    <fragment
+        android:id="@+id/addPlaylistFragment"
+        android:name="com.example.playlistmakerag.mediateka.ui.AddPlaylistFragment"
+        android:label="fragment_add_playlist"
+        tools:layout="@layout/fragment_add_playlist" >
+        <action
+            android:id="@+id/action_addPlaylistFragment_to_mediatekaFragment"
+            app:destination="@id/mediatekaFragment" />
+        <action
+            android:id="@+id/action_addPlaylistFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trackDisplayFragment"
+        android:name="com.example.playlistmakerag.player.ui.TrackDisplayFragment"
+        android:label="TrackDisplayFragment" >
+        <action
+            android:id="@+id/action_trackDisplayFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
+    </fragment>
 </navigation>
