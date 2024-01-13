@@ -129,8 +129,6 @@ class TrackDisplayFragment : Fragment(), TrackView {
             if (savedInstanceState == null) {
                 it.findNavController()
                     .navigate(R.id.action_trackDisplayActivity_to_addPlaylistFragment)
-                viewModel.onPlayClicked()
-                viewModel.startPlayer()
             }
         }
 
