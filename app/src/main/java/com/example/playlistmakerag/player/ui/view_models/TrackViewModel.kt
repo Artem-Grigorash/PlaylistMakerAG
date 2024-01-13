@@ -78,9 +78,6 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
             message.postValue("Трек уже добавлен в плейлист ${playlist.playlistName}")
         }
         else {
-            viewModelScope.launch {
-                playlistInteractor.deletePlaylist(playlist)
-            }
             if (tracks != null) {
                 tracks.add(actualTrack)
             } else {
@@ -90,12 +87,10 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
             val newPlaylist = Playlist(playlist.playlistName, playlist.playlistDescription, playlist.imageUri,
                 playlist.trackAmount?.plus(1), newString)
             viewModelScope.launch {
-                playlistInteractor.addPlaylist(newPlaylist)
+                playlistInteractor.updatePlaylist(newPlaylist)
                 fillData()
+                message.postValue("Добавлено в плейлист ${playlist.playlistName}")
             }
-            message.postValue("Добавлено в плейлист ${playlist.playlistName}")
-
-
         }
     }
 

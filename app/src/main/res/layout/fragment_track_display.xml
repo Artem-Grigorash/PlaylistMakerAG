@@ -50,12 +50,13 @@
             android:id="@+id/trackPicture"
             android:layout_width="336dp"
             android:layout_height="355dp"
+            android:layout_marginTop="42dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/middleBorder"
             app:layout_constraintDimensionRatio="h,1:1"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
-            app:layout_constraintTop_toTopOf="@+id/bottomBorder"
+            app:layout_constraintTop_toBottomOf="@+id/arrayBack"
             app:srcCompat="@drawable/tracks_place_holder" />
 
         <ImageView
@@ -76,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleGray"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="28dp"
             android:text="@string/country"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/leftBorder" />
@@ -86,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleBlack"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="28dp"
             tools:text="Russia"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
@@ -96,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleGray"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/genre"
             app:layout_constraintBottom_toTopOf="@+id/country"
             app:layout_constraintStart_toStartOf="@+id/leftBorder" />
@@ -106,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleGray"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/year"
             app:layout_constraintBottom_toTopOf="@+id/genre"
             app:layout_constraintStart_toStartOf="@+id/leftBorder" />
@@ -116,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleGray"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/album"
             app:layout_constraintBottom_toTopOf="@+id/year"
             app:layout_constraintStart_toStartOf="@+id/leftBorder" />
@@ -126,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleGray"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/length"
             app:layout_constraintBottom_toTopOf="@+id/album"
             app:layout_constraintStart_toStartOf="@+id/leftBorder" />
@@ -136,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleBlack"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             tools:text="Rock"
             app:layout_constraintBottom_toTopOf="@+id/country_value"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
@@ -146,7 +147,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleBlack"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             tools:text="2018"
             app:layout_constraintBottom_toTopOf="@+id/genre_value"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
@@ -156,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleBlack"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             tools:text="Super album"
             app:layout_constraintBottom_toTopOf="@+id/year_value"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
@@ -166,7 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/LittleTextStyleBlack"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             tools:text="5:12"
             app:layout_constraintBottom_toTopOf="@+id/album_value"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder" />
@@ -176,17 +177,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/HeaderStyle"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             tools:text="Name of track"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
-            app:layout_constraintTop_toTopOf="@+id/middleBorder" />
+            app:layout_constraintTop_toBottomOf="@+id/trackPicture" />
 
         <TextView
             android:id="@+id/author_of_track"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/PlaceHolderStyle"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             tools:text="Author"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
             app:layout_constraintTop_toBottomOf="@+id/name_of_track" />
@@ -195,20 +196,20 @@
             android:id="@+id/play_button"
             android:layout_width="85dp"
             android:layout_height="85dp"
+            android:layout_marginTop="30dp"
             android:backgroundTint="@color/white_dark"
             android:clickable="true"
             android:foregroundGravity="center"
             app:backgroundTint="@color/classic_text"
-            app:tint="@color/classic_text"
             app:borderWidth="2dp"
 
             app:fabCustomSize="85dp"
-            app:layout_constraintBottom_toTopOf="@+id/time_of_track"
             app:layout_constraintEnd_toStartOf="@+id/rightBorder"
             app:layout_constraintStart_toStartOf="@+id/leftBorder"
             app:layout_constraintTop_toBottomOf="@+id/author_of_track"
             app:maxImageSize="85dp"
-            app:srcCompat="@drawable/play" />
+            app:srcCompat="@drawable/play"
+            app:tint="@color/classic_text" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_track_button"
