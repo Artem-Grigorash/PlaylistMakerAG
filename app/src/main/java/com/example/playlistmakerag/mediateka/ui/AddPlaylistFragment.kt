@@ -64,6 +64,8 @@ class AddPlaylistFragment : Fragment() {
         binding.smallDescription.visibility = View.GONE
         binding.nameShape.visibility = View.GONE
         binding.descriptionShape.visibility = View.GONE
+        binding.nameShapeEnabled.visibility = View.VISIBLE
+        binding.descriptionShapeEnabled.visibility = View.VISIBLE
 
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -72,10 +74,12 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallName.visibility = View.VISIBLE
                     binding.nameShape.visibility = View.VISIBLE
+                    binding.nameShapeEnabled.visibility = View.GONE
                 }
                 else{
                     binding.smallName.visibility = View.GONE
                     binding.nameShape.visibility = View.GONE
+                    binding.nameShapeEnabled.visibility = View.VISIBLE
                 }
             }
 
@@ -85,10 +89,12 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallName.visibility = View.VISIBLE
                     binding.nameShape.visibility = View.VISIBLE
+                    binding.nameShapeEnabled.visibility = View.GONE
                 }
                 else{
                     binding.smallName.visibility = View.GONE
                     binding.nameShape.visibility = View.GONE
+                    binding.nameShapeEnabled.visibility = View.VISIBLE
                 }
             }
 
@@ -98,10 +104,12 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallName.visibility = View.VISIBLE
                     binding.nameShape.visibility = View.VISIBLE
+                    binding.nameShapeEnabled.visibility = View.GONE
                 }
                 else{
                     binding.smallName.visibility = View.GONE
                     binding.nameShape.visibility = View.GONE
+                    binding.nameShapeEnabled.visibility = View.VISIBLE
                 }
             }
         }
@@ -112,10 +120,12 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallDescription.visibility = View.VISIBLE
                     binding.descriptionShape.visibility = View.VISIBLE
+                    binding.descriptionShapeEnabled.visibility = View.GONE
                 }
                 else{
                     binding.smallDescription.visibility = View.GONE
                     binding.descriptionShape.visibility = View.GONE
+                    binding.descriptionShapeEnabled.visibility = View.VISIBLE
                 }
             }
 
@@ -123,10 +133,12 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallDescription.visibility = View.VISIBLE
                     binding.descriptionShape.visibility = View.VISIBLE
+                    binding.descriptionShapeEnabled.visibility = View.GONE
                 }
                 else{
                     binding.smallDescription.visibility = View.GONE
                     binding.descriptionShape.visibility = View.GONE
+                    binding.descriptionShapeEnabled.visibility = View.VISIBLE
                 }
             }
 
@@ -134,10 +146,12 @@ class AddPlaylistFragment : Fragment() {
                 if (s?.isNotEmpty() == true) {
                     binding.smallDescription.visibility = View.VISIBLE
                     binding.descriptionShape.visibility = View.VISIBLE
+                    binding.descriptionShapeEnabled.visibility = View.GONE
                 }
                 else{
                     binding.smallDescription.visibility = View.GONE
                     binding.descriptionShape.visibility = View.GONE
+                    binding.descriptionShapeEnabled.visibility = View.VISIBLE
                 }
             }
         }

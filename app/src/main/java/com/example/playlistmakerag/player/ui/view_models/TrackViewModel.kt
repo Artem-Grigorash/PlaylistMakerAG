@@ -12,6 +12,7 @@ import com.example.playlistmakerag.player.domain.db.HistoryInteractor
 import com.example.playlistmakerag.player.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -86,7 +87,7 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
             val newString = Gson().toJson(tracks)
             val newPlaylist = Playlist(playlist.playlistName, playlist.playlistDescription, playlist.imageUri,
                 playlist.trackAmount?.plus(1), newString)
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 playlistInteractor.updatePlaylist(newPlaylist)
                 fillData()
                 message.postValue("Добавлено в плейлист ${playlist.playlistName}")
