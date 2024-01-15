@@ -172,7 +172,7 @@ class AddPlaylistFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        confirmDialog = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogStyle)
+        confirmDialog = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_MyApp_Dialog_Alert)
             .setTitle("Завершить создание плейлиста?")
             .setNeutralButton("Отмена") { dialog, which ->
                 // ничего не делаем

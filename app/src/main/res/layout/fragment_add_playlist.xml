@@ -154,7 +154,7 @@
         android:clickable="true"
         android:textAllCaps="false"
         android:enabled="false"
-        android:backgroundTint="@drawable/tap_selector"
+        android:background="@drawable/tap_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toStartOf="@+id/leftBorder" />

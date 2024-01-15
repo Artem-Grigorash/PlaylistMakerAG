@@ -81,7 +81,10 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="cornerRadius">@dimen/small_corner_radius</item>
     </style>
-    <style name="AlertDialogStyle" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="android:textColorPrimary">@color/permanentBlue</item>
+    <style name="Theme.MyApp.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:background">@style/MaterialAlertDialogText</item>
+    </style>
+    <style name="MaterialAlertDialogText" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/permanentBlue</item>
     </style>
 </resources>
