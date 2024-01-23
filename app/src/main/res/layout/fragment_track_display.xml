@@ -19,11 +19,10 @@
 
         <ImageView
             android:id="@+id/trackPicture"
-            android:layout_width="312dp"
-            android:layout_height="312dp"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="82dp"
-
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="446dp"
             android:scaleType="centerCrop"
@@ -31,7 +30,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/tracks_place_holder" />
+            app:srcCompat="@drawable/tracks_place_holder"
+/>
 
         <ImageView
             android:id="@+id/arrayBack"
