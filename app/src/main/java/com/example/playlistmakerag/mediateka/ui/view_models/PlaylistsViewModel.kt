@@ -9,6 +9,7 @@ import com.example.playlistmakerag.R
 import com.example.playlistmakerag.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
 import com.example.playlistmakerag.mediateka.ui.PlaylistsState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlaylistsViewModel(
@@ -41,5 +42,19 @@ class PlaylistsViewModel(
 
     private fun renderState(state: PlaylistsState) {
         stateLiveData.postValue(state)
+    }
+
+    private var isClickAllowed = true
+
+    fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewModelScope.launch {
+                delay(1000L)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 }

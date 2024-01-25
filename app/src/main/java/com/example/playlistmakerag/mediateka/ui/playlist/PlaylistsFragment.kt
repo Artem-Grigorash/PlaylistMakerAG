@@ -13,8 +13,12 @@ import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentPlaylistsBinding
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
 import com.example.playlistmakerag.mediateka.ui.PlaylistAdapter
+import com.example.playlistmakerag.mediateka.ui.PlaylistInfoFragment
 import com.example.playlistmakerag.mediateka.ui.PlaylistsState
 import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistsViewModel
+import com.example.playlistmakerag.player.domain.models.Track
+import com.example.playlistmakerag.player.ui.TrackDisplayFragment
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment: Fragment() {
@@ -65,7 +69,20 @@ class PlaylistsFragment: Fragment() {
             findNavController().navigate(R.id.action_mediatekaFragment_to_addPlaylistFragment)
         }
 
+        adapter!!.itemClickListener = { _, playlist ->
+            if (viewModel.clickDebounce()) {
+                openPlaylist(playlist)
+            }
+        }
 
+    }
+
+    private fun openPlaylist(playlist: Playlist) {
+        val playlistJson = Gson().toJson(playlist)
+        findNavController().navigate(
+            R.id.action_mediatekaFragment_to_playlistInfoFragment,
+            PlaylistInfoFragment.createArgs(playlistJson)
+        )
     }
 
     override fun onDestroyView() {

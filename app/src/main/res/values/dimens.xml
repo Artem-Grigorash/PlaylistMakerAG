@@ -7,7 +7,7 @@
     <dimen name="small_text">14sp</dimen>
     <dimen name="tiny_text">12sp</dimen>
     <dimen name="save_text">16sp</dimen>
-    <dimen name="header_text">25sp</dimen>
+    <dimen name="header_text">24sp</dimen>
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="small_corner_radius">5dp</dimen>
     <dimen name="icon_padding">5dp</dimen>

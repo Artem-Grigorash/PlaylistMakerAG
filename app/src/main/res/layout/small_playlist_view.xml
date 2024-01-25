@@ -27,7 +27,7 @@
         />
 
     <ImageView
-        android:id="@+id/trackPicture"
+        android:id="@+id/placeholderImage"
         style="@style/TracksPicturesStyle"
         android:layout_gravity="start"
         />
