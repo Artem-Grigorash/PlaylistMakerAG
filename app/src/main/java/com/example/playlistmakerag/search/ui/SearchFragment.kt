@@ -174,9 +174,6 @@ class SearchFragment : Fragment() {
     private fun openTrack(track: Track) {
         viewModel.onItemClicked(track)
         val trackJson = Gson().toJson(track)
-//        val intent = Intent(requireContext(), TrackDisplayActivity::class.java)
-//        intent.putExtra("LAST_TRACK", trackJson)
-//        startActivity(intent)
         findNavController().navigate(
             R.id.action_searchFragment_to_trackDisplayFragment,
             TrackDisplayFragment.createArgs(trackJson)

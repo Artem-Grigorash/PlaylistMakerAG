@@ -62,5 +62,9 @@
         android:id="@+id/playlistInfoFragment"
         android:name="com.example.playlistmakerag.mediateka.ui.PlaylistInfoFragment"
         android:label="fragment_playlist_info"
-        tools:layout="@layout/fragment_playlist_info" />
+        tools:layout="@layout/fragment_playlist_info" >
+        <action
+            android:id="@+id/action_playlistInfoFragment_to_trackDisplayFragment"
+            app:destination="@id/trackDisplayFragment" />
+    </fragment>
 </navigation>

@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
                     bottomNavigationView.visibility = View.GONE
                     separator.visibility = View.GONE
                 }
+                R.id.playlistInfoFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                    separator.visibility = View.GONE
+                }
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
                     separator.visibility = View.VISIBLE
