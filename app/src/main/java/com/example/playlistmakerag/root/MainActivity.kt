@@ -17,17 +17,21 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
+        val separator = findViewById<View>(R.id.separator)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.addPlaylistFragment -> {
                     bottomNavigationView.visibility = View.GONE
+                    separator.visibility = View.GONE
                 }
                 R.id.trackDisplayFragment -> {
                     bottomNavigationView.visibility = View.GONE
+                    separator.visibility = View.GONE
                 }
                 else -> {
                     bottomNavigationView.visibility = View.VISIBLE
+                    separator.visibility = View.VISIBLE
                 }
             }
         }

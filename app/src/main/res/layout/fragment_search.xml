@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white_dark"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="12dp">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -38,6 +38,7 @@
             android:maxLength="25"
             android:background="@android:color/transparent"
             android:paddingStart="50dp"
+            android:textCursorDrawable="@color/permanentBlue"
             android:textColorHint="@color/text_gray"
             android:imeOptions="actionDone"
             android:singleLine="true"/>
@@ -84,7 +85,7 @@
             android:layout_width="@dimen/progress_bar_side"
             android:layout_height="@dimen/progress_bar_side"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/bar_blue"
+            android:indeterminateTint="@color/permanentBlue"
             android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView

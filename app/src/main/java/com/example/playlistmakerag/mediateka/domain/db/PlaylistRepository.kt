@@ -11,5 +11,6 @@ interface PlaylistRepository {
     suspend fun deletePlaylist(playlist: Playlist)
 
     fun historyPlaylists(): Flow<List<Playlist>>
+    suspend fun updatePlaylist(playlist: Playlist)
 
 }
