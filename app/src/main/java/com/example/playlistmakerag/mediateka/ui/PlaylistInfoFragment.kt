@@ -102,6 +102,17 @@ class PlaylistInfoFragment : Fragment() {
                 openTrack(track)
             }
         }
+
+        adapter.itemLongClickListener = {_, track ->
+            viewModel.deleteTrack(lastPlaylist, track)
+            adapter.notifyDataSetChanged()
+        }
+
+//        viewModel.observeState().observe(viewLifecycleOwner) {
+//            tracks_for_adapter.clear()
+//            tracks_for_adapter.addAll(it)
+//            adapter.notifyDataSetChanged()
+//        }
     }
 
     private fun openTrack(track: Track) {

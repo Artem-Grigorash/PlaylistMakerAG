@@ -3,6 +3,7 @@ package com.example.playlistmakerag.mediateka.di
 import com.example.playlistmakerag.mediateka.ui.view_models.AddPlaylistViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.FavouriteTracksViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.HistoryViewModel
+import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistInfoViewModel
 import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -23,5 +24,9 @@ val viewModelModuleMediateka = module {
 
     viewModel{
         AddPlaylistViewModel(get())
+    }
+
+    viewModel{
+        PlaylistInfoViewModel(get())
     }
 }

@@ -125,8 +125,8 @@
         android:background="@drawable/rounded_corners"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
-        app:behavior_hideable="true"
         app:behavior_peekHeight="240dp"
+        app:behavior_hideable="false"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
