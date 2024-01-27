@@ -24,6 +24,7 @@ import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistInfoViewMode
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayFragment
 import com.example.playlistmakerag.search.ui.TracksAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,6 +50,7 @@ class PlaylistInfoFragment : Fragment() {
     private lateinit var tracklist: RecyclerView
     private lateinit var placeholderImage: ImageView
     private lateinit var arrayBack: ImageView
+
 
     private var tracks_for_adapter = ArrayList<Track>()
 
@@ -94,7 +96,7 @@ class PlaylistInfoFragment : Fragment() {
         if (tracks!=null)
             tracks_for_adapter = tracks
         tracklist.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val adapter = TracksAdapter(tracks_for_adapter)
+        var adapter = TracksAdapter(tracks_for_adapter)
         tracklist.adapter=adapter
 
         adapter.itemClickListener = { _, track ->
@@ -104,8 +106,18 @@ class PlaylistInfoFragment : Fragment() {
         }
 
         adapter.itemLongClickListener = {_, track ->
-            viewModel.deleteTrack(lastPlaylist, track)
-            adapter.notifyDataSetChanged()
+            val confirmDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_MyApp_Dialog_Alert)
+                .setTitle("Хотите удалить трек?")
+                .setNegativeButton("НЕТ") { dialog, which ->
+                    // ничего не делаем
+                }.setPositiveButton("ДА") { dialog, which ->
+                    viewModel.deleteTrack(lastPlaylist, track)
+                    tracks_for_adapter.remove(track)
+                    adapter = TracksAdapter(tracks_for_adapter)
+                    tracklist.adapter=adapter
+                    adapter.notifyDataSetChanged()
+                }
+            confirmDialog.show()
         }
 
 //        viewModel.observeState().observe(viewLifecycleOwner) {
@@ -113,6 +125,7 @@ class PlaylistInfoFragment : Fragment() {
 //            tracks_for_adapter.addAll(it)
 //            adapter.notifyDataSetChanged()
 //        }
+
     }
 
     private fun openTrack(track: Track) {
