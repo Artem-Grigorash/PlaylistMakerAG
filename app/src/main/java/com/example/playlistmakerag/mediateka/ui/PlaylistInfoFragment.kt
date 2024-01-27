@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -50,6 +51,7 @@ class PlaylistInfoFragment : Fragment() {
     private lateinit var tracklist: RecyclerView
     private lateinit var placeholderImage: ImageView
     private lateinit var arrayBack: ImageView
+    private lateinit var share: ImageView
 
 
     private var tracks_for_adapter = ArrayList<Track>()
@@ -70,6 +72,7 @@ class PlaylistInfoFragment : Fragment() {
         arrayBack = binding.arrayBack
         name.text=lastPlaylist.playlistName
         description.text=lastPlaylist.playlistDescription
+        share = binding.share
         val counterTracks = lastPlaylist.trackAmount
         var sec = 0L
         val listType: Type = object : TypeToken<ArrayList<Track?>?>() {}.type
@@ -120,11 +123,15 @@ class PlaylistInfoFragment : Fragment() {
             confirmDialog.show()
         }
 
-//        viewModel.observeState().observe(viewLifecycleOwner) {
-//            tracks_for_adapter.clear()
-//            tracks_for_adapter.addAll(it)
-//            adapter.notifyDataSetChanged()
-//        }
+        share.setOnClickListener {
+            if (tracks_for_adapter.isEmpty()) {
+                val toast = Toast.makeText(requireContext(), "В этом плейлисте нет списка треков, которым можно поделиться", Toast.LENGTH_LONG)
+                toast.show()
+            }
+            else{
+
+            }
+        }
 
     }
 

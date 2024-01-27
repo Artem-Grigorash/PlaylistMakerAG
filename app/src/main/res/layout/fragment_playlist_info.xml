@@ -86,7 +86,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/description_text" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/share"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
@@ -97,13 +97,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/time_text" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/menu"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/dots"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toEndOf="@+id/share"
                 app:tint="@color/permanent_black"
                 app:layout_constraintTop_toBottomOf="@+id/time_text" />
 
