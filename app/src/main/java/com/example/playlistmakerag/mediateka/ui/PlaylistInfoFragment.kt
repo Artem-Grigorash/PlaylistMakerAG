@@ -129,7 +129,14 @@ class PlaylistInfoFragment : Fragment() {
                 toast.show()
             }
             else{
-
+                var str = "${lastPlaylist.playlistName}\n${lastPlaylist.playlistDescription}\n${lastPlaylist.trackAmount} треков\n"
+                var c = 1
+                for (tr in tracks_for_adapter){
+                    str += "$c. ${tr.artistName} - ${tr.trackName} (${SimpleDateFormat("mm:ss", Locale.getDefault()).format(tr.trackTimeMillis)})\n"
+                    c++
+                }
+                val shareIntent = viewModel.shareApp(str)
+                startActivity(shareIntent)
             }
         }
 

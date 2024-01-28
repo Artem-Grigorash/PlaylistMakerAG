@@ -27,6 +27,6 @@ val viewModelModuleMediateka = module {
     }
 
     viewModel{
-        PlaylistInfoViewModel(get())
+        PlaylistInfoViewModel(get(), get())
     }
 }
