@@ -146,6 +146,99 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/menu_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_corners"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        app:behavior_peekHeight="260dp"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="60dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/gray_smth"/>
+
+        <FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/SearchTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:paddingStart="55dp"
+                android:paddingBottom="10dp"
+                tools:text="Name of plalist" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/LittleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="55dp"
+                android:paddingTop="20dp"
+                tools:text="Amount of added tracks"
+                />
+
+            <ImageView
+                android:id="@+id/placeholderAlbum"
+                style="@style/TracksPicturesStyle"
+                android:layout_gravity="start"
+                />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/share_option"
+            style="@style/SearchTextStyle"
+            android:textColor="@color/permanent_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeholderImage"
+            android:text="Поделиться" />
+
+        <TextView
+            android:id="@+id/edit_option"
+            style="@style/SearchTextStyle"
+            android:textColor="@color/permanent_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeholderImage"
+            android:text="Редактировать информацию" />
+
+        <TextView
+            android:id="@+id/delete_option"
+            style="@style/SearchTextStyle"
+            android:textColor="@color/permanent_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeholderImage"
+            android:text="Удалить плейлист" />
+
+
+
+    </LinearLayout>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
