@@ -25,6 +25,7 @@ import com.example.playlistmakerag.mediateka.ui.view_models.PlaylistInfoViewMode
 import com.example.playlistmakerag.player.domain.models.Track
 import com.example.playlistmakerag.player.ui.TrackDisplayFragment
 import com.example.playlistmakerag.search.ui.TracksAdapter
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -52,7 +53,11 @@ class PlaylistInfoFragment : Fragment() {
     private lateinit var placeholderImage: ImageView
     private lateinit var arrayBack: ImageView
     private lateinit var share: ImageView
-
+    private lateinit var title: TextView
+    private lateinit var descriptionAlbum: TextView
+    private lateinit var placeholderAlbum: ImageView
+    private lateinit var menu: ImageView
+    private lateinit var overlay: View
 
     private var tracks_for_adapter = ArrayList<Track>()
 
@@ -73,6 +78,13 @@ class PlaylistInfoFragment : Fragment() {
         name.text=lastPlaylist.playlistName
         description.text=lastPlaylist.playlistDescription
         share = binding.share
+        title = binding.title
+        descriptionAlbum = binding.description
+        placeholderAlbum = binding.placeholderAlbum
+        menu = binding.menu
+        overlay = binding.overlay
+
+
         val counterTracks = lastPlaylist.trackAmount
         var sec = 0L
         val listType: Type = object : TypeToken<ArrayList<Track?>?>() {}.type
@@ -84,12 +96,23 @@ class PlaylistInfoFragment : Fragment() {
         val time = SimpleDateFormat("mm", Locale.getDefault()).format(sec)
         timeAndAmount.text = "$time минут • $counterTracks треков"
 
+        title.text = lastPlaylist.playlistName
+        descriptionAlbum.text = "$counterTracks треков"
+
         if(lastPlaylist.imageUri!=null){
             Glide.with(requireActivity())
                 .load(lastPlaylist.imageUri)
                 .placeholder(R.drawable.placeholder_bordered)
                 .transform(CenterCrop())
                 .into(placeholderImage)
+        }
+
+        if(lastPlaylist.imageUri!=null){
+            Glide.with(requireActivity())
+                .load(lastPlaylist.imageUri)
+                .placeholder(R.drawable.tracks_place_holder)
+                .transform(CenterCrop(), RoundedCorners(10))
+                .into(placeholderAlbum)
         }
 
         arrayBack.setOnClickListener {
@@ -139,6 +162,32 @@ class PlaylistInfoFragment : Fragment() {
                 startActivity(shareIntent)
             }
         }
+
+        val bottomSheetContainer = binding.menuBottomSheet
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        menu.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
 
     }
 
