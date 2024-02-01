@@ -58,6 +58,8 @@ class PlaylistInfoFragment : Fragment() {
     private lateinit var placeholderAlbum: ImageView
     private lateinit var menu: ImageView
     private lateinit var overlay: View
+    private lateinit var shareOption: TextView
+    private lateinit var deleteOption: TextView
 
     private var tracks_for_adapter = ArrayList<Track>()
 
@@ -83,7 +85,8 @@ class PlaylistInfoFragment : Fragment() {
         placeholderAlbum = binding.placeholderAlbum
         menu = binding.menu
         overlay = binding.overlay
-
+        shareOption = binding.shareOption
+        deleteOption = binding.deleteOption
 
         val counterTracks = lastPlaylist.trackAmount
         var sec = 0L
@@ -146,7 +149,36 @@ class PlaylistInfoFragment : Fragment() {
             confirmDialog.show()
         }
 
+        deleteOption.setOnClickListener{
+            val confirmDialog: MaterialAlertDialogBuilder = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_MyApp_Dialog_Alert)
+                .setTitle("Хотите удалить плейлист ${lastPlaylist.playlistName}?")
+                .setNegativeButton("НЕТ") { dialog, which ->
+                    // ничего не делаем
+                }.setPositiveButton("ДА") { dialog, which ->
+                    viewModel.deletePlaylist(lastPlaylist)
+                    findNavController().navigateUp()
+                }
+            confirmDialog.show()
+        }
+
         share.setOnClickListener {
+            if (tracks_for_adapter.isEmpty()) {
+                val toast = Toast.makeText(requireContext(), "В этом плейлисте нет списка треков, которым можно поделиться", Toast.LENGTH_LONG)
+                toast.show()
+            }
+            else{
+                var str = "${lastPlaylist.playlistName}\n${lastPlaylist.playlistDescription}\n${lastPlaylist.trackAmount} треков\n"
+                var c = 1
+                for (tr in tracks_for_adapter){
+                    str += "$c. ${tr.artistName} - ${tr.trackName} (${SimpleDateFormat("mm:ss", Locale.getDefault()).format(tr.trackTimeMillis)})\n"
+                    c++
+                }
+                val shareIntent = viewModel.shareApp(str)
+                startActivity(shareIntent)
+            }
+        }
+
+        shareOption.setOnClickListener {
             if (tracks_for_adapter.isEmpty()) {
                 val toast = Toast.makeText(requireContext(), "В этом плейлисте нет списка треков, которым можно поделиться", Toast.LENGTH_LONG)
                 toast.show()

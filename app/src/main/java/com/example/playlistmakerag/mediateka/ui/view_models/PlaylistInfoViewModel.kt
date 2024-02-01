@@ -45,11 +45,16 @@ class PlaylistInfoViewModel(private val playlistInteractor: PlaylistInteractor, 
             playlist.trackAmount?.minus(1), newString)
         viewModelScope.launch(Dispatchers.IO) {
             playlistInteractor.updatePlaylist(newPlaylist)
-//            fillData()
-//            message.postValue("Добавлено в плейлист ${playlist.playlistName}")
+            }
         }
     }
+
+    fun deletePlaylist(playlist: Playlist){
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistInteractor.deletePlaylist(playlist)
+        }
     }
+
     private val stateLiveData = MutableLiveData<List<Playlist>>()
 
     fun observeState(): LiveData<List<Playlist>> = stateLiveData
