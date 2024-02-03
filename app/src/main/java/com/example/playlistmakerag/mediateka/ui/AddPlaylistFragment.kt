@@ -41,7 +41,7 @@ open class AddPlaylistFragment : Fragment() {
     open lateinit var descriptionEditText: EditText
     open lateinit var saveButton: Button
     open lateinit var backButton: ImageView
-
+    var flag = false
     lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     open val viewModel by viewModel<AddPlaylistViewModel>()
@@ -158,7 +158,6 @@ open class AddPlaylistFragment : Fragment() {
         descriptionEditText.addTextChangedListener(textWatcherDescription)
 
         var actualUri: Uri? = null
-        var flag = false
         //регистрируем событие, которое вызывает photo picker
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
@@ -181,9 +180,7 @@ open class AddPlaylistFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener{
-            viewModel.savePlaylist(nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri)
-            showMessage("Плейлист ${nameEditText.text} создан")
-            findNavController().navigateUp()
+            save(actualUri)
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_MyApp_Dialog_Alert)
@@ -196,20 +193,27 @@ open class AddPlaylistFragment : Fragment() {
             }
 
         binding.backButton.setOnClickListener {
-            if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
-                confirmDialog.show()
-            else
-                findNavController().navigateUp()
+            back()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
-                    confirmDialog.show()
-                else
-                    findNavController().navigateUp()
+                back()
             }
         })
+    }
+
+    open fun back(){
+        if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
+            confirmDialog.show()
+        else
+            findNavController().navigateUp()
+    }
+
+    open fun save(actualUri: Uri?){
+        viewModel.savePlaylist(nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri)
+        showMessage("Плейлист ${nameEditText.text} создан")
+        findNavController().navigateUp()
     }
 
     private fun showMessage(textInp: String) {

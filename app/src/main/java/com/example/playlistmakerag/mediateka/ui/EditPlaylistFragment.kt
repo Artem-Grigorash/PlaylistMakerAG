@@ -1,8 +1,10 @@
 package com.example.playlistmakerag.mediateka.ui
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -16,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class EditPlaylistFragment: AddPlaylistFragment() {
     override lateinit var binding: FragmentAddPlaylistBinding
 
-//    override val viewModel by viewModel<EditPlaylistViewModel>()
+    override val viewModel by viewModel<EditPlaylistViewModel>()
 
     private val link = requireArguments().getString(ARGS_PLAYLIST)
     private val lastPlaylist: Playlist = Gson().fromJson(link, Playlist::class.java)
@@ -33,6 +35,20 @@ class EditPlaylistFragment: AddPlaylistFragment() {
                 .into(binding.pickImage)
         }
 
+        binding.header.text = "Редактировать"
+        binding.saveButton.text = "Сохранить"
+
+    }
+
+    override fun back() {
+        findNavController().navigateUp()
+    }
+
+    override fun save(actualUri: Uri?) {
+        findNavController().navigateUp()
+        if (nameEditText.text.toString() != lastPlaylist.playlistName || descriptionEditText.text.toString() != lastPlaylist.playlistDescription || actualUri.toString()!=lastPlaylist.imageUri) {
+            viewModel.updatePlaylist(lastPlaylist, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString())
+        }
     }
 
     companion object {
