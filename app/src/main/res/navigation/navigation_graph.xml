@@ -66,5 +66,12 @@
         <action
             android:id="@+id/action_playlistInfoFragment_to_trackDisplayFragment"
             app:destination="@id/trackDisplayFragment" />
+        <action
+            android:id="@+id/action_playlistInfoFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.example.playlistmakerag.mediateka.ui.EditPlaylistFragment"
+        android:label="EditPlaylistFragment" />
 </navigation>

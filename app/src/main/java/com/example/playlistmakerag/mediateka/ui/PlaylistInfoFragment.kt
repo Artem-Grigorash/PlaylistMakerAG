@@ -60,7 +60,7 @@ class PlaylistInfoFragment : Fragment() {
     private lateinit var overlay: View
     private lateinit var shareOption: TextView
     private lateinit var deleteOption: TextView
-
+    private lateinit var editOption: TextView
     private var tracks_for_adapter = ArrayList<Track>()
 
 
@@ -87,6 +87,7 @@ class PlaylistInfoFragment : Fragment() {
         overlay = binding.overlay
         shareOption = binding.shareOption
         deleteOption = binding.deleteOption
+        editOption = binding.editOption
 
         val counterTracks = lastPlaylist.trackAmount
         var sec = 0L
@@ -200,6 +201,10 @@ class PlaylistInfoFragment : Fragment() {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
+        editOption.setOnClickListener{
+            editPlaylist(lastPlaylist)
+        }
+
         menu.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
@@ -228,6 +233,14 @@ class PlaylistInfoFragment : Fragment() {
         findNavController().navigate(
             R.id.action_playlistInfoFragment_to_trackDisplayFragment,
             TrackDisplayFragment.createArgs(trackJson)
+        )
+    }
+
+    private fun editPlaylist(playlist: Playlist) {
+        val playlistJson = Gson().toJson(playlist)
+        findNavController().navigate(
+            R.id.action_playlistInfoFragment_to_editPlaylistFragment,
+            EditPlaylistFragment.createArgs(playlistJson)
         )
     }
 

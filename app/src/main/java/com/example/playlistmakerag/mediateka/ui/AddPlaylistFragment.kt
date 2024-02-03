@@ -33,18 +33,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class AddPlaylistFragment : Fragment() {
+open class AddPlaylistFragment : Fragment() {
 
-    private lateinit var binding: FragmentAddPlaylistBinding
+    open lateinit var binding: FragmentAddPlaylistBinding
 
-    private lateinit var nameEditText: EditText
-    private lateinit var descriptionEditText: EditText
-    private lateinit var saveButton: Button
-    private lateinit var backButton: ImageView
+    open lateinit var nameEditText: EditText
+    open lateinit var descriptionEditText: EditText
+    open lateinit var saveButton: Button
+    open lateinit var backButton: ImageView
 
     lateinit var confirmDialog: MaterialAlertDialogBuilder
 
-    private val viewModel by viewModel<AddPlaylistViewModel>()
+    open val viewModel by viewModel<AddPlaylistViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
