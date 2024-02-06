@@ -216,7 +216,7 @@ open class AddPlaylistFragment : Fragment() {
         findNavController().navigateUp()
     }
 
-    private fun showMessage(textInp: String) {
+    fun showMessage(textInp: String) {
         val inflater = layoutInflater
         val container = requireActivity().findViewById<ViewGroup>(R.id.custom_toast_container)
         val layout: View = inflater.inflate(R.layout.custom_toast, container)

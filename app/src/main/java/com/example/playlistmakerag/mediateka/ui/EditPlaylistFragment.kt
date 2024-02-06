@@ -20,11 +20,17 @@ class EditPlaylistFragment: AddPlaylistFragment() {
 
     override val viewModel by viewModel<EditPlaylistViewModel>()
 
-    private val link = requireArguments().getString(ARGS_PLAYLIST)
-    private val lastPlaylist: Playlist = Gson().fromJson(link, Playlist::class.java)
+    private lateinit var link: String
+    private lateinit var lastPlaylist: Playlist
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.imageView.visibility = View.GONE
+
+        link = requireArguments().getString(ARGS_PLAYLIST).toString()
+        lastPlaylist = Gson().fromJson(link, Playlist::class.java)
+
         nameEditText.setText(lastPlaylist.playlistName)
         descriptionEditText.setText(lastPlaylist.playlistDescription)
         if(lastPlaylist.imageUri!=null){
@@ -45,10 +51,10 @@ class EditPlaylistFragment: AddPlaylistFragment() {
     }
 
     override fun save(actualUri: Uri?) {
+//        if (nameEditText.text.toString() != lastPlaylist.playlistName || descriptionEditText.text.toString() != lastPlaylist.playlistDescription || actualUri.toString()!=lastPlaylist.imageUri) {
+        viewModel.updatePlaylist(lastPlaylist, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString())
+        showMessage("debug massage")
         findNavController().navigateUp()
-        if (nameEditText.text.toString() != lastPlaylist.playlistName || descriptionEditText.text.toString() != lastPlaylist.playlistDescription || actualUri.toString()!=lastPlaylist.imageUri) {
-            viewModel.updatePlaylist(lastPlaylist, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString())
-        }
     }
 
     companion object {
