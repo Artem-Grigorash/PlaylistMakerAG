@@ -13,12 +13,10 @@ import java.lang.reflect.Type
 
 class EditPlaylistViewModel(private val interactor: PlaylistInteractor): AddPlaylistViewModel(interactor) {
     fun updatePlaylist(playlist: Playlist, newName:String, newDescription:String?, newUrl:String?){
-//        val listType: Type = object : TypeToken<ArrayList<Track?>?>() {}.type
-//        val tracks: ArrayList<Track>? = Gson().fromJson(playlist.addedTracks, listType)
-//        val newString = Gson().toJson(tracks)
         val newPlaylist = Playlist(newName, newDescription, newUrl, playlist.trackAmount, playlist.addedTracks)
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.updatePlaylist(newPlaylist)
+            interactor.deletePlaylist(playlist)
+            interactor.addPlaylist(newPlaylist)
         }
     }
 }

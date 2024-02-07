@@ -51,10 +51,13 @@ class EditPlaylistFragment: AddPlaylistFragment() {
     }
 
     override fun save(actualUri: Uri?) {
-//        if (nameEditText.text.toString() != lastPlaylist.playlistName || descriptionEditText.text.toString() != lastPlaylist.playlistDescription || actualUri.toString()!=lastPlaylist.imageUri) {
-        viewModel.updatePlaylist(lastPlaylist, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString())
-        showMessage("debug massage")
-        findNavController().navigateUp()
+        if (nameEditText.text.toString() != lastPlaylist.playlistName || descriptionEditText.text.toString() != lastPlaylist.playlistDescription || actualUri.toString()!=lastPlaylist.imageUri) {
+            viewModel.updatePlaylist(lastPlaylist, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString())
+            showMessage("debug massage")
+            findNavController().navigateUp()
+        }
+        else
+            findNavController().navigateUp()
     }
 
     companion object {
