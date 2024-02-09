@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -69,7 +70,7 @@ class PlaylistInfoFragment : Fragment() {
 
 
         val link = requireArguments().getString(PlaylistInfoFragment.ARGS_PLAYLIST)
-        val lastPlaylist: Playlist = Gson().fromJson(link, Playlist::class.java)
+        var lastPlaylist: Playlist = Gson().fromJson(link, Playlist::class.java)
 
         name=binding.name
         description=binding.descriptionText
@@ -201,10 +202,33 @@ class PlaylistInfoFragment : Fragment() {
             }
         }
 
+        val bottomSheetHight = (binding.root.height - binding.menu.bottom)
         val bottomSheetContainer = binding.menuBottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
+            peekHeight = bottomSheetHight
         }
+
+
+
+
+        setFragmentResultListener("requestKey") { _, result ->
+            val data = result.getString("key") // Retrieve the data using the key
+            if (data!=null){
+                val pl: Playlist = Gson().fromJson(data, Playlist::class.java)
+                name.text=pl.playlistName
+                description.text=pl.playlistDescription
+                if(pl.imageUri!=null){
+                    Glide.with(requireActivity())
+                        .load(pl.imageUri)
+                        .placeholder(R.drawable.placeholder_bordered)
+                        .transform(CenterCrop())
+                        .into(placeholderImage)
+                }
+                lastPlaylist = pl
+            }
+        }
+
 
         editOption.setOnClickListener{
             editPlaylist(lastPlaylist)
@@ -213,6 +237,7 @@ class PlaylistInfoFragment : Fragment() {
         menu.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
 
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {

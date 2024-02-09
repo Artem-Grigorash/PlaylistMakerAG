@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -45,6 +46,7 @@ class EditPlaylistFragment: AddPlaylistFragment() {
         binding.header.text = "Редактировать"
         binding.saveButton.text = "Сохранить"
 
+
     }
 
     override fun back() {
@@ -56,10 +58,14 @@ class EditPlaylistFragment: AddPlaylistFragment() {
             viewModel.updatePlaylist(lastPlaylist, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString())
             val pl = Playlist(lastPlaylist.playlistId, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString(), lastPlaylist.trackAmount, lastPlaylist.addedTracks)
             val playlistJson = Gson().toJson(pl)
-            findNavController().navigate(
-                R.id.action_editPlaylistFragment_to_playlistInfoFragment,
-                PlaylistInfoFragment.createArgs(playlistJson)
-            )
+            val bundle = Bundle()
+            bundle.putString("key", playlistJson) // Put any data you want to send back
+            setFragmentResult("requestKey", bundle)
+            findNavController().navigateUp()
+//            findNavController().navigate(
+//                R.id.action_editPlaylistFragment_to_playlistInfoFragment,
+//                PlaylistInfoFragment.createArgs(playlistJson)
+//            )
         }
         else
             findNavController().navigateUp()
