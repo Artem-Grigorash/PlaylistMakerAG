@@ -73,5 +73,9 @@
     <fragment
         android:id="@+id/editPlaylistFragment"
         android:name="com.example.playlistmakerag.mediateka.ui.EditPlaylistFragment"
-        android:label="EditPlaylistFragment" />
+        android:label="EditPlaylistFragment" >
+        <action
+            android:id="@+id/action_editPlaylistFragment_to_playlistInfoFragment"
+            app:destination="@id/playlistInfoFragment" />
+    </fragment>
 </navigation>

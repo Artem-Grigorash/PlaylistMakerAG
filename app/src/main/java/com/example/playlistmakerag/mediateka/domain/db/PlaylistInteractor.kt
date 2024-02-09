@@ -13,5 +13,5 @@ interface PlaylistInteractor {
 
     suspend fun updatePlaylist(newPlaylist: Playlist)
 
-    suspend fun getPlaylist(playlistName: String)
+    suspend fun getPlaylist(playlistId: String)
 }

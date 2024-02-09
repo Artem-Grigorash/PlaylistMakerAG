@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmakerag.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 open class AddPlaylistViewModel(private val interactor: PlaylistInteractor): ViewModel() {
 
@@ -16,7 +17,7 @@ open class AddPlaylistViewModel(private val interactor: PlaylistInteractor): Vie
         }
 
     private fun createPlaylist(name: String, description: String?, uri: Uri?): Playlist{
-        return Playlist(name,description, uri.toString(), 0, "")
+        return Playlist(UUID.randomUUID().toString(), name,description, uri.toString(), 0, "")
     }
 
 

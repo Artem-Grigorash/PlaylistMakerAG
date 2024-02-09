@@ -146,6 +146,11 @@ class PlaylistInfoFragment : Fragment() {
                     adapter = TracksAdapter(tracks_for_adapter)
                     tracklist.adapter=adapter
                     adapter.notifyDataSetChanged()
+                    var seconds = 0L
+                    for (t in tracks_for_adapter)
+                        seconds+=t.trackTimeMillis
+                    val timeMin = SimpleDateFormat("mm", Locale.getDefault()).format(seconds)
+                    timeAndAmount.text = "$timeMin минут • ${tracks_for_adapter.size} треков"
                 }
             confirmDialog.show()
         }

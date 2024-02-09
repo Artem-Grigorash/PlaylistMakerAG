@@ -13,10 +13,9 @@ import java.lang.reflect.Type
 
 class EditPlaylistViewModel(private val interactor: PlaylistInteractor): AddPlaylistViewModel(interactor) {
     fun updatePlaylist(playlist: Playlist, newName:String, newDescription:String?, newUrl:String?){
-        val newPlaylist = Playlist(newName, newDescription, newUrl, playlist.trackAmount, playlist.addedTracks)
+        val newPlaylist = Playlist(playlist.playlistId, newName, newDescription, newUrl, playlist.trackAmount, playlist.addedTracks)
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.deletePlaylist(playlist)
-            interactor.addPlaylist(newPlaylist)
+            interactor.updatePlaylist(newPlaylist)
         }
     }
 }

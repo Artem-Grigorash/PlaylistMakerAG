@@ -12,6 +12,7 @@ import com.example.playlistmakerag.R
 import com.example.playlistmakerag.databinding.FragmentAddPlaylistBinding
 import com.example.playlistmakerag.mediateka.domain.models.Playlist
 import com.example.playlistmakerag.mediateka.ui.view_models.EditPlaylistViewModel
+import com.example.playlistmakerag.player.ui.TrackDisplayFragment
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -53,7 +54,12 @@ class EditPlaylistFragment: AddPlaylistFragment() {
     override fun save(actualUri: Uri?) {
         if (nameEditText.text.toString() != lastPlaylist.playlistName || descriptionEditText.text.toString() != lastPlaylist.playlistDescription || actualUri.toString()!=lastPlaylist.imageUri) {
             viewModel.updatePlaylist(lastPlaylist, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString())
-            findNavController().navigateUp()
+            val pl = Playlist(lastPlaylist.playlistId, nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri.toString(), lastPlaylist.trackAmount, lastPlaylist.addedTracks)
+            val playlistJson = Gson().toJson(pl)
+            findNavController().navigate(
+                R.id.action_editPlaylistFragment_to_playlistInfoFragment,
+                PlaylistInfoFragment.createArgs(playlistJson)
+            )
         }
         else
             findNavController().navigateUp()

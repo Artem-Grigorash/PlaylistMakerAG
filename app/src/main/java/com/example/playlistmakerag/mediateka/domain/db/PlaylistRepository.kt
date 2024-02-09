@@ -14,6 +14,6 @@ interface PlaylistRepository {
 
     suspend fun updatePlaylist(playlist: Playlist)
 
-    suspend fun getPlaylist(playlistName: String)
+    suspend fun getPlaylist(playlistId: String)
 
 }

@@ -38,7 +38,7 @@ class PlaylistRepositoryImpl(
         playlistDatabase.playlistDao().updatePlaylist(playlistDbConvertor.map(playlist))
     }
 
-    override suspend fun getPlaylist(playlistName: String){
-        playlistDatabase.playlistDao().getPlaylist(playlistName)
+    override suspend fun getPlaylist(playlistId: String){
+        playlistDatabase.playlistDao().getPlaylist(playlistId)
     }
 }
