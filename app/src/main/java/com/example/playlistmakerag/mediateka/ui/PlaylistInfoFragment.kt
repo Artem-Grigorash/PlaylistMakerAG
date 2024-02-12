@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -202,14 +203,45 @@ class PlaylistInfoFragment : Fragment() {
             }
         }
 
-        val bottomSheetHight = (binding.root.height - binding.menu.bottom)
-        val bottomSheetContainer = binding.menuBottomSheet
-        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+        val bottomSheetContainerMenu = binding.menuBottomSheet
+        val bottomSheetBehaviorMenu = BottomSheetBehavior.from(bottomSheetContainerMenu).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
-            peekHeight = bottomSheetHight
         }
 
+        menu.setOnClickListener {
+            bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+//
+//        bottomSheetContainer.viewTreeObserver.addOnGlobalLayoutListener {
+//            val bottomSheetHight = (binding.root.height - binding.menu.bottom)
+//            bottomSheetBehavior.peekHeight = bottomSheetHight
+//        }
 
+        view.doOnNextLayout {
+            val bottomSheetHight = (binding.root.height - binding.menu.bottom)
+            val bottomSheetContainer = binding.standardBottomSheet
+            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+                peekHeight = bottomSheetHight
+            }
+
+            bottomSheetBehavior.addBottomSheetCallback(object :
+                BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    when (newState) {
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            overlay.visibility = View.GONE
+                        }
+
+                        else -> {
+                            overlay.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+            })
+        }
 
 
         setFragmentResultListener("requestKey") { _, result ->
@@ -234,27 +266,27 @@ class PlaylistInfoFragment : Fragment() {
             editPlaylist(lastPlaylist)
         }
 
-        menu.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
+//        menu.setOnClickListener {
+//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//        }
 
 
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        overlay.visibility = View.GONE
-                    }
-
-                    else -> {
-                        overlay.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-        })
+//        bottomSheetBehavior.addBottomSheetCallback(object :
+//            BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                when (newState) {
+//                    BottomSheetBehavior.STATE_HIDDEN -> {
+//                        overlay.visibility = View.GONE
+//                    }
+//
+//                    else -> {
+//                        overlay.visibility = View.VISIBLE
+//                    }
+//                }
+//            }
+//
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+//        })
 
     }
 
