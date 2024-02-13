@@ -62,10 +62,6 @@ class EditPlaylistFragment: AddPlaylistFragment() {
             bundle.putString("key", playlistJson) // Put any data you want to send back
             setFragmentResult("requestKey", bundle)
             findNavController().navigateUp()
-//            findNavController().navigate(
-//                R.id.action_editPlaylistFragment_to_playlistInfoFragment,
-//                PlaylistInfoFragment.createArgs(playlistJson)
-//            )
         }
         else
             findNavController().navigateUp()
