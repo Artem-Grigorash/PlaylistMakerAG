@@ -33,18 +33,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class AddPlaylistFragment : Fragment() {
+open class AddPlaylistFragment : Fragment() {
 
-    private lateinit var binding: FragmentAddPlaylistBinding
+    open lateinit var binding: FragmentAddPlaylistBinding
 
-    private lateinit var nameEditText: EditText
-    private lateinit var descriptionEditText: EditText
-    private lateinit var saveButton: Button
-    private lateinit var backButton: ImageView
-
+    open lateinit var nameEditText: EditText
+    open lateinit var descriptionEditText: EditText
+    open lateinit var saveButton: Button
+    open lateinit var backButton: ImageView
+    var flag = false
     lateinit var confirmDialog: MaterialAlertDialogBuilder
 
-    private val viewModel by viewModel<AddPlaylistViewModel>()
+    open val viewModel by viewModel<AddPlaylistViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
@@ -158,7 +158,6 @@ class AddPlaylistFragment : Fragment() {
         descriptionEditText.addTextChangedListener(textWatcherDescription)
 
         var actualUri: Uri? = null
-        var flag = false
         //регистрируем событие, которое вызывает photo picker
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
@@ -181,9 +180,7 @@ class AddPlaylistFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener{
-            viewModel.savePlaylist(nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri)
-            showMessage("Плейлист ${nameEditText.text} создан")
-            findNavController().navigateUp()
+            save(actualUri)
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext(), R.style.Theme_MyApp_Dialog_Alert)
@@ -196,23 +193,30 @@ class AddPlaylistFragment : Fragment() {
             }
 
         binding.backButton.setOnClickListener {
-            if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
-                confirmDialog.show()
-            else
-                findNavController().navigateUp()
+            back()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
-                    confirmDialog.show()
-                else
-                    findNavController().navigateUp()
+                back()
             }
         })
     }
 
-    private fun showMessage(textInp: String) {
+    open fun back(){
+        if(nameEditText.text.isNotEmpty() || descriptionEditText.text.isNotEmpty() || flag)
+            confirmDialog.show()
+        else
+            findNavController().navigateUp()
+    }
+
+    open fun save(actualUri: Uri?){
+        viewModel.savePlaylist(nameEditText.text.toString(), descriptionEditText.text.toString(), actualUri)
+        showMessage("Плейлист ${nameEditText.text} создан")
+        findNavController().navigateUp()
+    }
+
+    fun showMessage(textInp: String) {
         val inflater = layoutInflater
         val container = requireActivity().findViewById<ViewGroup>(R.id.custom_toast_container)
         val layout: View = inflater.inflate(R.layout.custom_toast, container)

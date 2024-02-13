@@ -85,7 +85,7 @@ class TrackViewModel(private val interactor: TrackInteractor, private val histor
                 tracks = ArrayList<Track>().apply { add(actualTrack) }
             }
             val newString = Gson().toJson(tracks)
-            val newPlaylist = Playlist(playlist.playlistName, playlist.playlistDescription, playlist.imageUri,
+            val newPlaylist = Playlist(playlist.playlistId, playlist.playlistName, playlist.playlistDescription, playlist.imageUri,
                 playlist.trackAmount?.plus(1), newString)
             viewModelScope.launch(Dispatchers.IO) {
                 playlistInteractor.updatePlaylist(newPlaylist)

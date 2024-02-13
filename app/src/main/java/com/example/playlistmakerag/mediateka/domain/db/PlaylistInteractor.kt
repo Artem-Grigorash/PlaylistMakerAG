@@ -10,5 +10,8 @@ interface PlaylistInteractor {
     suspend fun deletePlaylist(playlist: Playlist)
 
     fun historyPlaylists(): Flow<List<Playlist>>
+
     suspend fun updatePlaylist(newPlaylist: Playlist)
+
+    suspend fun getPlaylist(playlistId: String)
 }

@@ -8,6 +8,7 @@ import com.example.playlistmakerag.player.domain.models.Track
 @Entity(tableName = "playlist_table")
 data class PlaylistEntity(
     @PrimaryKey
+    val playlistId: String,
     val playlistName: String,
     val playlistDescription: String?,
     val imageUri: String?,

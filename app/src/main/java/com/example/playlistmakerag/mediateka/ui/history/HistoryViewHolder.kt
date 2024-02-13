@@ -18,7 +18,7 @@ class HistoryViewHolder(parent: ViewGroup) :
             .inflate(R.layout.tracks_view, parent, false)) {
     private val trackName: TextView = itemView.findViewById(R.id.trackName)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
-    private val trackPicture: ImageView = itemView.findViewById(R.id.trackPicture)
+    private val trackPicture: ImageView = itemView.findViewById(R.id.placeholderImage)
 
     fun bind(model: Track) {
         trackName.text = short(model.trackName)

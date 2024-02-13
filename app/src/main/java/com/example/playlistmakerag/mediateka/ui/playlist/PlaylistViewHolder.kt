@@ -14,7 +14,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     private val title: TextView = itemView.findViewById(R.id.title)
     private val amountOfTracks: TextView = itemView.findViewById(R.id.description)
-    private val picture: ImageView = itemView.findViewById(R.id.trackPicture)
+    private val picture: ImageView = itemView.findViewById(R.id.placeholderImage)
 
     fun bind(playlist: Playlist) {
         title.text = playlist.playlistName

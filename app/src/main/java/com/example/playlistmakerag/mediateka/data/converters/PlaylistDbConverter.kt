@@ -6,10 +6,10 @@ import com.example.playlistmakerag.mediateka.domain.models.Playlist
 class PlaylistDbConverter {
 
         fun map(playlist: Playlist): PlaylistEntity {
-            return PlaylistEntity(playlist.playlistName, playlist.playlistDescription, playlist.imageUri, playlist.trackAmount, playlist.addedTracks)
+            return PlaylistEntity(playlist.playlistId, playlist.playlistName, playlist.playlistDescription, playlist.imageUri, playlist.trackAmount, playlist.addedTracks)
         }
         fun map(playlist: PlaylistEntity): Playlist {
-            return Playlist(playlist.playlistName, playlist.playlistDescription, playlist.imageUri, playlist.trackAmount, playlist.addedTracks)
+            return Playlist(playlist.playlistId, playlist.playlistName, playlist.playlistDescription, playlist.imageUri, playlist.trackAmount, playlist.addedTracks)
         }
 
 }
