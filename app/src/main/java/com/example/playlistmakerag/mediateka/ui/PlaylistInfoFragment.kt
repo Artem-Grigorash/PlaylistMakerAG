@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
@@ -211,11 +212,12 @@ class PlaylistInfoFragment : Fragment() {
         menu.setOnClickListener {
             bottomSheetBehaviorMenu.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-//
-//        bottomSheetContainer.viewTreeObserver.addOnGlobalLayoutListener {
-//            val bottomSheetHight = (binding.root.height - binding.menu.bottom)
-//            bottomSheetBehavior.peekHeight = bottomSheetHight
-//        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
+        })
 
         view.doOnNextLayout {
             val bottomSheetHight = (binding.root.height - binding.menu.bottom)
@@ -265,28 +267,6 @@ class PlaylistInfoFragment : Fragment() {
         editOption.setOnClickListener{
             editPlaylist(lastPlaylist)
         }
-
-//        menu.setOnClickListener {
-//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//        }
-
-
-//        bottomSheetBehavior.addBottomSheetCallback(object :
-//            BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                when (newState) {
-//                    BottomSheetBehavior.STATE_HIDDEN -> {
-//                        overlay.visibility = View.GONE
-//                    }
-//
-//                    else -> {
-//                        overlay.visibility = View.VISIBLE
-//                    }
-//                }
-//            }
-//
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-//        })
 
     }
 
